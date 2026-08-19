@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Калькулятор вклада — Свобода</title>
+<title>Свобода — калькулятор вклада</title>
 
 <style>
 * {
@@ -14,46 +14,71 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #eef4ff, #f8fafc);
-    color: #172033;
+    background:
+        radial-gradient(circle at top left, #243b80 0, transparent 35%),
+        radial-gradient(circle at bottom right, #4b1f72 0, transparent 35%),
+        #0b1020;
+    color: white;
+    min-height: 100vh;
 }
 
 .container {
-    width: min(900px, 94%);
-    margin: 30px auto;
+    width: min(1000px, 94%);
+    margin: auto;
+    padding: 25px 0 40px;
 }
+
+/* HEADER */
 
 .header {
     text-align: center;
-    margin-bottom: 25px;
+    padding: 20px 10px 30px;
+}
+
+.logo {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 30px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.12);
+    font-size: 14px;
+    color: #9fc1ff;
+    margin-bottom: 15px;
 }
 
 .header h1 {
     margin: 0;
-    font-size: 38px;
+    font-size: 42px;
+    line-height: 1.1;
 }
 
 .header h1 span {
-    color: #1677ff;
+    background: linear-gradient(90deg, #4facfe, #8f7cff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .header p {
-    margin-top: 8px;
-    color: #667085;
+    margin-top: 12px;
+    color: #9ba7c0;
     font-size: 17px;
 }
 
-.grid {
+/* MAIN */
+
+.main-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 380px 1fr;
     gap: 20px;
 }
 
 .card {
-    background: white;
-    border-radius: 22px;
+    background: rgba(20, 28, 52, .88);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 24px;
     padding: 25px;
-    box-shadow: 0 12px 35px rgba(20, 40, 80, 0.08);
+    box-shadow: 0 20px 60px rgba(0,0,0,.28);
+    backdrop-filter: blur(12px);
 }
 
 .card h2 {
@@ -61,63 +86,70 @@ body {
     font-size: 22px;
 }
 
+/* INPUTS */
+
 label {
     display: block;
-    margin-top: 18px;
+    margin-top: 16px;
     margin-bottom: 7px;
-    font-weight: 600;
+    color: #bac4da;
+    font-size: 14px;
 }
 
 input {
     width: 100%;
-    padding: 14px;
-    border: 1px solid #d7deea;
+    padding: 14px 15px;
     border-radius: 12px;
+    border: 1px solid #34415f;
+    background: #11182c;
+    color: white;
     font-size: 17px;
-    background: #fbfcfe;
 }
 
 input:focus {
     outline: none;
-    border-color: #1677ff;
-    box-shadow: 0 0 0 3px rgba(22,119,255,0.1);
+    border-color: #4facfe;
+    box-shadow: 0 0 0 3px rgba(79,172,254,.15);
 }
 
 button {
     width: 100%;
-    margin-top: 24px;
-    padding: 15px;
+    margin-top: 22px;
+    padding: 16px;
     border: none;
-    border-radius: 12px;
-    background: #1677ff;
+    border-radius: 14px;
+    background: linear-gradient(90deg, #1677ff, #7b61ff);
     color: white;
     font-size: 18px;
-    font-weight: bold;
+    font-weight: 700;
     cursor: pointer;
+    box-shadow: 0 10px 25px rgba(79,110,255,.3);
 }
 
 button:hover {
-    background: #005fe6;
+    transform: translateY(-1px);
 }
 
-.result-big {
-    background: linear-gradient(135deg, #1677ff, #4b8dff);
-    color: white;
-    border-radius: 18px;
-    padding: 25px;
-    text-align: center;
+/* RESULT */
+
+.result-main {
+    background: linear-gradient(135deg, #1677ff, #784cff);
+    border-radius: 20px;
+    padding: 24px;
     margin-bottom: 15px;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(79,90,255,.3);
 }
 
-.result-big div {
-    font-size: 15px;
-    opacity: 0.9;
+.result-main small {
+    color: #dfe8ff;
+    font-size: 14px;
 }
 
-.result-big strong {
+.result-main strong {
     display: block;
-    font-size: 34px;
     margin-top: 8px;
+    font-size: 38px;
 }
 
 .stats {
@@ -127,15 +159,15 @@ button:hover {
 }
 
 .stat {
-    background: #f5f7fb;
-    border-radius: 14px;
     padding: 16px;
+    border-radius: 16px;
+    background: #11182c;
+    border: 1px solid #293654;
 }
 
-.stat span {
+.stat small {
     display: block;
-    color: #667085;
-    font-size: 14px;
+    color: #8996b2;
     margin-bottom: 7px;
 }
 
@@ -143,30 +175,40 @@ button:hover {
     font-size: 19px;
 }
 
+.profit {
+    color: #36e0a2;
+}
+
+/* CHART */
+
 .full {
-    grid-column: 1 / -1;
+    margin-top: 20px;
 }
 
 .chart {
-    height: 260px;
+    height: 270px;
     display: flex;
     align-items: flex-end;
-    gap: 6px;
-    padding-top: 20px;
-    border-bottom: 1px solid #e6eaf0;
+    gap: 7px;
+    padding: 20px 5px 0;
+    border-bottom: 1px solid #33405d;
     overflow-x: auto;
 }
 
 .bar {
-    min-width: 18px;
-    background: #1677ff;
-    border-radius: 6px 6px 0 0;
-    transition: 0.2s;
+    min-width: 22px;
+    background: linear-gradient(to top, #1677ff, #8f7cff);
+    border-radius: 7px 7px 0 0;
+    box-shadow: 0 0 15px rgba(79,110,255,.25);
+    cursor: pointer;
+    transition: .2s;
 }
 
 .bar:hover {
-    transform: scaleY(1.03);
+    filter: brightness(1.25);
 }
+
+/* TABLE */
 
 .table-wrap {
     overflow-x: auto;
@@ -175,13 +217,13 @@ button:hover {
 table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 520px;
+    min-width: 550px;
 }
 
 th,
 td {
-    padding: 12px 10px;
-    border-bottom: 1px solid #edf0f4;
+    padding: 13px 10px;
+    border-bottom: 1px solid #29344d;
     text-align: right;
 }
 
@@ -191,41 +233,63 @@ td:first-child {
 }
 
 th {
-    background: #f6f8fb;
+    color: #a7b3ca;
+    background: #11182c;
 }
 
-.note {
-    margin-top: 18px;
-    color: #667085;
+td {
+    color: #e4e9f5;
+}
+
+td:nth-child(3) {
+    color: #36e0a2;
+}
+
+/* INFO */
+
+.info {
+    margin-top: 20px;
+    padding: 18px;
+    background: rgba(54,224,162,.07);
+    border: 1px solid rgba(54,224,162,.15);
+    border-radius: 16px;
+    color: #aab6ca;
     font-size: 14px;
     line-height: 1.5;
 }
 
-@media (max-width: 700px) {
+/* MOBILE */
 
-    .grid {
+@media (max-width: 800px) {
+
+    .main-grid {
         grid-template-columns: 1fr;
     }
 
-    .full {
-        grid-column: auto;
+    .header h1 {
+        font-size: 32px;
     }
 
-    .header h1 {
-        font-size: 29px;
+}
+
+@media (max-width: 500px) {
+
+    .container {
+        width: 94%;
+    }
+
+    .card {
+        padding: 18px;
     }
 
     .stats {
         grid-template-columns: 1fr;
     }
 
-    .container {
-        margin: 15px auto;
+    .result-main strong {
+        font-size: 30px;
     }
 
-    .card {
-        padding: 19px;
-    }
 }
 </style>
 </head>
@@ -235,19 +299,33 @@ th {
 <div class="container">
 
     <div class="header">
-        <h1><span>Свобода</span> — калькулятор вклада</h1>
-        <p>Рассчитайте доход с ежемесячной капитализацией</p>
+
+        <div class="logo">ФИНАНСОВЫЙ КАЛЬКУЛЯТОР</div>
+
+        <h1>
+            <span>Свобода</span>
+            — калькулятор вклада
+        </h1>
+
+        <p>
+            Узнайте, сколько принесут ваши деньги с ежемесячной капитализацией
+        </p>
+
     </div>
 
-    <div class="grid">
+
+    <div class="main-grid">
+
+        <!-- ПАРАМЕТРЫ -->
 
         <div class="card">
-            <h2>Параметры вклада</h2>
+
+            <h2>💰 Параметры вклада</h2>
 
             <label>Начальная сумма, ₽</label>
             <input type="number" id="initial" value="550000">
 
-            <label>Процентная ставка, % годовых</label>
+            <label>Ставка, % годовых</label>
             <input type="number" id="rate" value="13.2" step="0.1">
 
             <label>Срок, месяцев</label>
@@ -256,67 +334,62 @@ th {
             <label>Пополнение каждый месяц, ₽</label>
             <input type="number" id="addition" value="0">
 
-            <button onclick="calculate()">Рассчитать</button>
+            <button onclick="calculate()">
+                Рассчитать доход
+            </button>
+
         </div>
+
+
+        <!-- РЕЗУЛЬТАТ -->
 
         <div class="card">
 
-            <div class="result-big">
-                <div>Итоговая сумма</div>
+            <div class="result-main">
+
+                <small>Итоговая сумма</small>
+
                 <strong id="finalAmount">—</strong>
+
             </div>
+
 
             <div class="stats">
 
                 <div class="stat">
-                    <span>Ваши деньги</span>
+
+                    <small>Ваши деньги</small>
+
                     <strong id="invested">—</strong>
+
                 </div>
 
-                <div class="stat">
-                    <span>Доход</span>
-                    <strong id="profit">—</strong>
-                </div>
 
                 <div class="stat">
-                    <span>Доходность</span>
-                    <strong id="profitPercent">—</strong>
+
+                    <small>Доход</small>
+
+                    <strong class="profit" id="profit">—</strong>
+
                 </div>
 
+
                 <div class="stat">
-                    <span>Ставка</span>
+
+                    <small>Доходность</small>
+
+                    <strong class="profit" id="profitPercent">—</strong>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <small>Ставка</small>
+
                     <strong id="rateResult">—</strong>
+
                 </div>
-
-            </div>
-
-        </div>
-
-        <div class="card full">
-            <h2>Рост вклада</h2>
-            <div class="chart" id="chart"></div>
-        </div>
-
-        <div class="card full">
-
-            <h2>Расчёт по месяцам</h2>
-
-            <div class="table-wrap">
-
-                <table>
-
-                    <thead>
-                        <tr>
-                            <th>Месяц</th>
-                            <th>Пополнение</th>
-                            <th>Проценты</th>
-                            <th>Баланс</th>
-                        </tr>
-                    </thead>
-
-                    <tbody id="tableBody"></tbody>
-
-                </table>
 
             </div>
 
@@ -324,113 +397,240 @@ th {
 
     </div>
 
-    <div class="note">
-        Расчёт является ориентировочным. Фактический доход зависит от условий конкретного банка.
+
+    <!-- ГРАФИК -->
+
+    <div class="card full">
+
+        <h2>📈 Рост вашего вклада</h2>
+
+        <div class="chart" id="chart"></div>
+
+    </div>
+
+
+    <!-- ТАБЛИЦА -->
+
+    <div class="card full">
+
+        <h2>📊 Доход по месяцам</h2>
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Месяц</th>
+                        <th>Пополнение</th>
+                        <th>Проценты</th>
+                        <th>Баланс</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="tableBody"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <div class="info">
+
+        ℹ️ Расчёт является ориентировочным. Фактический доход зависит
+        от условий конкретного банка, даты начисления процентов и порядка
+        капитализации.
+
     </div>
 
 </div>
 
+
 <script>
 
 function money(value) {
+
     return Math.round(value).toLocaleString("ru-RU") + " ₽";
+
 }
+
 
 function calculate() {
 
-    const initial = Number(document.getElementById("initial").value);
-    const rate = Number(document.getElementById("rate").value);
-    const months = Number(document.getElementById("months").value);
-    const addition = Number(document.getElementById("addition").value);
+    const initial =
+        Number(document.getElementById("initial").value);
 
-    if (initial < 0 || rate < 0 || months < 1 || addition < 0) {
+    const rate =
+        Number(document.getElementById("rate").value);
+
+    const months =
+        Number(document.getElementById("months").value);
+
+    const addition =
+        Number(document.getElementById("addition").value);
+
+
+    if (
+        initial < 0 ||
+        rate < 0 ||
+        months < 1 ||
+        addition < 0
+    ) {
+
         alert("Проверьте введённые значения.");
+
         return;
+
     }
 
-    const monthlyRate = rate / 100 / 12;
+
+    const monthlyRate =
+        rate / 100 / 12;
+
 
     let balance = initial;
+
     let invested = initial;
 
     const rows = [];
 
-    for (let month = 1; month <= months; month++) {
+
+    for (
+        let month = 1;
+        month <= months;
+        month++
+    ) {
 
         balance += addition;
+
         invested += addition;
 
-        const interest = balance * monthlyRate;
+
+        const interest =
+            balance * monthlyRate;
+
 
         balance += interest;
 
+
         rows.push({
+
             month: month,
+
             addition: addition,
+
             interest: interest,
+
             balance: balance
+
         });
+
     }
 
-    const profit = balance - invested;
+
+    const profit =
+        balance - invested;
+
 
     const profitPercent =
-        invested > 0 ? (profit / invested) * 100 : 0;
+        invested > 0
+        ? (profit / invested) * 100
+        : 0;
 
-    document.getElementById("finalAmount").textContent = money(balance);
 
-    document.getElementById("invested").textContent = money(invested);
+    document.getElementById("finalAmount").textContent =
+        money(balance);
 
-    document.getElementById("profit").textContent = money(profit);
+
+    document.getElementById("invested").textContent =
+        money(invested);
+
+
+    document.getElementById("profit").textContent =
+        money(profit);
+
 
     document.getElementById("profitPercent").textContent =
         profitPercent.toFixed(2).replace(".", ",") + "%";
 
+
     document.getElementById("rateResult").textContent =
         rate.toFixed(1).replace(".", ",") + "%";
 
-    const tableBody = document.getElementById("tableBody");
+
+    /* TABLE */
+
+    const tableBody =
+        document.getElementById("tableBody");
+
 
     tableBody.innerHTML = "";
 
+
     rows.forEach(row => {
 
-        const tr = document.createElement("tr");
+        tableBody.innerHTML += `
 
-        tr.innerHTML = `
-            <td>${row.month}</td>
-            <td>${money(row.addition)}</td>
-            <td>${money(row.interest)}</td>
-            <td>${money(row.balance)}</td>
+            <tr>
+
+                <td>${row.month}</td>
+
+                <td>${money(row.addition)}</td>
+
+                <td>${money(row.interest)}</td>
+
+                <td>${money(row.balance)}</td>
+
+            </tr>
+
         `;
-
-        tableBody.appendChild(tr);
 
     });
 
-    const chart = document.getElementById("chart");
+
+    /* CHART */
+
+    const chart =
+        document.getElementById("chart");
+
 
     chart.innerHTML = "";
 
-    const maxBalance = Math.max(...rows.map(row => row.balance));
+
+    const maxBalance =
+        Math.max(...rows.map(row => row.balance));
+
 
     rows.forEach(row => {
 
-        const bar = document.createElement("div");
+        const bar =
+            document.createElement("div");
+
 
         bar.className = "bar";
 
+
         bar.style.height =
-            (row.balance / maxBalance * 220) + "px";
+            (row.balance / maxBalance * 230) + "px";
+
 
         bar.title =
-            "Месяц " + row.month + ": " + money(row.balance);
+            "Месяц " +
+            row.month +
+            ": " +
+            money(row.balance);
+
 
         chart.appendChild(bar);
 
     });
 
 }
+
 
 calculate();
 

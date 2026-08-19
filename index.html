@@ -1,375 +1,347 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Калькулятор вклада</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Свобода — калькулятор вклада</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<style>
+* { box-sizing: border-box; }
 
-        body {
-            margin: 0;
-            padding: 20px;
-            font-family: Arial, sans-serif;
-            background: #f3f5f7;
-            color: #222;
-        }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f7fb;
+    color: #172033;
+}
 
-        .container {
-            max-width: 650px;
-            margin: 0 auto;
-        }
+.container {
+    max-width: 700px;
+    margin: auto;
+    padding: 20px;
+}
 
-        .card {
-            background: white;
-            border-radius: 18px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-        }
+header {
+    text-align: center;
+    padding: 20px 0 25px;
+}
 
-        h1 {
-            margin-top: 0;
-            margin-bottom: 10px;
-            text-align: center;
-        }
+.logo {
+    font-size: 28px;
+    font-weight: 800;
+}
 
-        .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 25px;
-        }
+.logo span {
+    color: #1677ff;
+}
 
-        label {
-            display: block;
-            margin-top: 16px;
-            margin-bottom: 7px;
-            font-weight: bold;
-        }
+.subtitle {
+    color: #6b7280;
+    margin-top: 8px;
+}
 
-        input {
-            width: 100%;
-            padding: 13px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            font-size: 17px;
-        }
+.card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 18px;
+    box-shadow: 0 8px 30px rgba(0,0,0,.07);
+}
 
-        input:focus {
-            outline: none;
-            border-color: #1677ff;
-        }
+h2 {
+    margin-top: 0;
+}
 
-        button {
-            width: 100%;
-            margin-top: 25px;
-            padding: 14px;
-            border: none;
-            border-radius: 10px;
-            background: #1677ff;
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+label {
+    display: block;
+    margin: 16px 0 7px;
+    font-weight: 600;
+}
 
-        button:hover {
-            background: #005fe6;
-        }
+input {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #d9dee8;
+    border-radius: 12px;
+    font-size: 17px;
+}
 
-        .result-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-top: 20px;
-        }
+button {
+    width: 100%;
+    margin-top: 22px;
+    padding: 15px;
+    border: 0;
+    border-radius: 12px;
+    background: #1677ff;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+}
 
-        .result-box {
-            background: #f3f7ff;
-            border-radius: 12px;
-            padding: 15px;
-        }
+button:hover {
+    background: #0d63dc;
+}
 
-        .result-title {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 7px;
-        }
+.main-result {
+    background: #eef5ff;
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 15px;
+}
 
-        .result-value {
-            font-size: 21px;
-            font-weight: bold;
-        }
+.main-result small {
+    color: #667085;
+}
 
-        .chart {
-            margin-top: 20px;
-            height: 260px;
-            display: flex;
-            align-items: flex-end;
-            gap: 4px;
-            padding: 15px 5px 0;
-            border-bottom: 1px solid #ddd;
-            overflow-x: auto;
-        }
+.main-result strong {
+    display: block;
+    font-size: 34px;
+    margin-top: 6px;
+}
 
-        .bar {
-            min-width: 12px;
-            background: #1677ff;
-            border-radius: 4px 4px 0 0;
-            position: relative;
-        }
+.stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
 
-        .bar:hover {
-            opacity: 0.8;
-        }
+.stat {
+    background: #f8f9fc;
+    border-radius: 14px;
+    padding: 16px;
+}
 
-        .table-wrapper {
-            overflow-x: auto;
-            margin-top: 15px;
-        }
+.stat small {
+    display: block;
+    color: #6b7280;
+    margin-bottom: 6px;
+}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 450px;
-        }
+.stat strong {
+    font-size: 19px;
+}
 
-        th, td {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-            text-align: right;
-        }
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
 
-        th:first-child,
-        td:first-child {
-            text-align: center;
-        }
+th, td {
+    padding: 11px 7px;
+    border-bottom: 1px solid #eceff3;
+    text-align: right;
+}
 
-        th {
-            background: #f5f5f5;
-        }
+th:first-child,
+td:first-child {
+    text-align: center;
+}
 
-        .hidden {
-            display: none;
-        }
+.chart {
+    height: 220px;
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+    padding-top: 20px;
+}
 
-        @media (max-width: 500px) {
-            body {
-                padding: 10px;
-            }
+.bar {
+    flex: 1;
+    max-width: 28px;
+    background: #1677ff;
+    border-radius: 6px 6px 0 0;
+}
 
-            .card {
-                padding: 18px;
-            }
+.note {
+    color: #6b7280;
+    font-size: 14px;
+    line-height: 1.5;
+}
 
-            .result-grid {
-                grid-template-columns: 1fr;
-            }
+@media (max-width: 600px) {
+    .container {
+        padding: 12px;
+    }
 
-            h1 {
-                font-size: 27px;
-            }
-        }
-    </style>
+    .card {
+        padding: 18px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .main-result strong {
+        font-size: 29px;
+    }
+}
+</style>
 </head>
 
 <body>
 
 <div class="container">
 
-    <div class="card">
-        <h1>Калькулятор вклада</h1>
-        <div class="subtitle">
-            Рассчитайте доход с ежемесячной капитализацией
-        </div>
+<header>
+    <div class="logo"><span>Свобода</span> — финансовые калькуляторы</div>
+    <div class="subtitle">Расчёт вклада с ежемесячной капитализацией</div>
+</header>
 
-        <label for="initial">Начальная сумма, ₽</label>
-        <input type="number" id="initial" value="550000" min="0">
+<div class="card">
+    <h2>Параметры вклада</h2>
 
-        <label for="rate">Процентная ставка, % годовых</label>
-        <input type="number" id="rate" value="13.2" min="0" step="0.1">
+    <label>Начальная сумма, ₽</label>
+    <input type="number" id="initial" value="550000">
 
-        <label for="months">Срок, месяцев</label>
-        <input type="number" id="months" value="5" min="1">
+    <label>Ставка, % годовых</label>
+    <input type="number" id="rate" value="13.2" step="0.1">
 
-        <label for="addition">Пополнение каждый месяц, ₽</label>
-        <input type="number" id="addition" value="0" min="0">
+    <label>Срок, месяцев</label>
+    <input type="number" id="months" value="5">
 
-        <button onclick="calculate()">Рассчитать</button>
+    <label>Пополнение каждый месяц, ₽</label>
+    <input type="number" id="addition" value="0">
+
+    <button onclick="calculate()">Рассчитать</button>
+</div>
+
+<div class="card">
+    <div class="main-result">
+        <small>Итоговая сумма</small>
+        <strong id="finalAmount">—</strong>
     </div>
 
-    <div class="card">
-
-        <h2>Результат</h2>
-
-        <div class="result-grid">
-
-            <div class="result-box">
-                <div class="result-title">Итоговая сумма</div>
-                <div class="result-value" id="finalAmount">—</div>
-            </div>
-
-            <div class="result-box">
-                <div class="result-title">Доход</div>
-                <div class="result-value" id="profit">—</div>
-            </div>
-
-            <div class="result-box">
-                <div class="result-title">Внесено своих денег</div>
-                <div class="result-value" id="invested">—</div>
-            </div>
-
-            <div class="result-box">
-                <div class="result-title">Заработано в %</div>
-                <div class="result-value" id="profitPercent">—</div>
-            </div>
-
+    <div class="stats">
+        <div class="stat">
+            <small>Ваши деньги</small>
+            <strong id="invested">—</strong>
         </div>
 
-        <h2>Рост вклада</h2>
-        <div class="chart" id="chart"></div>
-
-    </div>
-
-    <div class="card">
-
-        <h2>Расчёт по месяцам</h2>
-
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Месяц</th>
-                        <th>Пополнение</th>
-                        <th>Проценты</th>
-                        <th>Баланс</th>
-                    </tr>
-                </thead>
-
-                <tbody id="tableBody"></tbody>
-            </table>
+        <div class="stat">
+            <small>Доход</small>
+            <strong id="profit">—</strong>
         </div>
 
+        <div class="stat">
+            <small>Доходность</small>
+            <strong id="profitPercent">—</strong>
+        </div>
+
+        <div class="stat">
+            <small>Ставка</small>
+            <strong id="rateResult">—</strong>
+        </div>
     </div>
+</div>
+
+<div class="card">
+    <h2>Рост вклада</h2>
+    <div class="chart" id="chart"></div>
+</div>
+
+<div class="card">
+    <h2>По месяцам</h2>
+
+    <div style="overflow-x:auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Месяц</th>
+                    <th>Пополнение</th>
+                    <th>Проценты</th>
+                    <th>Баланс</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card note">
+    Расчёт является ориентировочным. Фактический доход зависит от условий конкретного банка,
+    даты начисления процентов и порядка капитализации.
+</div>
 
 </div>
 
 <script>
-
-function formatMoney(number) {
-    return Math.round(number).toLocaleString("ru-RU") + " ₽";
+function money(value) {
+    return Math.round(value).toLocaleString("ru-RU") + " ₽";
 }
 
 function calculate() {
+    const initial = Number(document.getElementById("initial").value);
+    const rate = Number(document.getElementById("rate").value);
+    const months = Number(document.getElementById("months").value);
+    const addition = Number(document.getElementById("addition").value);
 
-    let initial = Number(document.getElementById("initial").value);
-    let rate = Number(document.getElementById("rate").value);
-    let months = Number(document.getElementById("months").value);
-    let addition = Number(document.getElementById("addition").value);
-
-    if (initial < 0 || rate < 0 || months <= 0 || addition < 0) {
-        alert("Проверьте введённые данные.");
+    if (initial < 0 || rate < 0 || months < 1 || addition < 0) {
+        alert("Проверьте введённые значения.");
         return;
     }
 
-    let monthlyRate = rate / 100 / 12;
+    const monthlyRate = rate / 100 / 12;
     let balance = initial;
-
-    let totalInvested = initial;
-    let rows = [];
+    let invested = initial;
+    const rows = [];
 
     for (let month = 1; month <= months; month++) {
-
         balance += addition;
-        totalInvested += addition;
+        invested += addition;
 
-        let interest = balance * monthlyRate;
+        const interest = balance * monthlyRate;
         balance += interest;
 
         rows.push({
-            month: month,
-            addition: addition,
-            interest: interest,
-            balance: balance
+            month,
+            addition,
+            interest,
+            balance
         });
     }
 
-    let profit = balance - totalInvested;
-    let profitPercent = totalInvested > 0
-        ? (profit / totalInvested) * 100
-        : 0;
+    const profit = balance - invested;
+    const profitPercent = invested > 0 ? profit / invested * 100 : 0;
 
-    document.getElementById("finalAmount").textContent =
-        formatMoney(balance);
-
-    document.getElementById("profit").textContent =
-        formatMoney(profit);
-
-    document.getElementById("invested").textContent =
-        formatMoney(totalInvested);
-
+    document.getElementById("finalAmount").textContent = money(balance);
+    document.getElementById("invested").textContent = money(invested);
+    document.getElementById("profit").textContent = money(profit);
     document.getElementById("profitPercent").textContent =
         profitPercent.toFixed(2).replace(".", ",") + "%";
+    document.getElementById("rateResult").textContent =
+        rate.toFixed(1).replace(".", ",") + "%";
 
-    createTable(rows);
-    createChart(rows);
-}
-
-function createTable(rows) {
-
-    let tableBody = document.getElementById("tableBody");
-
+    const tableBody = document.getElementById("tableBody");
     tableBody.innerHTML = "";
 
-    rows.forEach(function(row) {
-
-        let tr = document.createElement("tr");
-
-        tr.innerHTML =
-            "<td>" + row.month + "</td>" +
-            "<td>" + formatMoney(row.addition) + "</td>" +
-            "<td>" + formatMoney(row.interest) + "</td>" +
-            "<td>" + formatMoney(row.balance) + "</td>";
-
-        tableBody.appendChild(tr);
+    rows.forEach(row => {
+        tableBody.innerHTML += `
+            <tr>
+                <td>${row.month}</td>
+                <td>${money(row.addition)}</td>
+                <td>${money(row.interest)}</td>
+                <td>${money(row.balance)}</td>
+            </tr>
+        `;
     });
-}
 
-function createChart(rows) {
-
-    let chart = document.getElementById("chart");
-
+    const chart = document.getElementById("chart");
     chart.innerHTML = "";
 
-    if (rows.length === 0) {
-        return;
-    }
+    const max = Math.max(...rows.map(r => r.balance));
 
-    let maxBalance = Math.max(...rows.map(row => row.balance));
-
-    rows.forEach(function(row) {
-
-        let bar = document.createElement("div");
-
+    rows.forEach(row => {
+        const bar = document.createElement("div");
         bar.className = "bar";
-
-        let height = (row.balance / maxBalance) * 230;
-
-        bar.style.height = height + "px";
-
-        bar.title =
-            "Месяц " + row.month +
-            ": " + formatMoney(row.balance);
-
+        bar.style.height = (row.balance / max * 190) + "px";
+        bar.title = `Месяц ${row.month}: ${money(row.balance)}`;
         chart.appendChild(bar);
     });
 }
 
 calculate();
-
 </script>
 
 </body>

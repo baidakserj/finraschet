@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>ФинРасчёт — кредитный калькулятор</title>
 
 <style>
+
 * {
     box-sizing: border-box;
 }
@@ -13,54 +15,88 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: #10131a;
-    color: #fff;
+    color: white;
+    min-height: 100vh;
+
+    background:
+        radial-gradient(circle at top left, #243b80 0, transparent 35%),
+        radial-gradient(circle at bottom right, #4b1f72 0, transparent 35%),
+        #0b1020;
 }
 
 .container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 30px 20px;
+    width: min(1000px, 94%);
+    margin: auto;
+    padding: 35px 0 50px;
 }
 
-h1 {
+.header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
+}
+
+.header h1 {
+    margin: 0 0 15px;
+    font-size: 42px;
+}
+
+.header h1 span {
+    background: linear-gradient(90deg, #4facfe, #8f7cff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.back {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: #aab5ca;
+    text-decoration: none;
+}
+
+.back:hover {
+    color: white;
 }
 
 .card {
-    background: #191e28;
-    border-radius: 16px;
-    padding: 25px;
-    margin-bottom: 20px;
+    background: rgba(20,28,52,.9);
+    border: 1px solid rgba(255,255,255,.09);
+    border-radius: 24px;
+    padding: 28px;
+    margin-bottom: 22px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.3);
 }
 
 label {
     display: block;
     margin-bottom: 8px;
-    color: #bbb;
+    color: #aab5ca;
 }
 
 input {
     width: 100%;
     padding: 14px;
     margin-bottom: 20px;
-    border-radius: 10px;
-    border: 1px solid #343b48;
-    background: #10131a;
-    color: #fff;
-    font-size: 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.12);
+    background: #10172a;
+    color: white;
+    font-size: 17px;
 }
 
 button {
     width: 100%;
     padding: 15px;
-    border: 0;
-    border-radius: 10px;
-    background: #4caf50;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #1677ff, #7b61ff);
     color: white;
     font-size: 17px;
+    font-weight: bold;
     cursor: pointer;
+}
+
+button:hover {
+    filter: brightness(1.12);
 }
 
 .result {
@@ -70,23 +106,68 @@ button {
 }
 
 .result-box {
-    background: #10131a;
+    background: #10172a;
     padding: 20px;
-    border-radius: 12px;
+    border-radius: 15px;
     text-align: center;
+    color: #aab5ca;
 }
 
 .result-box strong {
     display: block;
+    color: white;
     font-size: 24px;
     margin-top: 8px;
 }
 
-@media (max-width: 650px) {
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+th {
+    color: #9ba7c0;
+    font-weight: normal;
+}
+
+th, td {
+    padding: 11px 8px;
+    border-bottom: 1px solid rgba(255,255,255,.07);
+}
+
+td {
+    text-align: right;
+}
+
+th:first-child,
+td:first-child {
+    text-align: left;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+@media (max-width: 700px) {
+
     .result {
         grid-template-columns: 1fr;
     }
+
+    .header h1 {
+        font-size: 32px;
+    }
+
+    .card {
+        padding: 20px;
+    }
 }
+
 </style>
 </head>
 
@@ -94,31 +175,61 @@ button {
 
 <div class="container">
 
-    <h1>Кредитный калькулятор</h1>
-    <a href="index.html" style="
-    display: block;
-    text-align: center;
-    margin-bottom: 25px;
-    color: #bbb;
-    text-decoration: none;
-">
-    ← Все калькуляторы
-</a>
+    <div class="header">
+
+        <a class="back" href="index.html">
+            ← Все калькуляторы
+        </a>
+
+        <h1>
+            <span>Кредитный калькулятор</span>
+        </h1>
+
+    </div>
+
 
     <div class="card">
 
-        <label>Сумма кредита, ₽</label>
-        <input type="number" id="amount" value="1000000">
+        <label>
+            Сумма кредита, ₽
+        </label>
 
-        <label>Процентная ставка, % годовых</label>
-        <input type="number" id="rate" value="20" step="0.1">
+        <input
+            type="number"
+            id="amount"
+            value="1000000"
+        >
 
-        <label>Срок, месяцев</label>
-        <input type="number" id="months" value="60">
 
-        <button onclick="calculate()">Рассчитать</button>
+        <label>
+            Процентная ставка, % годовых
+        </label>
+
+        <input
+            type="number"
+            id="rate"
+            value="20"
+            step="0.1"
+        >
+
+
+        <label>
+            Срок кредита, месяцев
+        </label>
+
+        <input
+            type="number"
+            id="months"
+            value="60"
+        >
+
+
+        <button onclick="calculate()">
+            Рассчитать
+        </button>
 
     </div>
+
 
     <div class="card">
 
@@ -129,10 +240,12 @@ button {
                 <strong id="payment">—</strong>
             </div>
 
+
             <div class="result-box">
                 Всего выплатите
                 <strong id="total">—</strong>
             </div>
+
 
             <div class="result-box">
                 Переплата
@@ -143,48 +256,169 @@ button {
 
     </div>
 
+
+    <div class="card">
+
+        <h2>
+            График платежей
+        </h2>
+
+        <div class="table-wrap">
+
+            <div id="schedule"></div>
+
+        </div>
+
+    </div>
+
+
 </div>
 
-      <div class="card">
 
-        <h2>График платежей</h2>
-
-        <div id="schedule"></div>
-
-    </div>  
 <script>
 
 function formatMoney(number) {
+
     return Math.round(number).toLocaleString('ru-RU') + ' ₽';
+
 }
+
 
 function calculate() {
 
-    const amount = Number(document.getElementById('amount').value);
-    const annualRate = Number(document.getElementById('rate').value);
-    const months = Number(document.getElementById('months').value);
+    const amount =
+        Number(document.getElementById('amount').value);
 
-    const monthlyRate = annualRate / 100 / 12;
+    const annualRate =
+        Number(document.getElementById('rate').value);
+
+    const months =
+        Number(document.getElementById('months').value);
+
+
+    const monthlyRate =
+        annualRate / 100 / 12;
+
 
     let payment;
 
+
     if (monthlyRate === 0) {
+
         payment = amount / months;
+
     } else {
+
         payment =
             amount *
             monthlyRate *
             Math.pow(1 + monthlyRate, months) /
             (Math.pow(1 + monthlyRate, months) - 1);
+
     }
 
-    const total = payment * months;
-    const overpay = total - amount;
 
-    document.getElementById('payment').textContent = formatMoney(payment);
-    document.getElementById('total').textContent = formatMoney(total);
-    document.getElementById('overpay').textContent = formatMoney(overpay);
+    const total =
+        payment * months;
+
+    const overpay =
+        total - amount;
+
+
+    document.getElementById('payment').textContent =
+        formatMoney(payment);
+
+    document.getElementById('total').textContent =
+        formatMoney(total);
+
+    document.getElementById('overpay').textContent =
+        formatMoney(overpay);
+
+
+    let html = `
+
+        <table>
+
+            <tr>
+
+                <th>Месяц</th>
+                <th>Платёж</th>
+                <th>Проценты</th>
+                <th>Тело кредита</th>
+                <th>Остаток</th>
+
+            </tr>
+
+    `;
+
+
+    let balance = amount;
+
+
+    for (
+        let month = 1;
+        month <= months;
+        month++
+    ) {
+
+        const interest =
+            balance * monthlyRate;
+
+
+        let principal =
+            payment - interest;
+
+
+        if (principal > balance) {
+
+            principal = balance;
+
+        }
+
+
+        balance -= principal;
+
+
+        if (balance < 0.01) {
+
+            balance = 0;
+
+        }
+
+
+        html += `
+
+            <tr>
+
+                <td>${month}</td>
+
+                <td>${formatMoney(payment)}</td>
+
+                <td>${formatMoney(interest)}</td>
+
+                <td>${formatMoney(principal)}</td>
+
+                <td>${formatMoney(balance)}</td>
+
+            </tr>
+
+        `;
+
+    }
+
+
+    html += `
+
+        </table>
+
+    `;
+
+
+    document.getElementById('schedule').innerHTML =
+        html;
+
 }
+
 
 calculate();
 

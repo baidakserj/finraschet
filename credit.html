@@ -72,7 +72,8 @@ label {
     color: #aab5ca;
 }
 
-input {
+input,
+select {
     width: 100%;
     padding: 14px;
     margin-bottom: 20px;
@@ -120,6 +121,29 @@ button:hover {
     margin-top: 8px;
 }
 
+.savings {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.saving-box {
+    background: #10172a;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.saving-box span {
+    color: #aab5ca;
+}
+
+.saving-box strong {
+    display: block;
+    font-size: 24px;
+    margin-top: 8px;
+}
+
 .table-wrap {
     overflow-x: auto;
 }
@@ -135,7 +159,8 @@ th {
     font-weight: normal;
 }
 
-th, td {
+th,
+td {
     padding: 11px 8px;
     border-bottom: 1px solid rgba(255,255,255,.07);
 }
@@ -153,9 +178,14 @@ h2 {
     margin-top: 0;
 }
 
+.hidden {
+    display: none;
+}
+
 @media (max-width: 700px) {
 
-    .result {
+    .result,
+    .savings {
         grid-template-columns: 1fr;
     }
 
@@ -188,39 +218,38 @@ h2 {
     </div>
 
 
+    <!-- ОСНОВНОЙ КРЕДИТ -->
+
     <div class="card">
 
-        <label>
-            Сумма кредита, ₽
-        </label>
+        <label>Сумма кредита, ₽</label>
 
         <input
             type="number"
             id="amount"
             value="1000000"
+            min="1"
         >
 
 
-        <label>
-            Процентная ставка, % годовых
-        </label>
+        <label>Процентная ставка, % годовых</label>
 
         <input
             type="number"
             id="rate"
             value="20"
             step="0.1"
+            min="0"
         >
 
 
-        <label>
-            Срок кредита, месяцев
-        </label>
+        <label>Срок кредита, месяцев</label>
 
         <input
             type="number"
             id="months"
             value="60"
+            min="1"
         >
 
 
@@ -231,6 +260,8 @@ h2 {
     </div>
 
 
+    <!-- РЕЗУЛЬТАТ -->
+
     <div class="card">
 
         <div class="result">
@@ -240,12 +271,10 @@ h2 {
                 <strong id="payment">—</strong>
             </div>
 
-
             <div class="result-box">
                 Всего выплатите
                 <strong id="total">—</strong>
             </div>
-
 
             <div class="result-box">
                 Переплата
@@ -256,6 +285,101 @@ h2 {
 
     </div>
 
+
+    <!-- ДОСРОЧНОЕ ПОГАШЕНИЕ -->
+
+    <div class="card">
+
+        <h2>Досрочное погашение</h2>
+
+        <label>
+            Через сколько месяцев сделать досрочный платёж
+        </label>
+
+        <input
+            type="number"
+            id="earlyMonth"
+            value="12"
+            min="1"
+        >
+
+
+        <label>
+            Сумма досрочного платежа, ₽
+        </label>
+
+        <input
+            type="number"
+            id="earlyAmount"
+            value="200000"
+            min="0"
+        >
+
+
+        <label>
+            Что сделать после досрочного платежа?
+        </label>
+
+        <select id="earlyType">
+
+            <option value="payment">
+                Уменьшить ежемесячный платёж
+            </option>
+
+            <option value="term">
+                Сократить срок кредита
+            </option>
+
+        </select>
+
+
+        <button onclick="calculateEarly()">
+            Рассчитать досрочное погашение
+        </button>
+
+    </div>
+
+
+    <!-- ЭКОНОМИЯ -->
+
+    <div class="card hidden" id="earlyResult">
+
+        <h2>Результат досрочного погашения</h2>
+
+        <div class="savings">
+
+            <div class="saving-box">
+
+                <span>Экономия на процентах</span>
+
+                <strong id="interestSaving">—</strong>
+
+            </div>
+
+
+            <div class="saving-box">
+
+                <span>Новая переплата</span>
+
+                <strong id="newOverpay">—</strong>
+
+            </div>
+
+
+            <div class="saving-box">
+
+                <span>Сэкономлено времени</span>
+
+                <strong id="timeSaving">—</strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ГРАФИК -->
 
     <div class="card">
 
@@ -279,7 +403,111 @@ h2 {
 
 function formatMoney(number) {
 
-    return Math.round(number).toLocaleString('ru-RU') + ' ₽';
+    return Math.round(number)
+        .toLocaleString('ru-RU') + ' ₽';
+
+}
+
+
+function calculatePayment(balance, monthlyRate, months) {
+
+    if (months <= 0) {
+        return 0;
+    }
+
+    if (monthlyRate === 0) {
+        return balance / months;
+    }
+
+    return balance *
+        monthlyRate *
+        Math.pow(1 + monthlyRate, months) /
+        (Math.pow(1 + monthlyRate, months) - 1);
+
+}
+
+
+function buildSchedule(amount, annualRate, months) {
+
+    const monthlyRate =
+        annualRate / 100 / 12;
+
+    const payment =
+        calculatePayment(
+            amount,
+            monthlyRate,
+            months
+        );
+
+    let balance = amount;
+
+    let interestTotal = 0;
+
+    let rows = [];
+
+
+    for (
+        let month = 1;
+        month <= months;
+        month++
+    ) {
+
+        const interest =
+            balance * monthlyRate;
+
+        let principal =
+            payment - interest;
+
+
+        if (principal > balance) {
+            principal = balance;
+        }
+
+
+        balance -= principal;
+
+
+        if (balance < 0.01) {
+            balance = 0;
+        }
+
+
+        interestTotal += interest;
+
+
+        rows.push({
+
+            month: month,
+
+            payment: payment,
+
+            interest: interest,
+
+            principal: principal,
+
+            balance: balance
+
+        });
+
+
+        if (balance === 0) {
+            break;
+        }
+
+    }
+
+
+    return {
+
+        payment: payment,
+
+        interestTotal: interestTotal,
+
+        total: amount + interestTotal,
+
+        rows: rows
+
+    };
 
 }
 
@@ -296,43 +524,35 @@ function calculate() {
         Number(document.getElementById('months').value);
 
 
-    const monthlyRate =
-        annualRate / 100 / 12;
+    if (
+        amount <= 0 ||
+        months <= 0 ||
+        annualRate < 0
+    ) {
+        alert('Проверьте введённые данные.');
 
-
-    let payment;
-
-
-    if (monthlyRate === 0) {
-
-        payment = amount / months;
-
-    } else {
-
-        payment =
-            amount *
-            monthlyRate *
-            Math.pow(1 + monthlyRate, months) /
-            (Math.pow(1 + monthlyRate, months) - 1);
-
+        return;
     }
 
 
-    const total =
-        payment * months;
-
-    const overpay =
-        total - amount;
+    const result =
+        buildSchedule(
+            amount,
+            annualRate,
+            months
+        );
 
 
     document.getElementById('payment').textContent =
-        formatMoney(payment);
+        formatMoney(result.payment);
+
 
     document.getElementById('total').textContent =
-        formatMoney(total);
+        formatMoney(result.total);
+
 
     document.getElementById('overpay').textContent =
-        formatMoney(overpay);
+        formatMoney(result.interestTotal);
 
 
     let html = `
@@ -342,9 +562,13 @@ function calculate() {
             <tr>
 
                 <th>Месяц</th>
+
                 <th>Платёж</th>
+
                 <th>Проценты</th>
+
                 <th>Тело кредита</th>
+
                 <th>Остаток</th>
 
             </tr>
@@ -352,70 +576,231 @@ function calculate() {
     `;
 
 
-    let balance = amount;
-
-
-    for (
-        let month = 1;
-        month <= months;
-        month++
-    ) {
-
-        const interest =
-            balance * monthlyRate;
-
-
-        let principal =
-            payment - interest;
-
-
-        if (principal > balance) {
-
-            principal = balance;
-
-        }
-
-
-        balance -= principal;
-
-
-        if (balance < 0.01) {
-
-            balance = 0;
-
-        }
-
+    result.rows.forEach(row => {
 
         html += `
 
             <tr>
 
-                <td>${month}</td>
+                <td>${row.month}</td>
 
-                <td>${formatMoney(payment)}</td>
+                <td>${formatMoney(row.payment)}</td>
 
-                <td>${formatMoney(interest)}</td>
+                <td>${formatMoney(row.interest)}</td>
 
-                <td>${formatMoney(principal)}</td>
+                <td>${formatMoney(row.principal)}</td>
 
-                <td>${formatMoney(balance)}</td>
+                <td>${formatMoney(row.balance)}</td>
 
             </tr>
 
         `;
 
-    }
+    });
 
 
-    html += `
-
-        </table>
-
-    `;
+    html += `</table>`;
 
 
     document.getElementById('schedule').innerHTML =
         html;
+
+}
+
+
+function calculateEarly() {
+
+    const amount =
+        Number(document.getElementById('amount').value);
+
+    const annualRate =
+        Number(document.getElementById('rate').value);
+
+    const months =
+        Number(document.getElementById('months').value);
+
+    const earlyMonth =
+        Number(document.getElementById('earlyMonth').value);
+
+    const earlyAmount =
+        Number(document.getElementById('earlyAmount').value);
+
+    const earlyType =
+        document.getElementById('earlyType').value;
+
+
+    if (
+        amount <= 0 ||
+        months <= 0 ||
+        annualRate < 0 ||
+        earlyMonth < 1 ||
+        earlyMonth >= months ||
+        earlyAmount <= 0
+    ) {
+
+        alert('Проверьте данные для досрочного погашения.');
+
+        return;
+    }
+
+
+    const original =
+        buildSchedule(
+            amount,
+            annualRate,
+            months
+        );
+
+
+    const monthlyRate =
+        annualRate / 100 / 12;
+
+
+    const balanceBefore =
+        original.rows[earlyMonth - 1].balance;
+
+
+    const remaining =
+        Math.max(
+            0,
+            balanceBefore - earlyAmount
+        );
+
+
+    if (remaining === 0) {
+
+        const saving =
+            original.interestTotal;
+
+        document.getElementById('interestSaving').textContent =
+            formatMoney(saving);
+
+        document.getElementById('newOverpay').textContent =
+            '0 ₽';
+
+        document.getElementById('timeSaving').textContent =
+            (months - earlyMonth) + ' мес.';
+
+        document.getElementById('earlyResult')
+            .classList.remove('hidden');
+
+        return;
+    }
+
+
+    let newMonths;
+
+    let newPayment;
+
+
+    if (earlyType === 'payment') {
+
+        newMonths =
+            months - earlyMonth;
+
+        newPayment =
+            calculatePayment(
+                remaining,
+                monthlyRate,
+                newMonths
+            );
+
+    } else {
+
+        newPayment =
+            original.payment;
+
+        newMonths = 0;
+
+        let newBalance =
+            remaining;
+
+
+        while (
+            newBalance > 0.01 &&
+            newMonths < months
+        ) {
+
+            const interest =
+                newBalance * monthlyRate;
+
+            let principal =
+                newPayment - interest;
+
+
+            if (principal <= 0) {
+                break;
+            }
+
+
+            if (principal > newBalance) {
+                principal = newBalance;
+            }
+
+
+            newBalance -= principal;
+
+            newMonths++;
+
+        }
+
+    }
+
+
+    const interestBefore =
+        original.interestTotal;
+
+
+    let interestAfter =
+        0;
+
+
+    if (earlyType === 'payment') {
+
+        interestAfter =
+            newPayment * newMonths - remaining;
+
+    } else {
+
+        interestAfter =
+            newPayment * newMonths - remaining;
+
+    }
+
+
+    const newOverpay =
+        interestAfter +
+        (amount - balanceBefore);
+
+
+    const interestSaving =
+        Math.max(
+            0,
+            interestBefore - newOverpay
+        );
+
+
+    const timeSaving =
+        Math.max(
+            0,
+            months - (earlyMonth + newMonths)
+        );
+
+
+    document.getElementById('interestSaving').textContent =
+        formatMoney(interestSaving);
+
+
+    document.getElementById('newOverpay').textContent =
+        formatMoney(newOverpay);
+
+
+    document.getElementById('timeSaving').textContent =
+        timeSaving + ' мес.';
+
+
+    document.getElementById('earlyResult')
+        .classList.remove('hidden');
 
 }
 

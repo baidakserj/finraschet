@@ -25,13 +25,14 @@ body {
 
 .back {
     display: inline-block;
-    color: #aaa;
+    color: #4facfe;
+    font-weight: bold;
     text-decoration: none;
     margin-bottom: 20px;
 }
 
 .back:hover {
-    color: #fff;
+    color: #8f7cff;
 }
 
 h1 {
@@ -148,6 +149,7 @@ canvas {
 <a href="index.html" class="back">← Все калькуляторы</a>
 
 <h1>💰 Калькулятор накоплений</h1>
+
 <div class="subtitle">
     Узнайте, сколько нужно откладывать каждый месяц для достижения цели
 </div>
@@ -191,14 +193,17 @@ canvas {
         </div>
 
     </div>
+
 </div>
 
 <div class="card chart">
+
     <h2>📈 Рост накоплений</h2>
 
     <div class="chart-wrap">
         <canvas id="chart" width="850" height="320"></canvas>
     </div>
+
 </div>
 
 </div>
@@ -211,52 +216,93 @@ function formatMoney(value) {
 
 function calculate() {
 
-    const target = Number(document.getElementById('target').value);
-    const saved = Number(document.getElementById('saved').value);
-    const annualRate = Number(document.getElementById('rate').value);
-    const years = Number(document.getElementById('years').value);
+    const target =
+        Number(document.getElementById('target').value);
 
-    if (target <= 0 || years <= 0 || saved < 0 || annualRate < 0) {
+    const saved =
+        Number(document.getElementById('saved').value);
+
+    const annualRate =
+        Number(document.getElementById('rate').value);
+
+    const years =
+        Number(document.getElementById('years').value);
+
+    if (
+        target <= 0 ||
+        years <= 0 ||
+        saved < 0 ||
+        annualRate < 0
+    ) {
         alert('Проверьте введённые данные');
         return;
     }
 
-    const months = Math.round(years * 12);
-    const monthlyRate = annualRate / 100 / 12;
+    const months =
+        Math.round(years * 12);
+
+    const monthlyRate =
+        annualRate / 100 / 12;
 
     let monthlyPayment;
 
     if (monthlyRate === 0) {
-        monthlyPayment = Math.max(0, (target - saved) / months);
+
+        monthlyPayment =
+            Math.max(
+                0,
+                (target - saved) / months
+            );
+
     } else {
 
         const futureSaved =
-            saved * Math.pow(1 + monthlyRate, months);
+            saved *
+            Math.pow(
+                1 + monthlyRate,
+                months
+            );
 
-        const requiredAmount = target - futureSaved;
+        const requiredAmount =
+            target - futureSaved;
 
         if (requiredAmount <= 0) {
+
             monthlyPayment = 0;
+
         } else {
 
             monthlyPayment =
                 requiredAmount *
                 monthlyRate /
-                (Math.pow(1 + monthlyRate, months) - 1);
+                (
+                    Math.pow(
+                        1 + monthlyRate,
+                        months
+                    ) - 1
+                );
         }
     }
 
     let balance = saved;
     let ownMoney = saved;
+
     const data = [balance];
 
-    for (let month = 1; month <= months; month++) {
+    for (
+        let month = 1;
+        month <= months;
+        month++
+    ) {
 
-        balance *= (1 + monthlyRate);
+        balance *=
+            (1 + monthlyRate);
 
-        balance += monthlyPayment;
+        balance +=
+            monthlyPayment;
 
-        ownMoney += monthlyPayment;
+        ownMoney +=
+            monthlyPayment;
 
         data.push(balance);
     }
@@ -278,95 +324,143 @@ function calculate() {
 
 function drawChart(data, target) {
 
-    const canvas = document.getElementById('chart');
-    const ctx = canvas.getContext('2d');
+    const canvas =
+        document.getElementById('chart');
 
-    const width = canvas.width;
-    const height = canvas.height;
+    const ctx =
+        canvas.getContext('2d');
 
-    ctx.clearRect(0, 0, width, height);
+    const width =
+        canvas.width;
+
+    const height =
+        canvas.height;
+
+    ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
 
     const padding = 45;
 
-    let maxValue = Math.max(target, ...data);
+    let maxValue =
+        Math.max(
+            target,
+            ...data
+        );
 
     if (maxValue <= 0) {
         maxValue = 1;
     }
 
-    // Сетка
     ctx.strokeStyle = '#303646';
     ctx.lineWidth = 1;
 
-    for (let i = 0; i <= 5; i++) {
+    for (
+        let i = 0;
+        i <= 5;
+        i++
+    ) {
 
         const y =
             height -
             padding -
-            (i / 5) * (height - padding * 2);
+            (i / 5) *
+            (height - padding * 2);
 
         ctx.beginPath();
-        ctx.moveTo(padding, y);
-        ctx.lineTo(width - padding, y);
+
+        ctx.moveTo(
+            padding,
+            y
+        );
+
+        ctx.lineTo(
+            width - padding,
+            y
+        );
+
         ctx.stroke();
 
-        const value = maxValue * i / 5;
+        const value =
+            maxValue * i / 5;
 
         ctx.fillStyle = '#888';
         ctx.font = '12px Arial';
+
         ctx.fillText(
-            Math.round(value).toLocaleString('ru-RU'),
+            Math.round(value)
+                .toLocaleString('ru-RU'),
             5,
             y + 4
         );
     }
 
-    // Линия цели
     const targetY =
         height -
         padding -
-        (target / maxValue) * (height - padding * 2);
+        (target / maxValue) *
+        (height - padding * 2);
 
     ctx.setLineDash([6, 6]);
+
     ctx.strokeStyle = '#777';
+
     ctx.beginPath();
-    ctx.moveTo(padding, targetY);
-    ctx.lineTo(width - padding, targetY);
+
+    ctx.moveTo(
+        padding,
+        targetY
+    );
+
+    ctx.lineTo(
+        width - padding,
+        targetY
+    );
+
     ctx.stroke();
+
     ctx.setLineDash([]);
 
-    // График накоплений
     ctx.strokeStyle = '#4f7cff';
     ctx.lineWidth = 3;
 
     ctx.beginPath();
 
-    data.forEach((value, index) => {
+    data.forEach(
+        (value, index) => {
 
-        const x =
-            padding +
-            (index / (data.length - 1)) *
-            (width - padding * 2);
+            const x =
+                padding +
+                (index / (data.length - 1)) *
+                (width - padding * 2);
 
-        const y =
-            height -
-            padding -
-            (value / maxValue) *
-            (height - padding * 2);
+            const y =
+                height -
+                padding -
+                (value / maxValue) *
+                (height - padding * 2);
 
-        if (index === 0) {
-            ctx.moveTo(x, y);
-        } else {
-            ctx.lineTo(x, y);
+            if (index === 0) {
+
+                ctx.moveTo(x, y);
+
+            } else {
+
+                ctx.lineTo(x, y);
+            }
         }
-    });
+    );
 
     ctx.stroke();
 
-    // Точка в конце графика
-    const lastValue = data[data.length - 1];
+    const lastValue =
+        data[data.length - 1];
 
-    const lastX = width - padding;
+    const lastX =
+        width - padding;
 
     const lastY =
         height -
@@ -375,11 +469,19 @@ function drawChart(data, target) {
         (height - padding * 2);
 
     ctx.fillStyle = '#fff';
+
     ctx.beginPath();
-    ctx.arc(lastX, lastY, 5, 0, Math.PI * 2);
+
+    ctx.arc(
+        lastX,
+        lastY,
+        5,
+        0,
+        Math.PI * 2
+    );
+
     ctx.fill();
 
-    // Подпись результата
     ctx.fillStyle = '#aaa';
     ctx.font = '13px Arial';
 
@@ -390,7 +492,8 @@ function drawChart(data, target) {
     );
 
     ctx.fillText(
-        Math.round(data.length - 1) + ' мес.',
+        Math.round(data.length - 1) +
+        ' мес.',
         width - padding - 45,
         height - 15
     );

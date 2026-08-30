@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ФинРасчёт — калькулятор накоплений</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #10131c;
+    color: #fff;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 25px 15px 50px;
+}
+
+.back {
+    display: inline-block;
+    color: #aaa;
+    text-decoration: none;
+    margin-bottom: 20px;
+}
+
+.back:hover {
+    color: #fff;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #aaa;
+    margin-bottom: 30px;
+}
+
+.card {
+    background: #191e2b;
+    border-radius: 18px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 7px;
+    color: #ccc;
+}
+
+input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #353b4d;
+    border-radius: 10px;
+    background: #10131c;
+    color: white;
+    font-size: 16px;
+}
+
+button {
+    width: 100%;
+    margin-top: 25px;
+    padding: 15px;
+    border: 0;
+    border-radius: 10px;
+    background: #4f7cff;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #416be0;
+}
+
+.result {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.result-box {
+    background: #10131c;
+    border-radius: 12px;
+    padding: 18px;
+}
+
+.result-box span {
+    display: block;
+    color: #999;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.result-box strong {
+    font-size: 21px;
+}
+
+.chart {
+    margin-top: 25px;
+}
+
+.chart-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    min-width: 650px;
+    height: 320px;
+    background: #10131c;
+    border-radius: 12px;
+}
+
+@media (max-width: 600px) {
+    .result {
+        grid-template-columns: 1fr;
+    }
+
+    .card {
+        padding: 18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<a href="index.html" class="back">← Все калькуляторы</a>
+
+<h1>💰 Калькулятор накоплений</h1>
+<div class="subtitle">
+    Узнайте, сколько нужно откладывать каждый месяц для достижения цели
+</div>
+
+<div class="card">
+
+    <label for="target">Желаемая сумма, ₽</label>
+    <input id="target" type="number" value="1000000">
+
+    <label for="saved">Уже накоплено, ₽</label>
+    <input id="saved" type="number" value="0">
+
+    <label for="rate">Доходность, % годовых</label>
+    <input id="rate" type="number" value="10" step="0.1">
+
+    <label for="years">Срок, лет</label>
+    <input id="years" type="number" value="5" step="1">
+
+    <button onclick="calculate()">Рассчитать</button>
+
+    <div class="result">
+
+        <div class="result-box">
+            <span>Нужно откладывать в месяц</span>
+            <strong id="monthly">—</strong>
+        </div>
+
+        <div class="result-box">
+            <span>Цель</span>
+            <strong id="targetResult">—</strong>
+        </div>
+
+        <div class="result-box">
+            <span>Всего своих денег</span>
+            <strong id="ownMoney">—</strong>
+        </div>
+
+        <div class="result-box">
+            <span>Доход от процентов</span>
+            <strong id="interest">—</strong>
+        </div>
+
+    </div>
+</div>
+
+<div class="card chart">
+    <h2>📈 Рост накоплений</h2>
+
+    <div class="chart-wrap">
+        <canvas id="chart" width="850" height="320"></canvas>
+    </div>
+</div>
+
+</div>
+
+<script>
+
+function formatMoney(value) {
+    return Math.round(value).toLocaleString('ru-RU') + ' ₽';
+}
+
+function calculate() {
+
+    const target = Number(document.getElementById('target').value);
+    const saved = Number(document.getElementById('saved').value);
+    const annualRate = Number(document.getElementById('rate').value);
+    const years = Number(document.getElementById('years').value);
+
+    if (target <= 0 || years <= 0 || saved < 0 || annualRate < 0) {
+        alert('Проверьте введённые данные');
+        return;
+    }
+
+    const months = Math.round(years * 12);
+    const monthlyRate = annualRate / 100 / 12;
+
+    let monthlyPayment;
+
+    if (monthlyRate === 0) {
+        monthlyPayment = Math.max(0, (target - saved) / months);
+    } else {
+
+        const futureSaved =
+            saved * Math.pow(1 + monthlyRate, months);
+
+        const requiredAmount = target - futureSaved;
+
+        if (requiredAmount <= 0) {
+            monthlyPayment = 0;
+        } else {
+
+            monthlyPayment =
+                requiredAmount *
+                monthlyRate /
+                (Math.pow(1 + monthlyRate, months) - 1);
+        }
+    }
+
+    let balance = saved;
+    let ownMoney = saved;
+    const data = [balance];
+
+    for (let month = 1; month <= months; month++) {
+
+        balance *= (1 + monthlyRate);
+
+        balance += monthlyPayment;
+
+        ownMoney += monthlyPayment;
+
+        data.push(balance);
+    }
+
+    document.getElementById('monthly').textContent =
+        formatMoney(monthlyPayment);
+
+    document.getElementById('targetResult').textContent =
+        formatMoney(target);
+
+    document.getElementById('ownMoney').textContent =
+        formatMoney(ownMoney);
+
+    document.getElementById('interest').textContent =
+        formatMoney(balance - ownMoney);
+
+    drawChart(data, target);
+}
+
+function drawChart(data, target) {
+
+    const canvas = document.getElementById('chart');
+    const ctx = canvas.getContext('2d');
+
+    const width = canvas.width;
+    const height = canvas.height;
+
+    ctx.clearRect(0, 0, width, height);
+
+    const padding = 45;
+
+    let maxValue = Math.max(target, ...data);
+
+    if (maxValue <= 0) {
+        maxValue = 1;
+    }
+
+    // Сетка
+    ctx.strokeStyle = '#303646';
+    ctx.lineWidth = 1;
+
+    for (let i = 0; i <= 5; i++) {
+
+        const y =
+            height -
+            padding -
+            (i / 5) * (height - padding * 2);
+
+        ctx.beginPath();
+        ctx.moveTo(padding, y);
+        ctx.lineTo(width - padding, y);
+        ctx.stroke();
+
+        const value = maxValue * i / 5;
+
+        ctx.fillStyle = '#888';
+        ctx.font = '12px Arial';
+        ctx.fillText(
+            Math.round(value).toLocaleString('ru-RU'),
+            5,
+            y + 4
+        );
+    }
+
+    // Линия цели
+    const targetY =
+        height -
+        padding -
+        (target / maxValue) * (height - padding * 2);
+
+    ctx.setLineDash([6, 6]);
+    ctx.strokeStyle = '#777';
+    ctx.beginPath();
+    ctx.moveTo(padding, targetY);
+    ctx.lineTo(width - padding, targetY);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // График накоплений
+    ctx.strokeStyle = '#4f7cff';
+    ctx.lineWidth = 3;
+
+    ctx.beginPath();
+
+    data.forEach((value, index) => {
+
+        const x =
+            padding +
+            (index / (data.length - 1)) *
+            (width - padding * 2);
+
+        const y =
+            height -
+            padding -
+            (value / maxValue) *
+            (height - padding * 2);
+
+        if (index === 0) {
+            ctx.moveTo(x, y);
+        } else {
+            ctx.lineTo(x, y);
+        }
+    });
+
+    ctx.stroke();
+
+    // Точка в конце графика
+    const lastValue = data[data.length - 1];
+
+    const lastX = width - padding;
+
+    const lastY =
+        height -
+        padding -
+        (lastValue / maxValue) *
+        (height - padding * 2);
+
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(lastX, lastY, 5, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Подпись результата
+    ctx.fillStyle = '#aaa';
+    ctx.font = '13px Arial';
+
+    ctx.fillText(
+        '0',
+        padding,
+        height - 15
+    );
+
+    ctx.fillText(
+        Math.round(data.length - 1) + ' мес.',
+        width - padding - 45,
+        height - 15
+    );
+}
+
+calculate();
+
+</script>
+
+</body>
+</html>

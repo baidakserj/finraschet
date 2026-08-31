@@ -1,9 +1,9 @@
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>ФинРасчёт — калькулятор вклада</title>
 
 <style>
@@ -20,6 +20,21 @@ body {
         #0b1020;
     color: white;
     min-height: 100vh;
+}
+
+.back-link {
+    display: block;
+    margin: 0 auto 20px;
+    max-width: 1000px;
+    padding: 0 5%;
+    color: #4facfe;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s ease;
+}
+
+.back-link:hover {
+    color: #8f7cff;
 }
 
 .container {
@@ -245,17 +260,9 @@ td:nth-child(3) {
 </style>
 </head>
 
-<body><a href="index.html" style="
-display:block;
-margin:0 auto 20px;
-max-width:1000px;
-padding:0 5%;
-color:#9fc1ff;
-text-decoration:none;
-font-weight:bold;
-">
-← Все калькуляторы
-</a>
+<body>
+
+<a href="index.html" class="back-link">← Все калькуляторы</a>
 
 <div class="container">
 
@@ -298,8 +305,11 @@ font-weight:bold;
 <div class="card">
 
 <div class="result-main">
+
 <small>Итоговая сумма</small>
+
 <strong id="finalAmount">—</strong>
+
 </div>
 
 <div class="stats">
@@ -325,6 +335,7 @@ font-weight:bold;
 </div>
 
 </div>
+
 </div>
 
 </div>
@@ -346,12 +357,14 @@ font-weight:bold;
 <table>
 
 <thead>
+
 <tr>
 <th>Месяц</th>
 <th>Пополнение</th>
 <th>Проценты</th>
 <th>Баланс</th>
 </tr>
+
 </thead>
 
 <tbody id="tableBody"></tbody>
@@ -359,13 +372,12 @@ font-weight:bold;
 </table>
 
 </div>
+
 </div>
 
 <div class="info">
 
-ℹ️ Расчёт является ориентировочным. Фактический доход зависит
-от условий конкретного банка, даты начисления процентов и порядка
-капитализации.
+ℹ️ Расчёт является ориентировочным. Фактический доход зависит от условий конкретного банка, даты начисления процентов и порядка капитализации.
 
 </div>
 
@@ -374,7 +386,9 @@ font-weight:bold;
 <script>
 
 function money(value) {
+
     return Math.round(value).toLocaleString("ru-RU") + " ₽";
+
 }
 
 function calculate() {
@@ -397,23 +411,34 @@ function calculate() {
         months < 1 ||
         addition < 0
     ) {
+
         alert("Проверьте введённые значения.");
+
         return;
+
     }
 
-    const monthlyRate = rate / 100 / 12;
+    const monthlyRate =
+        rate / 100 / 12;
 
     let balance = initial;
+
     let invested = initial;
 
     const rows = [];
 
-    for (let month = 1; month <= months; month++) {
+    for (
+        let month = 1;
+        month <= months;
+        month++
+    ) {
 
         balance += addition;
+
         invested += addition;
 
-        const interest = balance * monthlyRate;
+        const interest =
+            balance * monthlyRate;
 
         balance += interest;
 
@@ -423,9 +448,11 @@ function calculate() {
             interest,
             balance
         });
+
     }
 
-    const profit = balance - invested;
+    const profit =
+        balance - invested;
 
     const profitPercent =
         invested > 0
@@ -492,6 +519,7 @@ function calculate() {
         chart.appendChild(bar);
 
     });
+
 }
 
 calculate();
@@ -500,3 +528,4 @@ calculate();
 
 </body>
 </html>
+```

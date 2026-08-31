@@ -188,7 +188,7 @@ button:hover {
 <h1>🪙 Конвертер криптовалют</h1>
 
 <div class="subtitle">
-Актуальные курсы CoinMarketCap
+Актуальные курсы криптовалют
 </div>
 
 <div class="field">
@@ -209,16 +209,16 @@ button:hover {
 <label for="from">Из</label>
 
 <select id="from">
-    <option value="1">Bitcoin (BTC)</option>
-    <option value="1027">Ethereum (ETH)</option>
-    <option value="2">Litecoin (LTC)</option>
-    <option value="1839">BNB</option>
-    <option value="5426">Solana (SOL)</option>
-    <option value="52">XRP</option>
-    <option value="74">Dogecoin (DOGE)</option>
-    <option value="2010">Cardano (ADA)</option>
-    <option value="1958">TRON (TRX)</option>
-    <option value="11419">Toncoin (TON)</option>
+    <option value="btc-bitcoin">Bitcoin (BTC)</option>
+    <option value="eth-ethereum">Ethereum (ETH)</option>
+    <option value="ltc-litecoin">Litecoin (LTC)</option>
+    <option value="bnb-binance-coin">BNB</option>
+    <option value="sol-solana">Solana (SOL)</option>
+    <option value="xrp-xrp">XRP</option>
+    <option value="doge-dogecoin">Dogecoin (DOGE)</option>
+    <option value="ada-cardano">Cardano (ADA)</option>
+    <option value="trx-tron">TRON (TRX)</option>
+    <option value="ton-toncoin">Toncoin (TON)</option>
 </select>
 </div>
 
@@ -229,10 +229,10 @@ button:hover {
     <option value="USD">Доллар США (USD)</option>
     <option value="EUR">Евро (EUR)</option>
     <option value="RUB">Российский рубль (RUB)</option>
-    <option value="1">Bitcoin (BTC)</option>
-    <option value="1027">Ethereum (ETH)</option>
-    <option value="1839">BNB</option>
-    <option value="2">Litecoin (LTC)</option>
+    <option value="btc-bitcoin">Bitcoin (BTC)</option>
+    <option value="eth-ethereum">Ethereum (ETH)</option>
+    <option value="ltc-litecoin">Litecoin (LTC)</option>
+    <option value="bnb-binance-coin">BNB</option>
 </select>
 </div>
 
@@ -280,19 +280,19 @@ button:hover {
 <script>
 
 const API =
-"https://pro-api.coinmarketcap.com/public-api/v1/simple/price";
+"https://api.coinpaprika.com/v1/tickers/";
 
 const cryptoNames = {
-    "1": "BTC",
-    "1027": "ETH",
-    "2": "LTC",
-    "1839": "BNB",
-    "5426": "SOL",
-    "52": "XRP",
-    "74": "DOGE",
-    "2010": "ADA",
-    "1958": "TRX",
-    "11419": "TON"
+    "btc-bitcoin": "BTC",
+    "eth-ethereum": "ETH",
+    "ltc-litecoin": "LTC",
+    "bnb-binance-coin": "BNB",
+    "sol-solana": "SOL",
+    "xrp-xrp": "XRP",
+    "doge-dogecoin": "DOGE",
+    "ada-cardano": "ADA",
+    "trx-tron": "TRX",
+    "ton-toncoin": "TON"
 };
 
 const fiatNames = {
@@ -301,55 +301,10 @@ const fiatNames = {
     RUB: "RUB"
 };
 
-async function getPrice(id, currency) {
-
-    const url =
-        `${API}?ids=${id}&convert=${currency}`;
-
-    const response = await fetch(url, {
-        headers: {
-            "Accept": "application/json"
-        }
-    });
-
-    if (!response.ok) {
-        throw new Error(
-            `CoinMarketCap: HTTP ${response.status}`
-        );
-    }
-
-    const json = await response.json();
-
-    if (
-        json.status &&
-        String(json.status.error_code) !== "0"
-    ) {
-        throw new Error(
-            json.status.error_message ||
-            "Ошибка CoinMarketCap"
-        );
-    }
-
-    if (
-        !json.data ||
-        !json.data.length ||
-        json.data[0].price === undefined
-    ) {
-        throw new Error(
-            "CoinMarketCap не вернул цену"
-        );
-    }
-
-    return json.data[0].price;
-}
-
 function getName(value) {
-
-    if (cryptoNames[value]) {
-        return cryptoNames[value];
-    }
-
-    return fiatNames[value] || value;
+    return cryptoNames[value] ||
+           fiatNames[value] ||
+           value;
 }
 
 function formatNumber(value) {
@@ -373,6 +328,29 @@ function formatNumber(value) {
     return value.toLocaleString("ru-RU", {
         maximumFractionDigits: 10
     });
+}
+
+async function getTicker(id, quotes) {
+
+    const response = await fetch(
+        `${API}${id}?quotes=${quotes}`
+    );
+
+    if (!response.ok) {
+        throw new Error(
+            `Ошибка API: ${response.status}`
+        );
+    }
+
+    const data = await response.json();
+
+    if (!data || !data.quotes) {
+        throw new Error(
+            "API не вернул данные"
+        );
+    }
+
+    return data;
 }
 
 async function convertCrypto() {
@@ -404,8 +382,6 @@ async function convertCrypto() {
         resultMain.textContent =
             "Введите количество";
 
-        status.textContent = "";
-
         return;
     }
 
@@ -419,60 +395,68 @@ async function convertCrypto() {
     try {
 
         let rate;
+        let change24;
+        let updated;
 
         /*
-         * Если обе стороны — криптовалюты.
+         * Криптовалюта → фиат
          */
+
         if (
-            cryptoNames[from] &&
-            cryptoNames[to]
-        ) {
-
-            const fromUSD =
-                await getPrice(from, "USD");
-
-            const toUSD =
-                await getPrice(to, "USD");
-
-            rate =
-                fromUSD / toUSD;
-        }
-
-        /*
-         * Криптовалюта → фиат.
-         */
-        else if (
             cryptoNames[from] &&
             fiatNames[to]
         ) {
 
-            rate =
-                await getPrice(from, to);
+            const ticker =
+                await getTicker(from, to);
+
+            const quote =
+                ticker.quotes[to];
+
+            rate = quote.price;
+
+            change24 =
+                quote.percent_change_24h;
+
+            updated =
+                ticker.last_updated;
         }
 
         /*
-         * Фиат → криптовалюта.
+         * Криптовалюта → криптовалюта
          */
+
         else if (
-            fiatNames[from] &&
+            cryptoNames[from] &&
             cryptoNames[to]
         ) {
 
-            const cryptoPrice =
-                await getPrice(to, from);
+            const first =
+                await getTicker(from, "USD");
+
+            const second =
+                await getTicker(to, "USD");
+
+            const firstUSD =
+                first.quotes.USD.price;
+
+            const secondUSD =
+                second.quotes.USD.price;
 
             rate =
-                1 / cryptoPrice;
+                firstUSD / secondUSD;
+
+            change24 =
+                first.quotes.USD.percent_change_24h;
+
+            updated =
+                first.last_updated;
         }
 
-        /*
-         * Фиат → фиат.
-         * Этот режим пока не нужен.
-         */
         else {
 
             throw new Error(
-                "Конвертация между фиатными валютами здесь не поддерживается"
+                "Выберите криптовалюту в первом поле"
             );
         }
 
@@ -500,22 +484,23 @@ async function convertCrypto() {
             `1 ${toName} = ` +
             `${formatNumber(reverse)} ${fromName}`;
 
-        /*
-         * Simple Price специально отдаёт только цену,
-         * поэтому изменение за 24 часа здесь пока
-         * не выводим как выдуманное значение.
-         */
+        const changeElement =
+            document.getElementById("change");
 
-        document.getElementById("change").textContent =
-            "Доступно в расширенном запросе";
+        changeElement.textContent =
+            `${change24 >= 0 ? "+" : ""}` +
+            `${formatNumber(change24)}%`;
 
-        document.getElementById("change").className = "";
+        changeElement.className =
+            change24 >= 0
+                ? "positive"
+                : "negative";
 
         document.getElementById("updated").textContent =
-            new Date().toLocaleString("ru-RU");
+            new Date(updated).toLocaleString("ru-RU");
 
         status.textContent =
-            "Данные CoinMarketCap";
+            "Данные предоставлены CoinPaprika";
 
     } catch (error) {
 

@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -6,7 +7,9 @@
 <title>ФинРасчёт — сложный процент</title>
 
 <style>
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
 
 body {
     margin: 0;
@@ -17,6 +20,21 @@ body {
         radial-gradient(circle at bottom right, #4b1f72 0, transparent 35%),
         #0b1020;
     min-height: 100vh;
+}
+
+.back-link {
+    display: block;
+    margin: 0 auto 20px;
+    max-width: 1000px;
+    padding: 0 5%;
+    color: #4facfe;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s ease;
+}
+
+.back-link:hover {
+    color: #8f7cff;
 }
 
 .container {
@@ -143,6 +161,7 @@ button {
 }
 
 @media(max-width:600px) {
+
     .header h1 {
         font-size: 30px;
     }
@@ -159,24 +178,21 @@ button {
 </head>
 
 <body>
-    <a href="index.html" style="
-display:block;
-margin:0 auto 20px;
-max-width:1000px;
-padding:0 5%;
-color:#9fc1ff;
-text-decoration:none;
-font-weight:bold;
-">
-← Все калькуляторы
-</a>
-</a>
+
+<a href="index.html" class="back-link">← Все калькуляторы</a>
 
 <div class="container">
 
     <div class="header">
-        <h1><span>ФинРасчёт</span> — сложный процент</h1>
-        <p>Узнайте, как ваши деньги могут расти со временем</p>
+
+        <h1>
+            <span>ФинРасчёт</span> — сложный процент
+        </h1>
+
+        <p>
+            Узнайте, как ваши деньги могут расти со временем
+        </p>
+
     </div>
 
     <div class="card">
@@ -184,45 +200,79 @@ font-weight:bold;
         <h2>Параметры расчёта</h2>
 
         <label>Начальная сумма, ₽</label>
-        <input type="number" id="initial" value="100000">
+
+        <input
+            type="number"
+            id="initial"
+            value="100000"
+        >
 
         <label>Доходность, % годовых</label>
-        <input type="number" id="rate" value="10" step="0.1">
+
+        <input
+            type="number"
+            id="rate"
+            value="10"
+            step="0.1"
+        >
 
         <label>Срок, лет</label>
-        <input type="number" id="years" value="10" step="1">
 
-        <button onclick="calculate()">Рассчитать</button>
+        <input
+            type="number"
+            id="years"
+            value="10"
+            step="1"
+        >
+
+        <button onclick="calculate()">
+            Рассчитать
+        </button>
 
     </div>
 
     <div class="card">
 
         <div class="result">
+
             <small>Итоговая сумма</small>
+
             <strong id="finalAmount">—</strong>
+
         </div>
 
         <div class="stats">
 
             <div class="stat">
+
                 <small>Начальная сумма</small>
+
                 <strong id="startAmount">—</strong>
+
             </div>
 
             <div class="stat">
+
                 <small>Доход</small>
+
                 <strong class="profit" id="profit">—</strong>
+
             </div>
 
             <div class="stat">
+
                 <small>Рост капитала</small>
+
                 <strong class="profit" id="growth">—</strong>
+
             </div>
 
             <div class="stat">
+
                 <small>Ставка</small>
+
                 <strong id="rateResult">—</strong>
+
             </div>
 
         </div>
@@ -242,24 +292,44 @@ font-weight:bold;
 <script>
 
 function money(value) {
-    return Math.round(value).toLocaleString("ru-RU") + " ₽";
+
+    return Math.round(value)
+        .toLocaleString("ru-RU") + " ₽";
+
 }
 
 function calculate() {
 
-    const initial = Number(document.getElementById("initial").value);
-    const rate = Number(document.getElementById("rate").value);
-    const years = Number(document.getElementById("years").value);
+    const initial =
+        Number(document.getElementById("initial").value);
 
-    if (initial <= 0 || rate < 0 || years <= 0) {
+    const rate =
+        Number(document.getElementById("rate").value);
+
+    const years =
+        Number(document.getElementById("years").value);
+
+    if (
+        initial <= 0 ||
+        rate < 0 ||
+        years <= 0
+    ) {
+
         alert("Проверьте введённые значения.");
+
         return;
+
     }
 
-    const annualRate = rate / 100;
+    const annualRate =
+        rate / 100;
 
     const finalAmount =
-        initial * Math.pow(1 + annualRate, years);
+        initial *
+        Math.pow(
+            1 + annualRate,
+            years
+        );
 
     const profit =
         finalAmount - initial;
@@ -282,36 +352,55 @@ function calculate() {
     document.getElementById("rateResult").textContent =
         rate.toFixed(1).replace(".", ",") + "%";
 
-    const chart = document.getElementById("chart");
+    const chart =
+        document.getElementById("chart");
 
     chart.innerHTML = "";
 
     let balances = [];
 
-    for (let year = 1; year <= years; year++) {
+    for (
+        let year = 1;
+        year <= years;
+        year++
+    ) {
 
         const amount =
-            initial * Math.pow(1 + annualRate, year);
+            initial *
+            Math.pow(
+                1 + annualRate,
+                year
+            );
 
         balances.push(amount);
+
     }
 
-    const max = Math.max(...balances);
+    const max =
+        Math.max(...balances);
 
-    balances.forEach((amount, index) => {
+    balances.forEach(
+        (amount, index) => {
 
-        const bar = document.createElement("div");
+            const bar =
+                document.createElement("div");
 
-        bar.className = "bar";
+            bar.className = "bar";
 
-        bar.style.height =
-            (amount / max * 220) + "px";
+            bar.style.height =
+                (amount / max * 220) + "px";
 
-        bar.title =
-            "Год " + (index + 1) + ": " + money(amount);
+            bar.title =
+                "Год " +
+                (index + 1) +
+                ": " +
+                money(amount);
 
-        chart.appendChild(bar);
-    });
+            chart.appendChild(bar);
+
+        }
+    );
+
 }
 
 calculate();
@@ -320,3 +409,4 @@ calculate();
 
 </body>
 </html>
+```

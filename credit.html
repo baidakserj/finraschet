@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -24,6 +25,21 @@ body {
         #0b1020;
 }
 
+.back-link {
+    display: block;
+    margin: 0 auto 20px;
+    max-width: 1000px;
+    padding: 0 5%;
+    color: #4facfe;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s ease;
+}
+
+.back-link:hover {
+    color: #8f7cff;
+}
+
 .container {
     width: min(1000px, 94%);
     margin: auto;
@@ -44,18 +60,6 @@ body {
     background: linear-gradient(90deg, #4facfe, #8f7cff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-}
-
-.back {
-    display: inline-block;
-    margin-bottom: 20px;
-    color: #4facfe;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-.back:hover {
-    color: #8f7cff;
 }
 
 .card {
@@ -204,13 +208,13 @@ h2 {
 
 <body>
 
+<a href="index.html" class="back-link">
+    ← Все калькуляторы
+</a>
+
 <div class="container">
 
     <div class="header">
-
-        <a class="back" href="index.html">
-            ← Все калькуляторы
-        </a>
 
         <h1>
             <span>Кредитный калькулятор</span>
@@ -812,3 +816,4 @@ calculate();
 
 </body>
 </html>
+```

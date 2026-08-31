@@ -1,0 +1,522 @@
+```html
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ФинРасчёт — конвертер валют</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: white;
+    min-height: 100vh;
+
+    background:
+        radial-gradient(circle at top left, #243b80 0, transparent 35%),
+        radial-gradient(circle at bottom right, #4b1f72 0, transparent 35%),
+        #0b1020;
+}
+
+.back-link {
+    display: block;
+    margin: 0 auto 20px;
+    max-width: 1000px;
+    padding: 0 5%;
+    color: #4facfe;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s ease;
+}
+
+.back-link:hover {
+    color: #8f7cff;
+}
+
+.container {
+    width: min(900px, 94%);
+    margin: auto;
+    padding: 35px 0 50px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.header h1 {
+    margin: 0 0 12px;
+    font-size: 42px;
+}
+
+.header h1 span {
+    background: linear-gradient(90deg, #4facfe, #8f7cff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header p {
+    color: #9ba7c0;
+    font-size: 17px;
+}
+
+.card {
+    background: rgba(20,28,52,.9);
+    border: 1px solid rgba(255,255,255,.09);
+    border-radius: 24px;
+    padding: 28px;
+    margin-bottom: 22px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.3);
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #aab5ca;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.12);
+    background: #10172a;
+    color: white;
+    font-size: 17px;
+}
+
+select {
+    cursor: pointer;
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #1677ff, #7b61ff);
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    filter: brightness(1.12);
+}
+
+.swap {
+    margin-top: -5px;
+    margin-bottom: 20px;
+    background: #293452;
+    font-size: 16px;
+}
+
+.swap:hover {
+    background: #37456b;
+}
+
+.result {
+    text-align: center;
+    padding: 28px;
+    border-radius: 20px;
+    background: linear-gradient(135deg,#1677ff,#784cff);
+}
+
+.result small {
+    color: #dce6ff;
+    font-size: 15px;
+}
+
+.result strong {
+    display: block;
+    margin-top: 10px;
+    font-size: 38px;
+}
+
+.rate-info {
+    text-align: center;
+    margin-top: 18px;
+    color: #aab5ca;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.error {
+    display: none;
+    margin-top: 18px;
+    padding: 14px;
+    border-radius: 12px;
+    background: rgba(255,80,80,.12);
+    border: 1px solid rgba(255,80,80,.25);
+    color: #ffb0b0;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+
+    .header h1 {
+        font-size: 32px;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
+    .result strong {
+        font-size: 30px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<a href="index.html" class="back-link">
+    ← Все калькуляторы
+</a>
+
+<div class="container">
+
+    <div class="header">
+
+        <h1>
+            <span>Конвертер валют</span>
+        </h1>
+
+        <p>
+            Переводите суммы между основными мировыми валютами
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <label for="amount">
+            Сумма
+        </label>
+
+        <input
+            type="number"
+            id="amount"
+            value="1000"
+            min="0"
+            step="any"
+        >
+
+
+        <label for="from">
+            Из валюты
+        </label>
+
+        <select id="from">
+
+            <option value="RUB">🇷🇺 Российский рубль (RUB)</option>
+            <option value="USD">🇺🇸 Доллар США (USD)</option>
+            <option value="EUR">🇪🇺 Евро (EUR)</option>
+            <option value="CNY">🇨🇳 Китайский юань (CNY)</option>
+            <option value="GBP">🇬🇧 Фунт стерлингов (GBP)</option>
+            <option value="CHF">🇨🇭 Швейцарский франк (CHF)</option>
+            <option value="JPY">🇯🇵 Японская иена (JPY)</option>
+
+        </select>
+
+
+        <button
+            class="swap"
+            onclick="swapCurrencies()"
+        >
+            ↔ Поменять валюты местами
+        </button>
+
+
+        <label for="to">
+            В валюту
+        </label>
+
+        <select id="to">
+
+            <option value="RUB">🇷🇺 Российский рубль (RUB)</option>
+            <option value="USD" selected>🇺🇸 Доллар США (USD)</option>
+            <option value="EUR">🇪🇺 Евро (EUR)</option>
+            <option value="CNY">🇨🇳 Китайский юань (CNY)</option>
+            <option value="GBP">🇬🇧 Фунт стерлингов (GBP)</option>
+            <option value="CHF">🇨🇭 Швейцарский франк (CHF)</option>
+            <option value="JPY">🇯🇵 Японская иена (JPY)</option>
+
+        </select>
+
+
+        <button onclick="convert()">
+            💱 Конвертировать
+        </button>
+
+
+        <div class="error" id="error"></div>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="result">
+
+            <small id="resultLabel">
+                Результат
+            </small>
+
+            <strong id="result">
+                —
+            </strong>
+
+        </div>
+
+
+        <div class="rate-info" id="rateInfo">
+            Курс будет загружен после расчёта
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const API =
+    'https://api.frankfurter.dev/v2/rate/';
+
+
+const currencyNames = {
+
+    RUB: 'Российский рубль',
+    USD: 'Доллар США',
+    EUR: 'Евро',
+    CNY: 'Китайский юань',
+    GBP: 'Фунт стерлингов',
+    CHF: 'Швейцарский франк',
+    JPY: 'Японская иена'
+
+};
+
+
+function formatNumber(value) {
+
+    return Number(value).toLocaleString(
+        'ru-RU',
+        {
+            maximumFractionDigits: 4
+        }
+    );
+
+}
+
+
+function showError(message) {
+
+    const error =
+        document.getElementById('error');
+
+    error.textContent = message;
+    error.style.display = 'block';
+
+}
+
+
+function hideError() {
+
+    document.getElementById('error')
+        .style.display = 'none';
+
+}
+
+
+async function convert() {
+
+    hideError();
+
+    const amount =
+        Number(
+            document.getElementById('amount').value
+        );
+
+    const from =
+        document.getElementById('from').value;
+
+    const to =
+        document.getElementById('to').value;
+
+
+    if (!Number.isFinite(amount) || amount < 0) {
+
+        showError(
+            'Введите корректную сумму.'
+        );
+
+        return;
+    }
+
+
+    if (from === to) {
+
+        document.getElementById('result').textContent =
+            formatNumber(amount) + ' ' + to;
+
+        document.getElementById('resultLabel').textContent =
+            currencyNames[from];
+
+        document.getElementById('rateInfo').textContent =
+            '1 ' + from + ' = 1 ' + to;
+
+        return;
+    }
+
+
+    document.getElementById('result').textContent =
+        'Загрузка...';
+
+    document.getElementById('rateInfo').textContent =
+        'Получаем актуальный курс...';
+
+
+    try {
+
+        let url =
+            API + from + '/' + to;
+
+
+        /*
+         * Для пар с RUB используем данные
+         * Центрального банка России.
+         */
+
+        if (from === 'RUB' || to === 'RUB') {
+
+            url += '?providers=CBR';
+
+        }
+
+
+        const response =
+            await fetch(url);
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                'Ошибка получения курса'
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        const rate =
+            Number(data.rate);
+
+
+        const converted =
+            amount * rate;
+
+
+        document.getElementById('result').textContent =
+            formatNumber(converted) + ' ' + to;
+
+
+        document.getElementById('resultLabel').textContent =
+            formatNumber(amount) + ' ' + from +
+            ' =';
+
+
+        document.getElementById('rateInfo').innerHTML =
+
+            '1 ' + from +
+            ' = <strong>' +
+            formatNumber(rate) +
+            ' ' + to +
+            '</strong><br>' +
+
+            'Курс: ' +
+            (data.date || 'последний доступный');
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        document.getElementById('result').textContent =
+            '—';
+
+        document.getElementById('rateInfo').textContent =
+            'Не удалось получить курс валют.';
+
+        showError(
+            'Не удалось загрузить актуальный курс. Проверьте подключение к интернету и попробуйте ещё раз.'
+        );
+
+    }
+
+}
+
+
+function swapCurrencies() {
+
+    const from =
+        document.getElementById('from');
+
+    const to =
+        document.getElementById('to');
+
+
+    const oldFrom =
+        from.value;
+
+    from.value =
+        to.value;
+
+    to.value =
+        oldFrom;
+
+
+    convert();
+
+}
+
+
+document
+    .getElementById('amount')
+    .addEventListener(
+        'keydown',
+        function(event) {
+
+            if (event.key === 'Enter') {
+
+                convert();
+
+            }
+
+        }
+    );
+
+
+convert();
+
+</script>
+
+</body>
+</html>
+```

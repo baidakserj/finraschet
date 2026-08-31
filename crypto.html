@@ -219,6 +219,21 @@ button:hover {
     <option value="ada-cardano">Cardano (ADA)</option>
     <option value="trx-tron">TRON (TRX)</option>
     <option value="ton-toncoin">Toncoin (TON)</option>
+    <option value="avax-avalanche">Avalanche (AVAX)</option>
+    <option value="dot-polkadot">Polkadot (DOT)</option>
+    <option value="link-chainlink">Chainlink (LINK)</option>
+    <option value="bch-bitcoin-cash">Bitcoin Cash (BCH)</option>
+    <option value="xlm-stellar">Stellar (XLM)</option>
+    <option value="shib-shiba-inu">Shiba Inu (SHIB)</option>
+    <option value="uni-uniswap">Uniswap (UNI)</option>
+    <option value="atom-cosmos">Cosmos (ATOM)</option>
+    <option value="etc-ethereum-classic">Ethereum Classic (ETC)</option>
+    <option value="near-near-protocol">NEAR Protocol (NEAR)</option>
+    <option value="apt-aptos">Aptos (APT)</option>
+    <option value="fil-filecoin">Filecoin (FIL)</option>
+    <option value="algo-algorand">Algorand (ALGO)</option>
+    <option value="icp-internet-computer">Internet Computer (ICP)</option>
+    <option value="sui-sui">Sui (SUI)</option>
 </select>
 </div>
 
@@ -233,6 +248,27 @@ button:hover {
     <option value="eth-ethereum">Ethereum (ETH)</option>
     <option value="ltc-litecoin">Litecoin (LTC)</option>
     <option value="bnb-binance-coin">BNB</option>
+    <option value="sol-solana">Solana (SOL)</option>
+    <option value="xrp-xrp">XRP</option>
+    <option value="doge-dogecoin">Dogecoin (DOGE)</option>
+    <option value="ada-cardano">Cardano (ADA)</option>
+    <option value="trx-tron">TRON (TRX)</option>
+    <option value="ton-toncoin">Toncoin (TON)</option>
+    <option value="avax-avalanche">Avalanche (AVAX)</option>
+    <option value="dot-polkadot">Polkadot (DOT)</option>
+    <option value="link-chainlink">Chainlink (LINK)</option>
+    <option value="bch-bitcoin-cash">Bitcoin Cash (BCH)</option>
+    <option value="xlm-stellar">Stellar (XLM)</option>
+    <option value="shib-shiba-inu">Shiba Inu (SHIB)</option>
+    <option value="uni-uniswap">Uniswap (UNI)</option>
+    <option value="atom-cosmos">Cosmos (ATOM)</option>
+    <option value="etc-ethereum-classic">Ethereum Classic (ETC)</option>
+    <option value="near-near-protocol">NEAR Protocol (NEAR)</option>
+    <option value="apt-aptos">Aptos (APT)</option>
+    <option value="fil-filecoin">Filecoin (FIL)</option>
+    <option value="algo-algorand">Algorand (ALGO)</option>
+    <option value="icp-internet-computer">Internet Computer (ICP)</option>
+    <option value="sui-sui">Sui (SUI)</option>
 </select>
 </div>
 
@@ -283,6 +319,7 @@ const API =
 "https://api.coinpaprika.com/v1/tickers/";
 
 const cryptoNames = {
+
     "btc-bitcoin": "BTC",
     "eth-ethereum": "ETH",
     "ltc-litecoin": "LTC",
@@ -292,7 +329,23 @@ const cryptoNames = {
     "doge-dogecoin": "DOGE",
     "ada-cardano": "ADA",
     "trx-tron": "TRX",
-    "ton-toncoin": "TON"
+    "ton-toncoin": "TON",
+
+    "avax-avalanche": "AVAX",
+    "dot-polkadot": "DOT",
+    "link-chainlink": "LINK",
+    "bch-bitcoin-cash": "BCH",
+    "xlm-stellar": "XLM",
+    "shib-shiba-inu": "SHIB",
+    "uni-uniswap": "UNI",
+    "atom-cosmos": "ATOM",
+    "etc-ethereum-classic": "ETC",
+    "near-near-protocol": "NEAR",
+    "apt-aptos": "APT",
+    "fil-filecoin": "FIL",
+    "algo-algorand": "ALGO",
+    "icp-internet-computer": "ICP",
+    "sui-sui": "SUI"
 };
 
 const fiatNames = {
@@ -302,6 +355,7 @@ const fiatNames = {
 };
 
 function getName(value) {
+
     return cryptoNames[value] ||
            fiatNames[value] ||
            value;
@@ -314,12 +368,14 @@ function formatNumber(value) {
     }
 
     if (Math.abs(value) >= 1000) {
+
         return value.toLocaleString("ru-RU", {
             maximumFractionDigits: 2
         });
     }
 
     if (Math.abs(value) >= 1) {
+
         return value.toLocaleString("ru-RU", {
             maximumFractionDigits: 6
         });
@@ -337,14 +393,17 @@ async function getTicker(id, quotes) {
     );
 
     if (!response.ok) {
+
         throw new Error(
             `Ошибка API: ${response.status}`
         );
     }
 
-    const data = await response.json();
+    const data =
+        await response.json();
 
     if (!data || !data.quotes) {
+
         throw new Error(
             "API не вернул данные"
         );
@@ -413,7 +472,14 @@ async function convertCrypto() {
             const quote =
                 ticker.quotes[to];
 
-            rate = quote.price;
+            if (!quote) {
+                throw new Error(
+                    `Валюта ${to} недоступна`
+                );
+            }
+
+            rate =
+                quote.price;
 
             change24 =
                 quote.percent_change_24h;

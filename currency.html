@@ -144,9 +144,9 @@ button:hover {
 .rate-info {
     text-align: center;
     margin-top: 18px;
-    color: #aab5ca;
+    color: #aab6ca;
     font-size: 14px;
-    line-height: 1.6;
+    line-height: 1.7;
 }
 
 .error {
@@ -192,7 +192,7 @@ button:hover {
     </h1>
 
     <p>
-        Конвертация по актуальному рыночному курсу
+        Актуальный курс валют
     </p>
 
 </div>
@@ -307,8 +307,25 @@ button:hover {
 
 <script>
 
+/*
+    Храним последний полученный курс.
+    Если пользователь меняет валюты местами,
+    используем обратный курс 1 / rate,
+    а не делаем второй запрос.
+*/
+
+let lastRate = null;
+let lastFrom = null;
+let lastTo = null;
+
+
+/*
+    Используем открытый endpoint ExchangeRate-API.
+    Он предоставляет актуальные курсы без API-ключа.
+*/
+
 const API =
-    'https://www.currencyexchangetool.com/api/v1/convert';
+    'https://open.er-api.com/v6/latest/';
 
 
 function formatNumber(value) {
@@ -380,6 +397,11 @@ async function convert() {
 
     if (from === to) {
 
+        lastRate = 1;
+        lastFrom = from;
+        lastTo = to;
+
+
         document.getElementById('resultLabel')
             .textContent =
             formatNumber(amount) +
@@ -403,6 +425,62 @@ async function convert() {
     }
 
 
+    /*
+        Если это обратная конвертация последней пары,
+        НЕ обращаемся к API повторно.
+
+        Например:
+
+        USD → RUB = 86.34
+
+        RUB → USD = 1 / 86.34
+                   = 0.0115821
+    */
+
+    if (
+        lastRate !== null &&
+        from === lastTo &&
+        to === lastFrom
+    ) {
+
+        const reverseRate =
+            1 / lastRate;
+
+
+        const result =
+            amount * reverseRate;
+
+
+        document.getElementById('resultLabel')
+            .textContent =
+            formatNumber(amount) +
+            ' ' +
+            from +
+            ' =';
+
+
+        document.getElementById('result')
+            .textContent =
+            formatNumber(result) +
+            ' ' +
+            to;
+
+
+        document.getElementById('rateInfo')
+            .innerHTML =
+            '1 ' +
+            from +
+            ' = ' +
+            formatNumber(reverseRate) +
+            ' ' +
+            to +
+            '<br>Обратный курс от предыдущего расчёта';
+
+
+        return;
+    }
+
+
     document.getElementById('result')
         .textContent =
         'Загрузка...';
@@ -410,23 +488,16 @@ async function convert() {
 
     document.getElementById('rateInfo')
         .textContent =
-        'Получаем рыночный курс...';
+        'Получаем актуальный курс...';
 
 
     try {
 
-        const url =
-            API +
-            '?amount=' +
-            encodeURIComponent(amount) +
-            '&from=' +
-            encodeURIComponent(from) +
-            '&to=' +
-            encodeURIComponent(to);
-
-
         const response =
-            await fetch(url);
+            await fetch(
+                API +
+                encodeURIComponent(from)
+            );
 
 
         if (!response.ok) {
@@ -443,23 +514,33 @@ async function convert() {
 
 
         if (
-            !data.success
+            data.result !== 'success' ||
+            !data.rates ||
+            typeof data.rates[to] !== 'number'
         ) {
 
             throw new Error(
-                data.error ||
-                'Не удалось получить курс'
+                'Курс недоступен'
             );
 
         }
 
 
-        const result =
-            Number(data.result);
-
-
         const rate =
-            Number(data.rate);
+            data.rates[to];
+
+
+        const result =
+            amount * rate;
+
+
+        /*
+            Запоминаем курс.
+        */
+
+        lastRate = rate;
+        lastFrom = from;
+        lastTo = to;
 
 
         document.getElementById('resultLabel')
@@ -486,25 +567,13 @@ async function convert() {
             to;
 
 
-        if (
-            data.changePct24h !== undefined
-        ) {
-
-            const change =
-                Number(data.changePct24h);
-
+        if (data.time_last_update_utc) {
 
             info +=
-                '<br>Изменение за 24 часа: ' +
-                (change >= 0 ? '+' : '') +
-                change.toFixed(2) +
-                '%';
+                '<br>Обновлено: ' +
+                data.time_last_update_utc;
 
         }
-
-
-        info +=
-            '<br>Рыночный mid-market курс';
 
 
         document.getElementById('rateInfo')
@@ -541,7 +610,6 @@ function swapCurrencies() {
     const from =
         document.getElementById('from');
 
-
     const to =
         document.getElementById('to');
 
@@ -558,10 +626,20 @@ function swapCurrencies() {
         temporary;
 
 
+    /*
+        Если это именно обратная пара,
+        convert() использует сохранённый курс
+        и считает 1 / rate.
+    */
+
     convert();
 
 }
 
+
+/*
+    Enter в поле суммы запускает расчёт.
+*/
 
 document
     .getElementById('amount')
@@ -580,6 +658,10 @@ document
         }
     );
 
+
+/*
+    Первый расчёт.
+*/
 
 convert();
 

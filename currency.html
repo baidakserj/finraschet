@@ -4,11 +4,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>ФинРасчёт — конвертер валют</title>
 
 <style>
-
 * {
     box-sizing: border-box;
 }
@@ -18,32 +16,28 @@ body {
     font-family: Arial, sans-serif;
     color: white;
     min-height: 100vh;
-
     background:
         radial-gradient(circle at top left, #243b80 0, transparent 35%),
         radial-gradient(circle at bottom right, #4b1f72 0, transparent 35%),
         #0b1020;
 }
 
-.back-link {
-    display: block;
-    margin: 0 auto 20px;
-    max-width: 1000px;
-    padding: 0 5%;
-    color: #4facfe;
-    text-decoration: none;
-    font-weight: bold;
-    transition: color 0.2s ease;
-}
-
-.back-link:hover {
-    color: #8f7cff;
-}
-
 .container {
     width: min(900px, 94%);
     margin: auto;
     padding: 35px 0 50px;
+}
+
+.back {
+    display: block;
+    margin-bottom: 20px;
+    color: #4facfe;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.back:hover {
+    color: #8f7cff;
 }
 
 .header {
@@ -82,11 +76,14 @@ label {
     color: #aab5ca;
 }
 
-input,
-select {
+.search {
+    margin-bottom: 8px;
+}
+
+select,
+input {
     width: 100%;
     padding: 14px;
-    margin-bottom: 20px;
     border-radius: 12px;
     border: 1px solid rgba(255,255,255,.12);
     background: #10172a;
@@ -103,7 +100,7 @@ button {
     padding: 15px;
     border: none;
     border-radius: 12px;
-    background: linear-gradient(90deg, #1677ff, #7b61ff);
+    background: linear-gradient(90deg,#1677ff,#7b61ff);
     color: white;
     font-size: 17px;
     font-weight: bold;
@@ -115,10 +112,8 @@ button:hover {
 }
 
 .swap {
-    margin-top: -5px;
-    margin-bottom: 20px;
+    margin: 18px 0;
     background: #293452;
-    font-size: 16px;
 }
 
 .swap:hover {
@@ -148,7 +143,7 @@ button:hover {
     margin-top: 18px;
     color: #aab5ca;
     font-size: 14px;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
 .error {
@@ -162,8 +157,13 @@ button:hover {
     text-align: center;
 }
 
-@media (max-width: 600px) {
+.loading {
+    color: #9ba7c0;
+    text-align: center;
+    padding: 10px;
+}
 
+@media (max-width: 600px) {
     .header h1 {
         font-size: 32px;
     }
@@ -176,139 +176,150 @@ button:hover {
         font-size: 30px;
     }
 }
-
 </style>
 </head>
 
 <body>
 
-<a href="index.html" class="back-link">
+<div class="container">
+
+<a href="index.html" class="back">
     ← Все калькуляторы
 </a>
 
-<div class="container">
+<div class="header">
 
-    <div class="header">
+    <h1>
+        <span>Конвертер валют</span>
+    </h1>
 
-        <h1>
-            <span>Конвертер валют</span>
-        </h1>
+    <p>
+        Конвертация по актуальному доступному курсу
+    </p>
 
-        <p>
-            Переводите суммы между основными мировыми валютами
-        </p>
-
-    </div>
+</div>
 
 
-    <div class="card">
+<div class="card">
 
-        <label for="amount">
-            Сумма
-        </label>
+    <label for="amount">
+        Сумма
+    </label>
 
-        <input
-            type="number"
-            id="amount"
-            value="1000"
-            min="0"
-            step="any"
-        >
-
-
-        <label for="from">
-            Из валюты
-        </label>
-
-        <select id="from">
-
-            <option value="RUB">🇷🇺 Российский рубль (RUB)</option>
-            <option value="USD">🇺🇸 Доллар США (USD)</option>
-            <option value="EUR">🇪🇺 Евро (EUR)</option>
-            <option value="CNY">🇨🇳 Китайский юань (CNY)</option>
-            <option value="GBP">🇬🇧 Фунт стерлингов (GBP)</option>
-            <option value="CHF">🇨🇭 Швейцарский франк (CHF)</option>
-            <option value="JPY">🇯🇵 Японская иена (JPY)</option>
-
-        </select>
+    <input
+        type="number"
+        id="amount"
+        value="1000"
+        min="0"
+        step="any"
+    >
 
 
-        <button
-            class="swap"
-            onclick="swapCurrencies()"
-        >
-            ↔ Поменять валюты местами
-        </button>
+    <label for="fromSearch">
+        Из валюты
+    </label>
+
+    <input
+        type="text"
+        id="fromSearch"
+        class="search"
+        placeholder="Поиск: RUB, рубль, доллар..."
+    >
+
+    <select id="from">
+        <option>Загрузка валют...</option>
+    </select>
 
 
-        <label for="to">
-            В валюту
-        </label>
-
-        <select id="to">
-
-            <option value="RUB">🇷🇺 Российский рубль (RUB)</option>
-            <option value="USD" selected>🇺🇸 Доллар США (USD)</option>
-            <option value="EUR">🇪🇺 Евро (EUR)</option>
-            <option value="CNY">🇨🇳 Китайский юань (CNY)</option>
-            <option value="GBP">🇬🇧 Фунт стерлингов (GBP)</option>
-            <option value="CHF">🇨🇭 Швейцарский франк (CHF)</option>
-            <option value="JPY">🇯🇵 Японская иена (JPY)</option>
-
-        </select>
+    <button
+        class="swap"
+        onclick="swapCurrencies()"
+    >
+        ↔ Поменять валюты местами
+    </button>
 
 
-        <button onclick="convert()">
-            💱 Конвертировать
-        </button>
+    <label for="toSearch">
+        В валюту
+    </label>
+
+    <input
+        type="text"
+        id="toSearch"
+        class="search"
+        placeholder="Поиск: USD, евро, юань..."
+    >
+
+    <select id="to">
+        <option>Загрузка валют...</option>
+    </select>
 
 
-        <div class="error" id="error"></div>
-
-    </div>
-
-
-    <div class="card">
-
-        <div class="result">
-
-            <small id="resultLabel">
-                Результат
-            </small>
-
-            <strong id="result">
-                —
-            </strong>
-
-        </div>
+    <button onclick="convert()">
+        💱 Конвертировать
+    </button>
 
 
-        <div class="rate-info" id="rateInfo">
-            Курс будет загружен после расчёта
-        </div>
+    <div class="error" id="error"></div>
+
+</div>
+
+
+<div class="card">
+
+    <div class="result">
+
+        <small id="resultLabel">
+            Результат
+        </small>
+
+        <strong id="result">
+            —
+        </strong>
 
     </div>
+
+    <div class="rate-info" id="rateInfo">
+        Загружаем список валют...
+    </div>
+
+</div>
 
 </div>
 
 
 <script>
 
-const API =
+const CURRENCIES_API =
+    'https://api.frankfurter.dev/v2/currencies';
+
+const RATE_API =
     'https://api.frankfurter.dev/v2/rate/';
 
+let currencies = [];
 
-const currencyNames = {
 
-    RUB: 'Российский рубль',
-    USD: 'Доллар США',
-    EUR: 'Евро',
-    CNY: 'Китайский юань',
-    GBP: 'Фунт стерлингов',
-    CHF: 'Швейцарский франк',
-    JPY: 'Японская иена'
-
-};
+/*
+ * Основные валюты показываем первыми.
+ */
+const popular = [
+    'RUB',
+    'USD',
+    'EUR',
+    'CNY',
+    'GBP',
+    'CHF',
+    'JPY',
+    'KZT',
+    'BYN',
+    'UZS',
+    'TRY',
+    'AED',
+    'INR',
+    'CAD',
+    'AUD',
+    'PLN'
+];
 
 
 function formatNumber(value) {
@@ -316,7 +327,7 @@ function formatNumber(value) {
     return Number(value).toLocaleString(
         'ru-RU',
         {
-            maximumFractionDigits: 4
+            maximumFractionDigits: 6
         }
     );
 
@@ -342,17 +353,166 @@ function hideError() {
 }
 
 
+function currencyLabel(currency) {
+
+    return currency.iso_code +
+        ' — ' +
+        currency.name +
+        (currency.symbol
+            ? ' (' + currency.symbol + ')'
+            : '');
+
+}
+
+
+function renderSelect(selectId, searchText = '') {
+
+    const select =
+        document.getElementById(selectId);
+
+    const query =
+        searchText.trim().toLowerCase();
+
+
+    let filtered =
+        currencies.filter(currency => {
+
+            const text =
+                (
+                    currency.iso_code +
+                    ' ' +
+                    currency.name +
+                    ' ' +
+                    (currency.symbol || '')
+                ).toLowerCase();
+
+            return text.includes(query);
+        });
+
+
+    const popularItems =
+        popular
+            .map(code =>
+                filtered.find(
+                    currency =>
+                        currency.iso_code === code
+                )
+            )
+            .filter(Boolean);
+
+
+    const otherItems =
+        filtered.filter(currency =>
+            !popular.includes(currency.iso_code)
+        );
+
+
+    const sorted =
+        [...popularItems, ...otherItems];
+
+
+    select.innerHTML = '';
+
+
+    if (sorted.length === 0) {
+
+        const option =
+            document.createElement('option');
+
+        option.textContent =
+            'Ничего не найдено';
+
+        select.appendChild(option);
+
+        return;
+    }
+
+
+    sorted.forEach(currency => {
+
+        const option =
+            document.createElement('option');
+
+        option.value =
+            currency.iso_code;
+
+        option.textContent =
+            currencyLabel(currency);
+
+        select.appendChild(option);
+
+    });
+
+}
+
+
+async function loadCurrencies() {
+
+    try {
+
+        const response =
+            await fetch(CURRENCIES_API);
+
+
+        if (!response.ok) {
+            throw new Error('Ошибка загрузки валют');
+        }
+
+
+        const data =
+            await response.json();
+
+
+        currencies =
+            Object.values(data);
+
+
+        renderSelect('from');
+
+        renderSelect('to');
+
+
+        document.getElementById('from').value =
+            'RUB';
+
+        document.getElementById('to').value =
+            'USD';
+
+
+        document.getElementById('rateInfo').textContent =
+            'Выберите валюты и нажмите «Конвертировать».';
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        showError(
+            'Не удалось загрузить список валют.'
+        );
+
+        document.getElementById('rateInfo').textContent =
+            'Ошибка загрузки валют.';
+
+    }
+
+}
+
+
 async function convert() {
 
     hideError();
+
 
     const amount =
         Number(
             document.getElementById('amount').value
         );
 
+
     const from =
         document.getElementById('from').value;
+
 
     const to =
         document.getElementById('to').value;
@@ -368,16 +528,36 @@ async function convert() {
     }
 
 
+    if (!from || !to) {
+
+        showError(
+            'Выберите обе валюты.'
+        );
+
+        return;
+    }
+
+
     if (from === to) {
 
-        document.getElementById('result').textContent =
-            formatNumber(amount) + ' ' + to;
-
         document.getElementById('resultLabel').textContent =
-            currencyNames[from];
+            formatNumber(amount) +
+            ' ' +
+            from +
+            ' =';
 
-        document.getElementById('rateInfo').textContent =
-            '1 ' + from + ' = 1 ' + to;
+
+        document.getElementById('result').textContent =
+            formatNumber(amount) +
+            ' ' +
+            to;
+
+
+        document.getElementById('rateInfo').innerHTML =
+            '1 ' +
+            from +
+            ' = 1 ' +
+            to;
 
         return;
     }
@@ -386,19 +566,23 @@ async function convert() {
     document.getElementById('result').textContent =
         'Загрузка...';
 
+
     document.getElementById('rateInfo').textContent =
-        'Получаем актуальный курс...';
+        'Получаем курс...';
 
 
     try {
 
         let url =
-            API + from + '/' + to;
+            RATE_API +
+            from +
+            '/' +
+            to;
 
 
         /*
-         * Для пар с RUB используем данные
-         * Центрального банка России.
+         * Для RUB используем официальный
+         * источник ЦБ РФ через Frankfurter.
          */
 
         if (from === 'RUB' || to === 'RUB') {
@@ -433,24 +617,30 @@ async function convert() {
             amount * rate;
 
 
-        document.getElementById('result').textContent =
-            formatNumber(converted) + ' ' + to;
-
-
         document.getElementById('resultLabel').textContent =
-            formatNumber(amount) + ' ' + from +
+            formatNumber(amount) +
+            ' ' +
+            from +
             ' =';
+
+
+        document.getElementById('result').textContent =
+            formatNumber(converted) +
+            ' ' +
+            to;
 
 
         document.getElementById('rateInfo').innerHTML =
 
-            '1 ' + from +
+            '1 ' +
+            from +
             ' = <strong>' +
             formatNumber(rate) +
-            ' ' + to +
+            ' ' +
+            to +
             '</strong><br>' +
 
-            'Курс: ' +
+            'Дата курса: ' +
             (data.date || 'последний доступный');
 
 
@@ -462,10 +652,10 @@ async function convert() {
             '—';
 
         document.getElementById('rateInfo').textContent =
-            'Не удалось получить курс валют.';
+            'Не удалось получить курс.';
 
         showError(
-            'Не удалось загрузить актуальный курс. Проверьте подключение к интернету и попробуйте ещё раз.'
+            'Не удалось получить курс валют. Попробуйте ещё раз.'
         );
 
     }
@@ -485,16 +675,102 @@ function swapCurrencies() {
     const oldFrom =
         from.value;
 
+
     from.value =
         to.value;
+
 
     to.value =
         oldFrom;
 
 
+    document.getElementById('fromSearch').value =
+        '';
+
+
+    document.getElementById('toSearch').value =
+        '';
+
+
     convert();
 
 }
+
+
+document
+    .getElementById('fromSearch')
+    .addEventListener(
+        'input',
+        function() {
+
+            const current =
+                document.getElementById('from').value;
+
+            renderSelect(
+                'from',
+                this.value
+            );
+
+            if (
+                currencies.some(
+                    currency =>
+                        currency.iso_code === current
+                )
+            ) {
+
+                const option =
+                    [...document.getElementById('from').options]
+                    .find(
+                        option =>
+                            option.value === current
+                    );
+
+                if (option) {
+                    option.selected = true;
+                }
+
+            }
+
+        }
+    );
+
+
+document
+    .getElementById('toSearch')
+    .addEventListener(
+        'input',
+        function() {
+
+            const current =
+                document.getElementById('to').value;
+
+            renderSelect(
+                'to',
+                this.value
+            );
+
+            if (
+                currencies.some(
+                    currency =>
+                        currency.iso_code === current
+                )
+            ) {
+
+                const option =
+                    [...document.getElementById('to').options]
+                    .find(
+                        option =>
+                            option.value === current
+                    );
+
+                if (option) {
+                    option.selected = true;
+                }
+
+            }
+
+        }
+    );
 
 
 document
@@ -504,16 +780,14 @@ document
         function(event) {
 
             if (event.key === 'Enter') {
-
                 convert();
-
             }
 
         }
     );
 
 
-convert();
+loadCurrencies();
 
 </script>
 

@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ФинРасчёт — конвертер криптовалют</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: #fff;
+    min-height: 100vh;
+    padding: 30px 15px;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.back {
+    display: inline-block;
+    color: #60a5fa;
+    text-decoration: none;
+    font-size: 16px;
+    margin-bottom: 25px;
+    transition: 0.2s;
+}
+
+.back:hover {
+    color: #a78bfa;
+}
+
+.card {
+    background: rgba(30, 41, 59, 0.95);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.35);
+}
+
+h1 {
+    margin: 0 0 8px;
+    font-size: 30px;
+}
+
+.subtitle {
+    color: #94a3b8;
+    margin-bottom: 30px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #cbd5e1;
+    font-size: 14px;
+}
+
+input, select {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #475569;
+    border-radius: 10px;
+    background: #0f172a;
+    color: #fff;
+    font-size: 17px;
+    outline: none;
+}
+
+input:focus, select:focus {
+    border-color: #60a5fa;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.field {
+    margin-bottom: 20px;
+}
+
+button {
+    width: 100%;
+    border: 0;
+    padding: 15px;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #2563eb, #7c3aed);
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    transform: translateY(-1px);
+    opacity: 0.92;
+}
+
+.result {
+    margin-top: 25px;
+    padding: 22px;
+    border-radius: 15px;
+    background: #0f172a;
+    display: none;
+}
+
+.result-main {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    word-break: break-word;
+}
+
+.info {
+    display: grid;
+    gap: 10px;
+    color: #cbd5e1;
+    font-size: 14px;
+}
+
+.info div {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    border-bottom: 1px solid #334155;
+    padding-bottom: 8px;
+}
+
+.info div:last-child {
+    border-bottom: none;
+}
+
+.positive {
+    color: #4ade80;
+}
+
+.negative {
+    color: #f87171;
+}
+
+.status {
+    margin-top: 15px;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+.error {
+    color: #f87171;
+}
+
+@media (max-width: 500px) {
+    .row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .card {
+        padding: 22px;
+    }
+
+    h1 {
+        font-size: 26px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <a href="index.html" class="back">← Все калькуляторы</a>
+
+    <div class="card">
+
+        <h1>🪙 Конвертер криптовалют</h1>
+        <div class="subtitle">
+            Актуальные курсы криптовалют CoinMarketCap
+        </div>
+
+        <div class="field">
+            <label for="amount">Количество</label>
+            <input
+                type="number"
+                id="amount"
+                value="1"
+                min="0"
+                step="any"
+            >
+        </div>
+
+        <div class="row">
+
+            <div class="field">
+                <label for="from">Из</label>
+                <select id="from">
+                    <option value="BTC">Bitcoin (BTC)</option>
+                    <option value="ETH">Ethereum (ETH)</option>
+                    <option value="LTC">Litecoin (LTC)</option>
+                    <option value="BNB">BNB</option>
+                    <option value="SOL">Solana (SOL)</option>
+                    <option value="XRP">XRP</option>
+                    <option value="DOGE">Dogecoin (DOGE)</option>
+                    <option value="ADA">Cardano (ADA)</option>
+                    <option value="TRX">TRON (TRX)</option>
+                    <option value="TON">Toncoin (TON)</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="to">В</label>
+                <select id="to">
+                    <option value="USD">Доллар США (USD)</option>
+                    <option value="EUR">Евро (EUR)</option>
+                    <option value="RUB">Российский рубль (RUB)</option>
+                    <option value="BTC">Bitcoin (BTC)</option>
+                    <option value="ETH">Ethereum (ETH)</option>
+                    <option value="BNB">BNB</option>
+                </select>
+            </div>
+
+        </div>
+
+        <button onclick="convertCrypto()">
+            Конвертировать
+        </button>
+
+        <div class="result" id="result">
+
+            <div class="result-main" id="resultMain"></div>
+
+            <div class="info">
+
+                <div>
+                    <span>Курс</span>
+                    <strong id="rate"></strong>
+                </div>
+
+                <div>
+                    <span>Обратный курс</span>
+                    <strong id="reverseRate"></strong>
+                </div>
+
+                <div>
+                    <span>Изменение за 24 часа</span>
+                    <strong id="change"></strong>
+                </div>
+
+                <div>
+                    <span>Обновлено</span>
+                    <strong id="updated"></strong>
+                </div>
+
+            </div>
+
+            <div class="status" id="status"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const API =
+    "https://pro-api.coinmarketcap.com/public-api/v3/cryptocurrency/quotes/latest";
+
+const cryptoIds = {
+    BTC: 1,
+    ETH: 1027,
+    BNB: 1839,
+    SOL: 5426,
+    XRP: 52,
+    DOGE: 74,
+    ADA: 2010,
+    TRX: 1958,
+    TON: 11419,
+    LTC: 2
+};
+
+const fiatIds = {
+    USD: 2781,
+    EUR: 2790,
+    RUB: 2806
+};
+
+const names = {
+    BTC: "BTC",
+    ETH: "ETH",
+    BNB: "BNB",
+    SOL: "SOL",
+    XRP: "XRP",
+    DOGE: "DOGE",
+    ADA: "ADA",
+    TRX: "TRX",
+    TON: "TON",
+    LTC: "LTC",
+    USD: "USD",
+    EUR: "EUR",
+    RUB: "RUB"
+};
+
+async function getQuote(symbol) {
+
+    const id = cryptoIds[symbol];
+
+    if (!id) {
+        throw new Error("Неизвестная криптовалюта");
+    }
+
+    const url =
+        `${API}?id=${id}&convert=USD,EUR,RUB`;
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+        throw new Error("Ошибка соединения с CoinMarketCap");
+    }
+
+    const json = await response.json();
+
+    if (
+        !json.status ||
+        String(json.status.error_code) !== "0"
+    ) {
+        throw new Error(
+            json.status?.error_message ||
+            "CoinMarketCap вернул ошибку"
+        );
+    }
+
+    return json.data[id];
+}
+
+function formatNumber(value) {
+
+    if (!Number.isFinite(value)) return "—";
+
+    if (Math.abs(value) >= 1000) {
+        return value.toLocaleString("ru-RU", {
+            maximumFractionDigits: 2
+        });
+    }
+
+    if (Math.abs(value) >= 1) {
+        return value.toLocaleString("ru-RU", {
+            maximumFractionDigits: 6
+        });
+    }
+
+    return value.toLocaleString("ru-RU", {
+        maximumFractionDigits: 10
+    });
+}
+
+async function convertCrypto() {
+
+    const amount =
+        parseFloat(document.getElementById("amount").value);
+
+    const from =
+        document.getElementById("from").value;
+
+    const to =
+        document.getElementById("to").value;
+
+    const result =
+        document.getElementById("result");
+
+    const resultMain =
+        document.getElementById("resultMain");
+
+    const status =
+        document.getElementById("status");
+
+    if (!amount || amount <= 0) {
+        result.style.display = "block";
+        resultMain.textContent = "Введите количество";
+        status.textContent = "";
+        return;
+    }
+
+    result.style.display = "block";
+
+    resultMain.textContent = "Загрузка...";
+    status.textContent = "";
+
+    try {
+
+        /*
+         * Получаем данные обеих криптовалют.
+         * Фиатные валюты берём из USD-цены CoinMarketCap.
+         */
+
+        const fromData = await getQuote(from);
+
+        let fromUSD =
+            fromData.quote.USD.price;
+
+        let toUSD;
+
+        if (cryptoIds[to]) {
+
+            const toData =
+                await getQuote(to);
+
+            toUSD =
+                toData.quote.USD.price;
+
+        } else {
+
+            toUSD =
+                fromData.quote[to].price;
+
+        }
+
+        const rate =
+            fromUSD / toUSD;
+
+        const converted =
+            amount * rate;
+
+        const reverse =
+            1 / rate;
+
+        resultMain.textContent =
+            `${formatNumber(amount)} ${names[from]} = ` +
+            `${formatNumber(converted)} ${names[to]}`;
+
+        document.getElementById("rate").textContent =
+            `1 ${names[from]} = ${formatNumber(rate)} ${names[to]}`;
+
+        document.getElementById("reverseRate").textContent =
+            `1 ${names[to]} = ${formatNumber(reverse)} ${names[from]}`;
+
+        const change =
+            fromData.quote.USD.percent_change_24h;
+
+        const changeElement =
+            document.getElementById("change");
+
+        changeElement.textContent =
+            `${change >= 0 ? "+" : ""}${formatNumber(change)}%`;
+
+        changeElement.className =
+            change >= 0 ? "positive" : "negative";
+
+        const updated =
+            fromData.quote.USD.last_updated;
+
+        document.getElementById("updated").textContent =
+            new Date(updated).toLocaleString("ru-RU");
+
+        status.textContent =
+            "Данные предоставлены CoinMarketCap";
+
+    } catch (error) {
+
+        resultMain.textContent =
+            "Не удалось получить курс";
+
+        status.innerHTML =
+            `<span class="error">${error.message}</span>`;
+
+    }
+}
+
+</script>
+
+</body>
+</html>

@@ -31,8 +31,6 @@ body {
     padding: 30px 0 50px;
 }
 
-/* КНОПКА НАЗАД */
-
 .back {
     display: inline-block;
     color: #4facfe;
@@ -44,8 +42,6 @@ body {
 .back:hover {
     color: #8f7cff;
 }
-
-/* ЗАГОЛОВОК */
 
 .header {
     text-align: center;
@@ -68,8 +64,6 @@ body {
     margin-top: 12px;
 }
 
-/* КАРТОЧКА */
-
 .card {
     background: rgba(20,28,52,.9);
     border: 1px solid rgba(255,255,255,.08);
@@ -78,8 +72,6 @@ body {
     margin-bottom: 20px;
     box-shadow: 0 20px 60px rgba(0,0,0,.3);
 }
-
-/* ПОЛЯ */
 
 label {
     display: block;
@@ -108,8 +100,6 @@ select {
     cursor: pointer;
 }
 
-/* СУММА */
-
 .amount-box {
     margin-bottom: 20px;
 }
@@ -118,8 +108,6 @@ select {
     font-size: 22px;
     font-weight: bold;
 }
-
-/* ПОИСК */
 
 .search-box {
     margin-bottom: 8px;
@@ -134,16 +122,12 @@ select {
     color: #71809d;
 }
 
-/* ВЫБОР ВАЛЮТ */
-
 .currency-row {
     display: grid;
     grid-template-columns: 1fr 60px 1fr;
     gap: 12px;
     align-items: end;
 }
-
-/* КНОПКА ОБМЕНА */
 
 .swap {
     width: 60px;
@@ -163,8 +147,6 @@ select {
     color: #8f7cff;
 }
 
-/* КНОПКА */
-
 button.calculate {
     width: 100%;
     margin-top: 25px;
@@ -182,8 +164,6 @@ button.calculate:hover {
     filter: brightness(1.12);
 }
 
-/* РЕЗУЛЬТАТ */
-
 .result {
     background: linear-gradient(135deg,#1677ff,#784cff);
     border-radius: 20px;
@@ -200,8 +180,6 @@ button.calculate:hover {
     margin-top: 10px;
     font-size: 38px;
 }
-
-/* КУРС */
 
 .rate-box {
     display: grid;
@@ -235,8 +213,6 @@ button.calculate:hover {
     color: #ff6b7a;
 }
 
-/* СОСТОЯНИЕ */
-
 .status {
     text-align: center;
     color: #9ba7c0;
@@ -248,8 +224,6 @@ button.calculate:hover {
     color: #ff6b7a;
 }
 
-/* ИНФО */
-
 .info {
     margin-top: 20px;
     padding: 18px;
@@ -260,8 +234,6 @@ button.calculate:hover {
     font-size: 14px;
     line-height: 1.5;
 }
-
-/* МОБИЛЬНАЯ ВЕРСИЯ */
 
 @media (max-width: 600px) {
 
@@ -361,8 +333,7 @@ button.calculate:hover {
 
             </div>
 
-            <select id="fromCurrency" size="1">
-            </select>
+            <select id="fromCurrency"></select>
 
         </div>
 
@@ -393,8 +364,7 @@ button.calculate:hover {
 
             </div>
 
-            <select id="toCurrency" size="1">
-            </select>
+            <select id="toCurrency"></select>
 
         </div>
 
@@ -643,7 +613,7 @@ function fillSelects(list) {
 }
 
 
-/* ФИЛЬТРАЦИЯ ВАЛЮТ */
+/* ПОИСК ПО ВАЛЮТАМ */
 
 function filterCurrencies(
     searchInput,
@@ -700,8 +670,6 @@ function filterCurrencies(
     });
 
 
-    /* Сохраняем выбранную валюту */
-
     if (
         filtered.some(
             currency =>
@@ -712,7 +680,9 @@ function filterCurrencies(
         select.value =
             currentValue;
 
-    } else if (filtered.length) {
+    } else if (
+        filtered.length
+    ) {
 
         select.selectedIndex =
             0;
@@ -783,9 +753,7 @@ async function convertCurrency() {
 
 
     if (!from || !to) {
-
         return;
-
     }
 
 
@@ -869,16 +837,12 @@ async function convertCurrency() {
         }
 
 
-        /* РЕЗУЛЬТАТ */
-
         document.getElementById('result')
             .textContent =
             formatNumber(data.result) +
             ' ' +
             data.to;
 
-
-        /* КУРС */
 
         document.getElementById('rate')
             .textContent =
@@ -889,8 +853,6 @@ async function convertCurrency() {
             ' ' +
             data.to;
 
-
-        /* ОБРАТНЫЙ КУРС */
 
         const reverse =
             1 / Number(data.rate);
@@ -905,8 +867,6 @@ async function convertCurrency() {
             ' ' +
             data.from;
 
-
-        /* ИЗМЕНЕНИЕ */
 
         const change =
             Number(
@@ -930,8 +890,6 @@ async function convertCurrency() {
             ? 'change-up'
             : 'change-down';
 
-
-        /* ВРЕМЯ */
 
         if (data.updatedAt) {
 

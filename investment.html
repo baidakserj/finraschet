@@ -140,13 +140,6 @@ button:hover {
     margin: 5px 0 18px;
 }
 
-.hint {
-    color: #64748b;
-    font-size: 13px;
-    margin-top: -10px;
-    margin-bottom: 17px;
-}
-
 .note {
     color: #64748b;
     font-size: 13px;
@@ -180,18 +173,14 @@ button:hover {
 
 <div class="section-title">💳 Расходы</div>
 
-<label>Комиссия при покупке, %</label>
-<input type="number" id="buyCommission" placeholder="Например, 0.3" step="any" value="0">
+<label>Комиссия при покупке, ₽</label>
+<input type="number" id="buyCommission" placeholder="Например, 25" step="any" value="0">
 
-<label>Комиссия при продаже, %</label>
-<input type="number" id="sellCommission" placeholder="Например, 0.3" step="any" value="0">
+<label>Комиссия при продаже, ₽</label>
+<input type="number" id="sellCommission" placeholder="Например, 25" step="any" value="0">
 
 <label>Дивиденды, ₽</label>
 <input type="number" id="dividends" placeholder="Например, 500" step="any" value="0">
-
-<div class="hint">
-Укажите фактическую комиссию вашего брокера.
-</div>
 
 <button onclick="calculate()">Рассчитать</button>
 
@@ -265,9 +254,17 @@ function formatMoney(value) {
 
 function calculate() {
 
-    const quantity = parseFloat(document.getElementById('quantity').value);
-    const buyPrice = parseFloat(document.getElementById('buyPrice').value);
-    const sellPrice = parseFloat(document.getElementById('sellPrice').value);
+    const quantity = parseFloat(
+        document.getElementById('quantity').value
+    );
+
+    const buyPrice = parseFloat(
+        document.getElementById('buyPrice').value
+    );
+
+    const sellPrice = parseFloat(
+        document.getElementById('sellPrice').value
+    );
 
     const buyCommission =
         parseFloat(document.getElementById('buyCommission').value) || 0;
@@ -296,15 +293,17 @@ function calculate() {
     const invested = quantity * buyPrice;
     const received = quantity * sellPrice;
 
-    const buyFeeAmount = invested * buyCommission / 100;
-    const sellFeeAmount = received * sellCommission / 100;
+    const totalFees =
+        buyCommission + sellCommission;
 
-    const totalFees = buyFeeAmount + sellFeeAmount;
-
-    const grossProfit = received - invested;
+    const grossProfit =
+        received - invested;
 
     const netProfit =
-        received + dividends - invested - totalFees;
+        received +
+        dividends -
+        invested -
+        totalFees;
 
     const percent =
         (netProfit / invested) * 100;
@@ -316,10 +315,10 @@ function calculate() {
         formatMoney(received);
 
     document.getElementById('buyFee').textContent =
-        formatMoney(buyFeeAmount);
+        formatMoney(buyCommission);
 
     document.getElementById('sellFee').textContent =
-        formatMoney(sellFeeAmount);
+        formatMoney(sellCommission);
 
     document.getElementById('dividendResult').textContent =
         formatMoney(dividends);

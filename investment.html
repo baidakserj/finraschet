@@ -1,0 +1,252 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ФинРасчёт — инвестиционный калькулятор</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: white;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 25px 18px 40px;
+}
+
+.back {
+    display: inline-block;
+    color: #60a5fa;
+    text-decoration: none;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin: 10px 0 8px;
+    font-size: 28px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #94a3b8;
+    margin-bottom: 28px;
+}
+
+.card {
+    background: rgba(30, 41, 59, 0.9);
+    border-radius: 18px;
+    padding: 22px;
+    margin-bottom: 18px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #cbd5e1;
+    font-size: 15px;
+}
+
+input {
+    width: 100%;
+    padding: 13px 14px;
+    margin-bottom: 17px;
+    border: 1px solid #475569;
+    border-radius: 10px;
+    background: #0f172a;
+    color: white;
+    font-size: 16px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #60a5fa;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 11px;
+    background: #2563eb;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+.result {
+    display: none;
+}
+
+.result-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 13px 0;
+    border-bottom: 1px solid #334155;
+}
+
+.result-row:last-child {
+    border-bottom: none;
+}
+
+.result-label {
+    color: #94a3b8;
+}
+
+.result-value {
+    font-weight: bold;
+    text-align: right;
+}
+
+.profit {
+    color: #4ade80;
+}
+
+.loss {
+    color: #f87171;
+}
+
+.big {
+    font-size: 24px;
+}
+
+.note {
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-top: 18px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<a href="index.html" class="back">← Все калькуляторы</a>
+
+<h1>📈 Инвестиционный калькулятор</h1>
+<div class="subtitle">Рассчитайте прибыль или убыток от сделки</div>
+
+<div class="card">
+
+<label>Количество актива</label>
+<input type="number" id="quantity" placeholder="Например, 100" step="any">
+
+<label>Цена покупки</label>
+<input type="number" id="buyPrice" placeholder="Например, 100" step="any">
+
+<label>Цена продажи</label>
+<input type="number" id="sellPrice" placeholder="Например, 125" step="any">
+
+<button onclick="calculate()">Рассчитать</button>
+
+</div>
+
+<div class="card result" id="result">
+
+<div class="result-row">
+<span class="result-label">Вложено</span>
+<span class="result-value" id="invested"></span>
+</div>
+
+<div class="result-row">
+<span class="result-label">Получено при продаже</span>
+<span class="result-value" id="received"></span>
+</div>
+
+<div class="result-row">
+<span class="result-label">Прибыль / убыток</span>
+<span class="result-value big" id="profit"></span>
+</div>
+
+<div class="result-row">
+<span class="result-label">Доходность</span>
+<span class="result-value" id="percent"></span>
+</div>
+
+<div class="note">
+Расчёт не учитывает комиссии биржи, налоги и другие расходы.
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function formatMoney(value) {
+    return value.toLocaleString('ru-RU', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }) + ' ₽';
+}
+
+function calculate() {
+
+    const quantity = parseFloat(document.getElementById('quantity').value);
+    const buyPrice = parseFloat(document.getElementById('buyPrice').value);
+    const sellPrice = parseFloat(document.getElementById('sellPrice').value);
+
+    if (
+        isNaN(quantity) ||
+        isNaN(buyPrice) ||
+        isNaN(sellPrice) ||
+        quantity <= 0 ||
+        buyPrice <= 0 ||
+        sellPrice < 0
+    ) {
+        alert('Введите корректные значения.');
+        return;
+    }
+
+    const invested = quantity * buyPrice;
+    const received = quantity * sellPrice;
+    const profit = received - invested;
+    const percent = (profit / invested) * 100;
+
+    document.getElementById('invested').textContent = formatMoney(invested);
+    document.getElementById('received').textContent = formatMoney(received);
+
+    const profitElement = document.getElementById('profit');
+    const percentElement = document.getElementById('percent');
+
+    profitElement.textContent =
+        (profit >= 0 ? '+' : '') + formatMoney(profit);
+
+    percentElement.textContent =
+        (percent >= 0 ? '+' : '') + percent.toFixed(2) + '%';
+
+    profitElement.className = 'result-value big ' +
+        (profit >= 0 ? 'profit' : 'loss');
+
+    percentElement.className = 'result-value ' +
+        (percent >= 0 ? 'profit' : 'loss');
+
+    document.getElementById('result').style.display = 'block';
+}
+
+</script>
+
+</body>
+</html>
+

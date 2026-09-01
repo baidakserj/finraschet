@@ -129,6 +129,19 @@ button:hover {
     font-size: 24px;
 }
 
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 5px 0 18px;
+}
+
+.hint {
+    color: #64748b;
+    font-size: 13px;
+    margin-top: -10px;
+    margin-bottom: 17px;
+}
+
 .note {
     color: #64748b;
     font-size: 13px;
@@ -145,9 +158,11 @@ button:hover {
 <a href="index.html" class="back">← Все калькуляторы</a>
 
 <h1>📈 Инвестиционный калькулятор</h1>
-<div class="subtitle">Рассчитайте прибыль или убыток от сделки</div>
+<div class="subtitle">Рассчитайте чистую прибыль или убыток от сделки</div>
 
 <div class="card">
+
+<div class="section-title">📊 Сделка</div>
 
 <label>Количество актива</label>
 <input type="number" id="quantity" placeholder="Например, 100" step="any">
@@ -158,11 +173,28 @@ button:hover {
 <label>Цена продажи</label>
 <input type="number" id="sellPrice" placeholder="Например, 125" step="any">
 
+<div class="section-title">💳 Расходы</div>
+
+<label>Комиссия при покупке, %</label>
+<input type="number" id="buyCommission" placeholder="Например, 0.3" step="any" value="0">
+
+<label>Комиссия при продаже, %</label>
+<input type="number" id="sellCommission" placeholder="Например, 0.3" step="any" value="0">
+
+<label>Дивиденды, ₽</label>
+<input type="number" id="dividends" placeholder="Например, 500" step="any" value="0">
+
+<div class="hint">
+Укажите фактическую комиссию вашего брокера.
+</div>
+
 <button onclick="calculate()">Рассчитать</button>
 
 </div>
 
 <div class="card result" id="result">
+
+<div class="section-title">📋 Результат</div>
 
 <div class="result-row">
 <span class="result-label">Вложено</span>
@@ -175,17 +207,42 @@ button:hover {
 </div>
 
 <div class="result-row">
-<span class="result-label">Прибыль / убыток</span>
-<span class="result-value big" id="profit"></span>
+<span class="result-label">Комиссия покупки</span>
+<span class="result-value" id="buyFee"></span>
 </div>
 
 <div class="result-row">
-<span class="result-label">Доходность</span>
+<span class="result-label">Комиссия продажи</span>
+<span class="result-value" id="sellFee"></span>
+</div>
+
+<div class="result-row">
+<span class="result-label">Дивиденды</span>
+<span class="result-value" id="dividendResult"></span>
+</div>
+
+<div class="result-row">
+<span class="result-label">Всего расходов</span>
+<span class="result-value" id="totalFees"></span>
+</div>
+
+<div class="result-row">
+<span class="result-label">Грязная прибыль</span>
+<span class="result-value" id="grossProfit"></span>
+</div>
+
+<div class="result-row">
+<span class="result-label">Чистая прибыль / убыток</span>
+<span class="result-value big" id="netProfit"></span>
+</div>
+
+<div class="result-row">
+<span class="result-label">Чистая доходность</span>
 <span class="result-value" id="percent"></span>
 </div>
 
 <div class="note">
-Расчёт не учитывает комиссии биржи, налоги и другие расходы.
+Расчёт не учитывает налоги и другие возможные расходы.
 </div>
 
 </div>
@@ -207,13 +264,25 @@ function calculate() {
     const buyPrice = parseFloat(document.getElementById('buyPrice').value);
     const sellPrice = parseFloat(document.getElementById('sellPrice').value);
 
+    const buyCommission =
+        parseFloat(document.getElementById('buyCommission').value) || 0;
+
+    const sellCommission =
+        parseFloat(document.getElementById('sellCommission').value) || 0;
+
+    const dividends =
+        parseFloat(document.getElementById('dividends').value) || 0;
+
     if (
         isNaN(quantity) ||
         isNaN(buyPrice) ||
         isNaN(sellPrice) ||
         quantity <= 0 ||
         buyPrice <= 0 ||
-        sellPrice < 0
+        sellPrice < 0 ||
+        buyCommission < 0 ||
+        sellCommission < 0 ||
+        dividends < 0
     ) {
         alert('Введите корректные значения.');
         return;
@@ -221,25 +290,69 @@ function calculate() {
 
     const invested = quantity * buyPrice;
     const received = quantity * sellPrice;
-    const profit = received - invested;
-    const percent = (profit / invested) * 100;
 
-    document.getElementById('invested').textContent = formatMoney(invested);
-    document.getElementById('received').textContent = formatMoney(received);
+    const buyFeeAmount = invested * buyCommission / 100;
+    const sellFeeAmount = received * sellCommission / 100;
 
-    const profitElement = document.getElementById('profit');
-    const percentElement = document.getElementById('percent');
+    const totalFees = buyFeeAmount + sellFeeAmount;
 
-    profitElement.textContent =
-        (profit >= 0 ? '+' : '') + formatMoney(profit);
+    const grossProfit = received - invested;
+
+    const netProfit =
+        received + dividends - invested - totalFees;
+
+    const percent =
+        (netProfit / invested) * 100;
+
+    document.getElementById('invested').textContent =
+        formatMoney(invested);
+
+    document.getElementById('received').textContent =
+        formatMoney(received);
+
+    document.getElementById('buyFee').textContent =
+        formatMoney(buyFeeAmount);
+
+    document.getElementById('sellFee').textContent =
+        formatMoney(sellFeeAmount);
+
+    document.getElementById('dividendResult').textContent =
+        formatMoney(dividends);
+
+    document.getElementById('totalFees').textContent =
+        formatMoney(totalFees);
+
+    const grossElement =
+        document.getElementById('grossProfit');
+
+    const netElement =
+        document.getElementById('netProfit');
+
+    const percentElement =
+        document.getElementById('percent');
+
+    grossElement.textContent =
+        (grossProfit >= 0 ? '+' : '') +
+        formatMoney(grossProfit);
+
+    netElement.textContent =
+        (netProfit >= 0 ? '+' : '') +
+        formatMoney(netProfit);
 
     percentElement.textContent =
-        (percent >= 0 ? '+' : '') + percent.toFixed(2) + '%';
+        (percent >= 0 ? '+' : '') +
+        percent.toFixed(2) + '%';
 
-    profitElement.className = 'result-value big ' +
-        (profit >= 0 ? 'profit' : 'loss');
+    grossElement.className =
+        'result-value ' +
+        (grossProfit >= 0 ? 'profit' : 'loss');
 
-    percentElement.className = 'result-value ' +
+    netElement.className =
+        'result-value big ' +
+        (netProfit >= 0 ? 'profit' : 'loss');
+
+    percentElement.className =
+        'result-value ' +
         (percent >= 0 ? 'profit' : 'loss');
 
     document.getElementById('result').style.display = 'block';

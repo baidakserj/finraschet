@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -86,8 +87,7 @@ label {
     color: #bac4da;
 }
 
-input,
-select {
+input {
     width: 100%;
     padding: 14px;
     border-radius: 12px;
@@ -97,8 +97,10 @@ select {
     font-size: 17px;
 }
 
-select {
-    cursor: pointer;
+input:focus {
+    outline: none;
+    border-color: #4facfe;
+    box-shadow: 0 0 0 2px rgba(79,172,254,.12);
 }
 
 /* СУММА */
@@ -120,6 +122,63 @@ select {
     gap: 12px;
     align-items: end;
 }
+
+/* ПОИСК ВАЛЮТЫ */
+
+.currency-picker {
+    position: relative;
+}
+
+.currency-search {
+    width: 100%;
+}
+
+.currency-list {
+    display: none;
+    position: absolute;
+    z-index: 100;
+    top: calc(100% + 5px);
+    left: 0;
+    right: 0;
+    max-height: 260px;
+    overflow-y: auto;
+    background: #11182c;
+    border: 1px solid #34415f;
+    border-radius: 12px;
+    box-shadow: 0 15px 35px rgba(0,0,0,.45);
+}
+
+.currency-list.open {
+    display: block;
+}
+
+.currency-option {
+    padding: 12px 14px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255,255,255,.05);
+    color: white;
+    font-size: 15px;
+}
+
+.currency-option:last-child {
+    border-bottom: none;
+}
+
+.currency-option:hover {
+    background: #1b2642;
+}
+
+.currency-option strong {
+    color: #4facfe;
+}
+
+.no-results {
+    padding: 14px;
+    color: #8996b2;
+    text-align: center;
+}
+
+/* КНОПКА ОБМЕНА */
 
 .swap {
     width: 60px;
@@ -270,194 +329,211 @@ button.calculate:hover {
     .result strong {
         font-size: 30px;
     }
+
 }
 
 </style>
+
 </head>
 
 <body>
 
 <div class="container">
 
-    <a href="index.html" class="back">
-        ← Все калькуляторы
-    </a>
+```
+<a href="index.html" class="back">
+    ← Все калькуляторы
+</a>
 
-    <div class="header">
+<div class="header">
 
-        <h1>
-            <span>Конвертер валют</span>
-        </h1>
+    <h1>
+        <span>Конвертер валют</span>
+    </h1>
 
-        <p>
-            Актуальный курс и быстрый перевод между валютами
-        </p>
+    <p>
+        Актуальный курс и быстрый перевод между валютами
+    </p>
+
+</div>
+
+
+<div class="card">
+
+    <div class="amount-box">
+
+        <label for="amount">
+            Сумма
+        </label>
+
+        <input
+            type="number"
+            id="amount"
+            value="1000"
+            min="0"
+            step="any"
+        >
 
     </div>
 
 
-    <div class="card">
+    <div class="currency-row">
 
-        <div class="amount-box">
+        <div class="currency-picker">
 
-            <label for="amount">
-                Сумма
+            <label for="fromSearch">
+                Из валюты
             </label>
 
             <input
-                type="number"
-                id="amount"
-                value="1000"
-                min="0"
-                step="any"
+                type="text"
+                id="fromSearch"
+                class="currency-search"
+                placeholder="🔍 Поиск валюты..."
+                autocomplete="off"
             >
 
-        </div>
-
-
-        <div class="currency-row">
-
-            <div>
-
-                <label for="fromCurrency">
-                    Из валюты
-                </label>
-
-                <select id="fromCurrency">
-                    <option value="RUB">RUB — Российский рубль</option>
-                    <option value="USD">USD — Доллар США</option>
-                    <option value="EUR">EUR — Евро</option>
-                </select>
-
-            </div>
-
-
-            <button
-                class="swap"
-                onclick="swapCurrencies()"
-                title="Поменять валюты местами"
-            >
-                ↔
-            </button>
-
-
-            <div>
-
-                <label for="toCurrency">
-                    В валюту
-                </label>
-
-                <select id="toCurrency">
-                    <option value="USD">USD — Доллар США</option>
-                    <option value="EUR">EUR — Евро</option>
-                    <option value="RUB">RUB — Российский рубль</option>
-                </select>
-
-            </div>
+            <div
+                id="fromList"
+                class="currency-list"
+            ></div>
 
         </div>
 
 
         <button
-            class="calculate"
-            onclick="convertCurrency()"
+            class="swap"
+            onclick="swapCurrencies()"
+            title="Поменять валюты местами"
         >
-            Конвертировать
+            ↔
         </button>
 
-        <div
-            class="status"
-            id="status"
-        >
-            Загружаем список валют...
+
+        <div class="currency-picker">
+
+            <label for="toSearch">
+                В валюту
+            </label>
+
+            <input
+                type="text"
+                id="toSearch"
+                class="currency-search"
+                placeholder="🔍 Поиск валюты..."
+                autocomplete="off"
+            >
+
+            <div
+                id="toList"
+                class="currency-list"
+            ></div>
+
         </div>
 
     </div>
 
 
-    <div class="card">
+    <button
+        class="calculate"
+        onclick="convertCurrency()"
+    >
+        Конвертировать
+    </button>
 
-        <div class="result">
+    <div
+        class="status"
+        id="status"
+    >
+        Загружаем список валют...
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <div class="result">
+
+        <small>
+            Результат
+        </small>
+
+        <strong id="result">
+            —
+        </strong>
+
+    </div>
+
+
+    <div class="rate-box">
+
+        <div class="stat">
 
             <small>
-                Результат
+                Курс
             </small>
 
-            <strong id="result">
+            <strong id="rate">
                 —
             </strong>
 
         </div>
 
 
-        <div class="rate-box">
+        <div class="stat">
 
-            <div class="stat">
+            <small>
+                Обратный курс
+            </small>
 
-                <small>
-                    Курс
-                </small>
+            <strong id="reverseRate">
+                —
+            </strong>
 
-                <strong id="rate">
-                    —
-                </strong>
-
-            </div>
+        </div>
 
 
-            <div class="stat">
+        <div class="stat">
 
-                <small>
-                    Обратный курс
-                </small>
+            <small>
+                Изменение за 24 часа
+            </small>
 
-                <strong id="reverseRate">
-                    —
-                </strong>
+            <strong id="change">
+                —
+            </strong>
 
-            </div>
-
-
-            <div class="stat">
-
-                <small>
-                    Изменение за 24 часа
-                </small>
-
-                <strong id="change">
-                    —
-                </strong>
-
-            </div>
+        </div>
 
 
-            <div class="stat">
+        <div class="stat">
 
-                <small>
-                    Обновлено
-                </small>
+            <small>
+                Обновлено
+            </small>
 
-                <strong id="updated">
-                    —
-                </strong>
-
-            </div>
+            <strong id="updated">
+                —
+            </strong>
 
         </div>
 
     </div>
 
-
-    <div class="info">
-
-        💱 Курс является справочным среднерыночным курсом.
-        Фактический курс покупки или продажи в банке,
-        обменнике или на бирже может отличаться.
-
-    </div>
-
 </div>
 
+
+<div class="info">
+
+    💱 Курс является справочным среднерыночным курсом.
+    Фактический курс покупки или продажи в банке,
+    обменнике или на бирже может отличаться.
+
+</div>
+```
+
+</div>
 
 <script>
 
@@ -465,14 +541,228 @@ const API =
     'https://www.currencyexchangetool.com/api/v1';
 
 
-const fromSelect =
-    document.getElementById('fromCurrency');
+const fromSearch =
+    document.getElementById('fromSearch');
 
-const toSelect =
-    document.getElementById('toCurrency');
+const toSearch =
+    document.getElementById('toSearch');
+
+const fromList =
+    document.getElementById('fromList');
+
+const toList =
+    document.getElementById('toList');
 
 const status =
     document.getElementById('status');
+
+
+let currencies = [];
+
+let fromCurrency = 'RUB';
+let toCurrency = 'USD';
+
+
+/* ПОКАЗ ВАЛЮТЫ В ПОЛЕ */
+
+function setSearchValue(type, code) {
+
+    const currency =
+        currencies.find(
+            item => item.code === code
+        );
+
+    if (!currency) return;
+
+    if (type === 'from') {
+
+        fromCurrency = code;
+
+        fromSearch.value =
+            currency.code +
+            ' — ' +
+            currency.name;
+
+        fromList.classList.remove('open');
+
+    } else {
+
+        toCurrency = code;
+
+        toSearch.value =
+            currency.code +
+            ' — ' +
+            currency.name;
+
+        toList.classList.remove('open');
+
+    }
+
+}
+
+
+/* РЕНДЕР СПИСКА */
+
+function renderCurrencyList(type, search = '') {
+
+    const list =
+        type === 'from'
+            ? fromList
+            : toList;
+
+    const query =
+        search
+            .trim()
+            .toLowerCase();
+
+    const filtered =
+        currencies.filter(currency => {
+
+            const code =
+                currency.code.toLowerCase();
+
+            const name =
+                currency.name.toLowerCase();
+
+            return (
+                code.includes(query) ||
+                name.includes(query)
+            );
+
+        });
+
+
+    list.innerHTML = '';
+
+
+    if (!filtered.length) {
+
+        list.innerHTML =
+            '<div class="no-results">Ничего не найдено</div>';
+
+        list.classList.add('open');
+
+        return;
+
+    }
+
+
+    filtered.forEach(currency => {
+
+        const option =
+            document.createElement('div');
+
+        option.className =
+            'currency-option';
+
+        option.innerHTML =
+            '<strong>' +
+            currency.code +
+            '</strong> — ' +
+            currency.name;
+
+        option.onclick =
+            function() {
+
+                setSearchValue(
+                    type,
+                    currency.code
+                );
+
+                convertCurrency();
+
+            };
+
+        list.appendChild(option);
+
+    });
+
+
+    list.classList.add('open');
+
+}
+
+
+/* ОБРАБОТКА ПОИСКА */
+
+fromSearch.addEventListener(
+    'input',
+    function() {
+
+        renderCurrencyList(
+            'from',
+            fromSearch.value
+        );
+
+    }
+);
+
+
+toSearch.addEventListener(
+    'input',
+    function() {
+
+        renderCurrencyList(
+            'to',
+            toSearch.value
+        );
+
+    }
+);
+
+
+/* ОТКРЫТИЕ СПИСКА */
+
+fromSearch.addEventListener(
+    'focus',
+    function() {
+
+        renderCurrencyList(
+            'from',
+            fromSearch.value
+        );
+
+    }
+);
+
+
+toSearch.addEventListener(
+    'focus',
+    function() {
+
+        renderCurrencyList(
+            'to',
+            toSearch.value
+        );
+
+    }
+);
+
+
+/* ЗАКРЫТИЕ СПИСКОВ ПРИ КЛИКЕ СНАРУЖ */
+
+document.addEventListener(
+    'click',
+    function(event) {
+
+        if (
+            !event.target.closest(
+                '.currency-picker'
+            )
+        ) {
+
+            fromList.classList.remove(
+                'open'
+            );
+
+            toList.classList.remove(
+                'open'
+            );
+
+        }
+
+    }
+);
 
 
 /* ЗАГРУЗКА ВАЛЮТ */
@@ -487,64 +777,40 @@ async function loadCurrencies() {
             );
 
         if (!response.ok) {
+
             throw new Error(
                 'Не удалось загрузить валюты'
             );
+
         }
+
 
         const data =
             await response.json();
 
 
         if (!data.success) {
+
             throw new Error(
                 'Ошибка API'
             );
+
         }
 
 
-        fromSelect.innerHTML = '';
-        toSelect.innerHTML = '';
+        currencies =
+            data.currencies;
 
 
-        data.currencies.forEach(currency => {
+        setSearchValue(
+            'from',
+            'RUB'
+        );
 
-            const optionFrom =
-                document.createElement('option');
-
-            optionFrom.value =
-                currency.code;
-
-            optionFrom.textContent =
-                currency.code +
-                ' — ' +
-                currency.name;
-
-            fromSelect.appendChild(
-                optionFrom
-            );
-
-
-            const optionTo =
-                document.createElement('option');
-
-            optionTo.value =
-                currency.code;
-
-            optionTo.textContent =
-                currency.code +
-                ' — ' +
-                currency.name;
-
-            toSelect.appendChild(
-                optionTo
-            );
-
-        });
-
-
-        fromSelect.value = 'RUB';
-        toSelect.value = 'USD';
+        setSearchValue(
+            'to',
+            'USD'
+        );
 
 
         status.textContent =
@@ -578,10 +844,10 @@ async function convertCurrency() {
         );
 
     const from =
-        fromSelect.value;
+        fromCurrency;
 
     const to =
-        toSelect.value;
+        toCurrency;
 
 
     if (
@@ -618,11 +884,16 @@ async function convertCurrency() {
             .textContent =
             '0%';
 
+        document.getElementById('change')
+            .className =
+            '';
+
         document.getElementById('updated')
             .textContent =
             '—';
 
         return;
+
     }
 
 
@@ -781,17 +1052,28 @@ async function convertCurrency() {
 function swapCurrencies() {
 
     const oldFrom =
-        fromSelect.value;
+        fromCurrency;
 
     const oldTo =
-        toSelect.value;
+        toCurrency;
 
 
-    fromSelect.value =
+    fromCurrency =
         oldTo;
 
-    toSelect.value =
+    toCurrency =
         oldFrom;
+
+
+    setSearchValue(
+        'from',
+        fromCurrency
+    );
+
+    setSearchValue(
+        'to',
+        toCurrency
+    );
 
 
     convertCurrency();

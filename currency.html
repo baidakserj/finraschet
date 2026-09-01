@@ -98,10 +98,10 @@ select {
     font-size: 17px;
 }
 
-input:focus {
+input:focus,
+select:focus {
     outline: none;
     border-color: #4facfe;
-    box-shadow: 0 0 0 2px rgba(79,172,254,.12);
 }
 
 select {
@@ -119,6 +119,21 @@ select {
     font-weight: bold;
 }
 
+/* ПОИСК */
+
+.search-box {
+    margin-bottom: 8px;
+}
+
+.search-box input {
+    padding: 11px 14px;
+    font-size: 15px;
+}
+
+.search-box input::placeholder {
+    color: #71809d;
+}
+
 /* ВЫБОР ВАЛЮТ */
 
 .currency-row {
@@ -126,61 +141,6 @@ select {
     grid-template-columns: 1fr 60px 1fr;
     gap: 12px;
     align-items: end;
-}
-
-/* ПОИСК ВАЛЮТЫ */
-
-.currency-picker {
-    position: relative;
-}
-
-.currency-search {
-    width: 100%;
-}
-
-.currency-list {
-    display: none;
-    position: absolute;
-    z-index: 100;
-    top: calc(100% + 5px);
-    left: 0;
-    right: 0;
-    max-height: 260px;
-    overflow-y: auto;
-    background: #11182c;
-    border: 1px solid #34415f;
-    border-radius: 12px;
-    box-shadow: 0 15px 35px rgba(0,0,0,.45);
-}
-
-.currency-list.open {
-    display: block;
-}
-
-.currency-option {
-    padding: 12px 14px;
-    cursor: pointer;
-    border-bottom: 1px solid rgba(255,255,255,.05);
-    color: white;
-    font-size: 15px;
-}
-
-.currency-option:last-child {
-    border-bottom: none;
-}
-
-.currency-option:hover {
-    background: #1b2642;
-}
-
-.currency-option strong {
-    color: #4facfe;
-}
-
-.no-results {
-    padding: 14px;
-    color: #8996b2;
-    text-align: center;
 }
 
 /* КНОПКА ОБМЕНА */
@@ -384,24 +344,25 @@ button.calculate:hover {
 
     <div class="currency-row">
 
-        <div class="currency-picker">
+        <div>
 
             <label for="fromSearch">
                 Из валюты
             </label>
 
-            <input
-                type="text"
-                id="fromSearch"
-                class="currency-search"
-                placeholder="🔍 Поиск валюты..."
-                autocomplete="off"
-            >
+            <div class="search-box">
 
-            <div
-                id="fromList"
-                class="currency-list"
-            ></div>
+                <input
+                    type="text"
+                    id="fromSearch"
+                    placeholder="🔍 Найти валюту..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+            <select id="fromCurrency" size="1">
+            </select>
 
         </div>
 
@@ -415,24 +376,25 @@ button.calculate:hover {
         </button>
 
 
-        <div class="currency-picker">
+        <div>
 
             <label for="toSearch">
                 В валюту
             </label>
 
-            <input
-                type="text"
-                id="toSearch"
-                class="currency-search"
-                placeholder="🔍 Поиск валюты..."
-                autocomplete="off"
-            >
+            <div class="search-box">
 
-            <div
-                id="toList"
-                class="currency-list"
-            ></div>
+                <input
+                    type="text"
+                    id="toSearch"
+                    placeholder="🔍 Найти валюту..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+            <select id="toCurrency" size="1">
+            </select>
 
         </div>
 
@@ -546,228 +508,23 @@ const API =
     'https://www.currencyexchangetool.com/api/v1';
 
 
+const fromSelect =
+    document.getElementById('fromCurrency');
+
+const toSelect =
+    document.getElementById('toCurrency');
+
 const fromSearch =
     document.getElementById('fromSearch');
 
 const toSearch =
     document.getElementById('toSearch');
 
-const fromList =
-    document.getElementById('fromList');
-
-const toList =
-    document.getElementById('toList');
-
 const status =
     document.getElementById('status');
 
 
 let currencies = [];
-
-let fromCurrency = 'RUB';
-let toCurrency = 'USD';
-
-
-/* ПОКАЗ ВЫБРАННОЙ ВАЛЮТЫ */
-
-function setSearchValue(type, code) {
-
-    const currency =
-        currencies.find(
-            item => item.code === code
-        );
-
-    if (!currency) return;
-
-    if (type === 'from') {
-
-        fromCurrency = code;
-
-        fromSearch.value =
-            currency.code +
-            ' — ' +
-            currency.name;
-
-        fromList.classList.remove('open');
-
-    } else {
-
-        toCurrency = code;
-
-        toSearch.value =
-            currency.code +
-            ' — ' +
-            currency.name;
-
-        toList.classList.remove('open');
-
-    }
-
-}
-
-
-/* ПОКАЗ СПИСКА */
-
-function renderCurrencyList(type, search = '') {
-
-    const list =
-        type === 'from'
-            ? fromList
-            : toList;
-
-    const query =
-        search
-            .trim()
-            .toLowerCase();
-
-    const filtered =
-        currencies.filter(currency => {
-
-            const code =
-                currency.code.toLowerCase();
-
-            const name =
-                currency.name.toLowerCase();
-
-            return (
-                code.includes(query) ||
-                name.includes(query)
-            );
-
-        });
-
-
-    list.innerHTML = '';
-
-
-    if (!filtered.length) {
-
-        list.innerHTML =
-            '<div class="no-results">Ничего не найдено</div>';
-
-        list.classList.add('open');
-
-        return;
-
-    }
-
-
-    filtered.forEach(currency => {
-
-        const option =
-            document.createElement('div');
-
-        option.className =
-            'currency-option';
-
-        option.innerHTML =
-            '<strong>' +
-            currency.code +
-            '</strong> — ' +
-            currency.name;
-
-        option.onclick =
-            function() {
-
-                setSearchValue(
-                    type,
-                    currency.code
-                );
-
-                convertCurrency();
-
-            };
-
-        list.appendChild(option);
-
-    });
-
-
-    list.classList.add('open');
-
-}
-
-
-/* ПОИСК */
-
-fromSearch.addEventListener(
-    'input',
-    function() {
-
-        renderCurrencyList(
-            'from',
-            fromSearch.value
-        );
-
-    }
-);
-
-
-toSearch.addEventListener(
-    'input',
-    function() {
-
-        renderCurrencyList(
-            'to',
-            toSearch.value
-        );
-
-    }
-);
-
-
-/* ОТКРЫТИЕ СПИСКА */
-
-fromSearch.addEventListener(
-    'focus',
-    function() {
-
-        renderCurrencyList(
-            'from',
-            fromSearch.value
-        );
-
-    }
-);
-
-
-toSearch.addEventListener(
-    'focus',
-    function() {
-
-        renderCurrencyList(
-            'to',
-            toSearch.value
-        );
-
-    }
-);
-
-
-/* ЗАКРЫТИЕ СПИСКА */
-
-document.addEventListener(
-    'click',
-    function(event) {
-
-        if (
-            !event.target.closest(
-                '.currency-picker'
-            )
-        ) {
-
-            fromList.classList.remove(
-                'open'
-            );
-
-            toList.classList.remove(
-                'open'
-            );
-
-        }
-
-    }
-);
 
 
 /* ЗАГРУЗКА ВАЛЮТ */
@@ -807,15 +564,16 @@ async function loadCurrencies() {
             data.currencies;
 
 
-        setSearchValue(
-            'from',
-            'RUB'
+        fillSelects(
+            currencies
         );
 
-        setSearchValue(
-            'to',
-            'USD'
-        );
+
+        fromSelect.value =
+            'RUB';
+
+        toSelect.value =
+            'USD';
 
 
         status.textContent =
@@ -839,6 +597,161 @@ async function loadCurrencies() {
 }
 
 
+/* ЗАПОЛНЕНИЕ СПИСКОВ */
+
+function fillSelects(list) {
+
+    fromSelect.innerHTML = '';
+    toSelect.innerHTML = '';
+
+
+    list.forEach(currency => {
+
+        const optionFrom =
+            document.createElement('option');
+
+        optionFrom.value =
+            currency.code;
+
+        optionFrom.textContent =
+            currency.code +
+            ' — ' +
+            currency.name;
+
+        fromSelect.appendChild(
+            optionFrom
+        );
+
+
+        const optionTo =
+            document.createElement('option');
+
+        optionTo.value =
+            currency.code;
+
+        optionTo.textContent =
+            currency.code +
+            ' — ' +
+            currency.name;
+
+        toSelect.appendChild(
+            optionTo
+        );
+
+    });
+
+}
+
+
+/* ФИЛЬТРАЦИЯ ВАЛЮТ */
+
+function filterCurrencies(
+    searchInput,
+    select
+) {
+
+    const query =
+        searchInput.value
+            .trim()
+            .toLowerCase();
+
+
+    const currentValue =
+        select.value;
+
+
+    select.innerHTML = '';
+
+
+    const filtered =
+        currencies.filter(currency => {
+
+            const code =
+                currency.code.toLowerCase();
+
+            const name =
+                currency.name.toLowerCase();
+
+            return (
+                code.includes(query) ||
+                name.includes(query)
+            );
+
+        });
+
+
+    filtered.forEach(currency => {
+
+        const option =
+            document.createElement('option');
+
+        option.value =
+            currency.code;
+
+        option.textContent =
+            currency.code +
+            ' — ' +
+            currency.name;
+
+        select.appendChild(
+            option
+        );
+
+    });
+
+
+    /* Сохраняем выбранную валюту */
+
+    if (
+        filtered.some(
+            currency =>
+                currency.code === currentValue
+        )
+    ) {
+
+        select.value =
+            currentValue;
+
+    } else if (filtered.length) {
+
+        select.selectedIndex =
+            0;
+
+    }
+
+}
+
+
+/* ПОИСК ИЗ ВАЛЮТЫ */
+
+fromSearch.addEventListener(
+    'input',
+    function() {
+
+        filterCurrencies(
+            fromSearch,
+            fromSelect
+        );
+
+    }
+);
+
+
+/* ПОИСК В ВАЛЮТУ */
+
+toSearch.addEventListener(
+    'input',
+    function() {
+
+        filterCurrencies(
+            toSearch,
+            toSelect
+        );
+
+    }
+);
+
+
 /* КОНВЕРТАЦИЯ */
 
 async function convertCurrency() {
@@ -849,10 +762,10 @@ async function convertCurrency() {
         );
 
     const from =
-        fromCurrency;
+        fromSelect.value;
 
     const to =
-        toCurrency;
+        toSelect.value;
 
 
     if (
@@ -863,6 +776,13 @@ async function convertCurrency() {
         alert(
             'Введите сумму больше нуля.'
         );
+
+        return;
+
+    }
+
+
+    if (!from || !to) {
 
         return;
 
@@ -989,7 +909,9 @@ async function convertCurrency() {
         /* ИЗМЕНЕНИЕ */
 
         const change =
-            Number(data.changePct24h || 0);
+            Number(
+                data.changePct24h || 0
+            );
 
 
         const changeElement =
@@ -1057,28 +979,17 @@ async function convertCurrency() {
 function swapCurrencies() {
 
     const oldFrom =
-        fromCurrency;
+        fromSelect.value;
 
     const oldTo =
-        toCurrency;
+        toSelect.value;
 
 
-    fromCurrency =
+    fromSelect.value =
         oldTo;
 
-    toCurrency =
+    toSelect.value =
         oldFrom;
-
-
-    setSearchValue(
-        'from',
-        fromCurrency
-    );
-
-    setSearchValue(
-        'to',
-        toCurrency
-    );
 
 
     convertCurrency();

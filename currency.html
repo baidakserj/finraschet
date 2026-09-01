@@ -87,7 +87,8 @@ label {
     color: #bac4da;
 }
 
-input {
+input,
+select {
     width: 100%;
     padding: 14px;
     border-radius: 12px;
@@ -101,6 +102,10 @@ input:focus {
     outline: none;
     border-color: #4facfe;
     box-shadow: 0 0 0 2px rgba(79,172,254,.12);
+}
+
+select {
+    cursor: pointer;
 }
 
 /* СУММА */
@@ -563,7 +568,7 @@ let fromCurrency = 'RUB';
 let toCurrency = 'USD';
 
 
-/* ПОКАЗ ВАЛЮТЫ В ПОЛЕ */
+/* ПОКАЗ ВЫБРАННОЙ ВАЛЮТЫ */
 
 function setSearchValue(type, code) {
 
@@ -601,7 +606,7 @@ function setSearchValue(type, code) {
 }
 
 
-/* РЕНДЕР СПИСКА */
+/* ПОКАЗ СПИСКА */
 
 function renderCurrencyList(type, search = '') {
 
@@ -683,7 +688,7 @@ function renderCurrencyList(type, search = '') {
 }
 
 
-/* ОБРАБОТКА ПОИСКА */
+/* ПОИСК */
 
 fromSearch.addEventListener(
     'input',
@@ -739,7 +744,7 @@ toSearch.addEventListener(
 );
 
 
-/* ЗАКРЫТИЕ СПИСКОВ ПРИ КЛИКЕ СНАРУЖ */
+/* ЗАКРЫТИЕ СПИСКА */
 
 document.addEventListener(
     'click',

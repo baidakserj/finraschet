@@ -26,10 +26,16 @@ body {
 
 .back {
     display: inline-block;
-    color: #60a5fa;
+    color: #4facfe;
     text-decoration: none;
     margin-bottom: 18px;
     font-size: 16px;
+    font-weight: bold;
+    transition: color 0.2s ease;
+}
+
+.back:hover {
+    color: #8f7cff;
 }
 
 h1 {
@@ -169,9 +175,6 @@ button:hover {
     Как меняется покупательная способность денег
 </div>
 
-
-<!-- ИСТОРИЧЕСКАЯ ИНФЛЯЦИЯ -->
-
 <div class="card">
 
 <h2>Историческая инфляция</h2>
@@ -202,9 +205,6 @@ button:hover {
 <div id="histResult" class="result"></div>
 
 </div>
-
-
-<!-- БУДУЩАЯ ИНФЛЯЦИЯ -->
 
 <div class="card">
 
@@ -244,14 +244,12 @@ button:hover {
 
 </div>
 
-
 <div class="footer">
 Исторические данные: Росстат, индекс потребительских цен (ИПЦ),
 декабрь к декабрю предыдущего года.
 </div>
 
 </div>
-
 
 <script>
 
@@ -310,20 +308,10 @@ const inflation = {
 const firstYear = 1991;
 const lastYear = 2025;
 
-const startYear =
-    document.getElementById("startYear");
+const startYear = document.getElementById("startYear");
+const endYear = document.getElementById("endYear");
 
-const endYear =
-    document.getElementById("endYear");
-
-
-// Заполняем список годов
-
-for (
-    let year = firstYear;
-    year <= lastYear;
-    year++
-) {
+for (let year = firstYear; year <= lastYear; year++) {
 
     startYear.add(
         new Option(year, year)
@@ -333,9 +321,6 @@ for (
         new Option(year, year)
     );
 }
-
-
-// Значения по умолчанию
 
 startYear.value = 2000;
 endYear.value = 2025;
@@ -392,9 +377,8 @@ function calcHistorical() {
         document.getElementById("histResult");
 
 
-    // Проверка
-
     if (
+        !Number.isFinite(sum) ||
         sum < 0 ||
         from >= to
     ) {
@@ -411,22 +395,8 @@ function calcHistorical() {
     }
 
 
-    // Коэффициент изменения цен
-
     let factor = 1;
 
-
-    /*
-        Если сравниваем конец одного года
-        с концом другого года,
-        используем коэффициенты следующих лет.
-
-        Например:
-
-        2000 → 2025
-
-        учитываем 2001 ... 2025
-    */
 
     for (
         let year = from + 1;
@@ -439,19 +409,13 @@ function calcHistorical() {
     }
 
 
-    // Сколько денег нужно в конечном году
-
     const equivalent =
         sum * factor;
 
 
-    // Покупательная способность суммы
-
     const purchasingPower =
         sum / factor;
 
-
-    // Накопленное изменение цен
 
     const totalInflation =
         (factor - 1) * 100;
@@ -492,6 +456,7 @@ function calcHistorical() {
             <span>
                 Покупательная способность
                 ${money(sum)} в ${to} году
+                ≈ в ценах ${from} года
             </span>
 
             <span class="value">
@@ -529,9 +494,10 @@ function calcFuture() {
         document.getElementById("futureResult");
 
 
-    // Проверка
-
     if (
+        !Number.isFinite(sum) ||
+        !Number.isFinite(rate) ||
+        !Number.isFinite(years) ||
         sum < 0 ||
         rate < 0 ||
         years < 0
@@ -549,8 +515,6 @@ function calcFuture() {
     }
 
 
-    // Коэффициент инфляции
-
     const factor =
         Math.pow(
             1 + rate / 100,
@@ -558,19 +522,13 @@ function calcFuture() {
         );
 
 
-    // Рост цен
-
     const totalInflation =
         (factor - 1) * 100;
 
 
-    // Сколько нужно денег в будущем
-
     const futureAmount =
         sum * factor;
 
-
-    // Покупательная способность
 
     const futurePower =
         sum / factor;
@@ -611,6 +569,7 @@ function calcFuture() {
                 Покупательная способность
                 ${money(sum)} через
                 ${years} лет
+                ≈ в сегодняшних ценах
             </span>
 
             <span class="value">

@@ -1,0 +1,305 @@
+
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ФинРасчёт — калькулятор просадки</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #111827, #1e293b);
+    color: #fff;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.back {
+    display: inline-block;
+    color: #4facfe;
+    text-decoration: none;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.back:hover {
+    color: #8f7cff;
+}
+
+h1 {
+    text-align: center;
+    margin: 10px 0 8px;
+    font-size: 28px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #b8c4d6;
+    margin-bottom: 25px;
+}
+
+.card {
+    background: rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 22px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #dbe5f2;
+    font-size: 15px;
+}
+
+input {
+    width: 100%;
+    padding: 13px;
+    margin-bottom: 18px;
+    border: none;
+    border-radius: 10px;
+    font-size: 17px;
+    background: #f8fafc;
+    color: #111827;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #4facfe, #7b61ff);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+.result {
+    display: none;
+}
+
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 13px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+
+.result-item:last-child {
+    border-bottom: none;
+}
+
+.result-label {
+    color: #b8c4d6;
+}
+
+.result-value {
+    font-weight: bold;
+    text-align: right;
+}
+
+.loss {
+    color: #ff7b7b;
+}
+
+.need {
+    color: #6ee7b7;
+}
+
+.highlight {
+    margin-top: 20px;
+    padding: 18px;
+    border-radius: 14px;
+    background: rgba(79,172,254,0.12);
+    text-align: center;
+}
+
+.highlight-title {
+    color: #b8c4d6;
+    margin-bottom: 8px;
+}
+
+.highlight-value {
+    font-size: 28px;
+    font-weight: bold;
+    color: #4facfe;
+}
+
+.note {
+    margin-top: 18px;
+    color: #9caec4;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+@media (max-width: 500px) {
+    body {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    .card {
+        padding: 18px;
+    }
+
+    .result-item {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .result-value {
+        text-align: left;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<a href="index.html" class="back">← Все калькуляторы</a>
+
+<h1>📉 Калькулятор просадки</h1>
+<div class="subtitle">
+    Узнайте размер потери и сколько нужно заработать для восстановления капитала
+</div>
+
+<div class="card">
+
+    <label for="initial">Исходный капитал, ₽</label>
+    <input type="number" id="initial" placeholder="Например, 500000">
+
+    <label for="current">Текущий капитал, ₽</label>
+    <input type="number" id="current" placeholder="Например, 320000">
+
+    <button onclick="calculate()">Рассчитать</button>
+
+</div>
+
+<div class="card result" id="result">
+
+    <div class="result-item">
+        <span class="result-label">Было</span>
+        <span class="result-value" id="was"></span>
+    </div>
+
+    <div class="result-item">
+        <span class="result-label">Стало</span>
+        <span class="result-value" id="became"></span>
+    </div>
+
+    <div class="result-item">
+        <span class="result-label">Потеряно</span>
+        <span class="result-value loss" id="loss"></span>
+    </div>
+
+    <div class="result-item">
+        <span class="result-label">Просадка</span>
+        <span class="result-value loss" id="drawdown"></span>
+    </div>
+
+    <div class="result-item">
+        <span class="result-label">Нужно вернуть</span>
+        <span class="result-value need" id="restore"></span>
+    </div>
+
+    <div class="result-item">
+        <span class="result-label">Нужна доходность для восстановления</span>
+        <span class="result-value need" id="recovery"></span>
+    </div>
+
+    <div class="highlight">
+        <div class="highlight-title">
+            Чтобы вернуться к исходному капиталу, нужно заработать
+        </div>
+        <div class="highlight-value" id="highlight"></div>
+    </div>
+
+    <div class="note">
+        Важно: процент потери и процент, необходимый для восстановления,
+        различаются. Например, после падения на 50% потребуется рост на 100%,
+        чтобы вернуться к исходной сумме.
+    </div>
+
+</div>
+
+</div>
+
+<script>
+function formatMoney(value) {
+    return value.toLocaleString('ru-RU', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+    }) + ' ₽';
+}
+
+function calculate() {
+    const initial = parseFloat(document.getElementById('initial').value);
+    const current = parseFloat(document.getElementById('current').value);
+
+    if (!initial || initial <= 0 || isNaN(current) || current < 0) {
+        alert('Введите корректные суммы.');
+        return;
+    }
+
+    if (current > initial) {
+        alert('Текущий капитал не может быть больше исходного для расчёта просадки.');
+        return;
+    }
+
+    const loss = initial - current;
+    const drawdown = (loss / initial) * 100;
+
+    let recovery = 0;
+
+    if (current > 0) {
+        recovery = (loss / current) * 100;
+    } else {
+        recovery = Infinity;
+    }
+
+    document.getElementById('was').textContent = formatMoney(initial);
+    document.getElementById('became').textContent = formatMoney(current);
+    document.getElementById('loss').textContent = formatMoney(loss);
+    document.getElementById('drawdown').textContent = drawdown.toFixed(2) + '%';
+    document.getElementById('restore').textContent = formatMoney(loss);
+
+    if (isFinite(recovery)) {
+        document.getElementById('recovery').textContent =
+            recovery.toFixed(2) + '%';
+
+        document.getElementById('highlight').textContent =
+            formatMoney(loss) + ' (' + recovery.toFixed(2) + '%)';
+    } else {
+        document.getElementById('recovery').textContent = '∞';
+
+        document.getElementById('highlight').textContent =
+            'Невозможно рассчитать';
+    }
+
+    document.getElementById('result').style.display = 'block';
+}
+</script>
+
+</body>

@@ -88,6 +88,13 @@ h1 {
     border-color: #4facfe;
 }
 
+.small-note {
+    color: #94a3b8;
+    font-size: 13px;
+    margin-top: -7px;
+    margin-bottom: 15px;
+}
+
 button {
     width: 100%;
     padding: 15px;
@@ -182,6 +189,12 @@ button:hover {
     color: #ff7b7b !important;
 }
 
+.crypto-result {
+    color: #aab5ca;
+    font-size: 14px;
+    margin-top: 6px;
+}
+
 @media (max-width: 600px) {
     body {
         padding: 15px;
@@ -214,6 +227,7 @@ button:hover {
         Посчитайте свои активы, долги и чистый капитал
     </div>
 
+
     <div class="card">
 
         <h2>Активы</h2>
@@ -233,10 +247,21 @@ button:hover {
             <input type="number" id="stocks" min="0" placeholder="0">
         </div>
 
+
         <div class="input-group">
-            <label>Криптовалюта, ₽</label>
+            <label>Криптовалюта, $</label>
             <input type="number" id="crypto" min="0" placeholder="0">
         </div>
+
+        <div class="input-group">
+            <label>Курс доллара, ₽</label>
+            <input type="number" id="dollarRate" min="0" step="0.01" placeholder="0">
+        </div>
+
+        <div class="small-note">
+            Стоимость криптовалюты будет автоматически переведена в рубли.
+        </div>
+
 
         <div class="input-group">
             <label>Другое, ₽</label>
@@ -244,6 +269,7 @@ button:hover {
         </div>
 
     </div>
+
 
     <div class="card">
 
@@ -261,9 +287,11 @@ button:hover {
 
     </div>
 
+
     <div class="card">
         <button onclick="calculate()">Рассчитать капитал</button>
     </div>
+
 
     <div class="results" id="results">
 
@@ -288,6 +316,7 @@ button:hover {
 
         </div>
 
+
         <div class="card">
 
             <h2>Структура капитала</h2>
@@ -304,6 +333,7 @@ button:hover {
 
 </div>
 
+
 <script>
 
 function getValue(id) {
@@ -311,41 +341,68 @@ function getValue(id) {
     return isNaN(value) ? 0 : value;
 }
 
+
 function formatMoney(value) {
     return Math.round(value).toLocaleString('ru-RU') + ' ₽';
 }
 
+
 function calculate() {
 
-    const assets = [
-        {
-            name: 'Вклады',
-            value: getValue('deposits')
-        },
-        {
-            name: 'Наличные',
-            value: getValue('cash')
-        },
-        {
-            name: 'Акции и облигации',
-            value: getValue('stocks')
-        },
-        {
-            name: 'Криптовалюта',
-            value: getValue('crypto')
-        },
-        {
-            name: 'Другое',
-            value: getValue('otherAssets')
-        }
-    ];
+    const deposits = getValue('deposits');
+    const cash = getValue('cash');
+    const stocks = getValue('stocks');
+    const cryptoUSD = getValue('crypto');
+    const dollarRate = getValue('dollarRate');
+    const otherAssets = getValue('otherAssets');
 
     const loans = getValue('loans');
     const otherDebts = getValue('otherDebts');
 
-    const totalAssets = assets.reduce((sum, item) => sum + item.value, 0);
+
+    if (cryptoUSD > 0 && dollarRate <= 0) {
+        alert('Введите курс доллара для расчёта стоимости криптовалюты.');
+        return;
+    }
+
+
+    const cryptoRUB = cryptoUSD * dollarRate;
+
+
+    const assets = [
+        {
+            name: 'Вклады',
+            value: deposits
+        },
+        {
+            name: 'Наличные',
+            value: cash
+        },
+        {
+            name: 'Акции и облигации',
+            value: stocks
+        },
+        {
+            name: 'Криптовалюта',
+            value: cryptoRUB
+        },
+        {
+            name: 'Другое',
+            value: otherAssets
+        }
+    ];
+
+
+    const totalAssets = assets.reduce(
+        (sum, item) => sum + item.value,
+        0
+    );
+
+
     const totalDebts = loans + otherDebts;
+
     const netCapital = totalAssets - totalDebts;
+
 
     document.getElementById('totalAssets').textContent =
         formatMoney(totalAssets);
@@ -353,9 +410,11 @@ function calculate() {
     document.getElementById('totalDebts').textContent =
         formatMoney(totalDebts);
 
+
     const netElement = document.getElementById('netCapital');
 
     netElement.textContent = formatMoney(netCapital);
+
 
     if (netCapital < 0) {
         netElement.classList.add('negative');
@@ -363,23 +422,33 @@ function calculate() {
         netElement.classList.remove('negative');
     }
 
+
     const structure = document.getElementById('structure');
+
     structure.innerHTML = '';
+
 
     assets.forEach(asset => {
 
         if (asset.value <= 0) return;
 
+
         const percent = totalAssets > 0
             ? (asset.value / totalAssets * 100)
             : 0;
 
+
         const item = document.createElement('div');
+
         item.className = 'structure-item';
+
 
         item.innerHTML = `
             <div class="structure-top">
-                <span class="structure-name">${asset.name}</span>
+                <span class="structure-name">
+                    ${asset.name}
+                </span>
+
                 <span class="structure-percent">
                     ${percent.toFixed(1)}%
                 </span>
@@ -392,23 +461,32 @@ function calculate() {
             </div>
         `;
 
+
         structure.appendChild(item);
+
     });
 
+
     if (totalAssets === 0) {
+
         structure.innerHTML = `
             <div class="note">
-                Введите данные об активах, чтобы увидеть структуру капитала.
+                Введите данные об активах,
+                чтобы увидеть структуру капитала.
             </div>
         `;
+
     }
 
+
     document.getElementById('results').style.display = 'block';
+
 
     document.getElementById('results').scrollIntoView({
         behavior: 'smooth',
         block: 'start'
     });
+
 }
 
 </script>

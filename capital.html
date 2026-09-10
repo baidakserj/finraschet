@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>ФинРасчёт — Мой капитал</title>
 
 <style>
@@ -21,8 +20,8 @@ body {
 
 .container {
     max-width: 900px;
-    margin: auto;
-    padding: 25px 15px 40px;
+    margin: 0 auto;
+    padding: 25px 15px 50px;
 }
 
 .back {
@@ -31,6 +30,7 @@ body {
     text-decoration: none;
     font-size: 16px;
     margin-bottom: 20px;
+    transition: 0.3s;
 }
 
 .back:hover {
@@ -38,123 +38,130 @@ body {
 }
 
 h1 {
-    margin: 0 0 8px;
-    font-size: 32px;
+    text-align: center;
+    margin-bottom: 10px;
 }
 
 .subtitle {
-    color: #94a3b8;
-    margin-bottom: 25px;
-    line-height: 1.5;
+    text-align: center;
+    color: #cbd5e1;
+    margin-bottom: 30px;
 }
 
 .card {
-    background: rgba(30, 41, 59, 0.92);
+    background: rgba(255,255,255,0.08);
     border-radius: 18px;
     padding: 22px;
     margin-bottom: 20px;
-    box-shadow: 0 8px 30px rgba(0,0,0,.25);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
-h2 {
+.card h2 {
     margin-top: 0;
-    font-size: 21px;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
+    margin-bottom: 20px;
 }
 
 label {
     display: block;
-    color: #cbd5e1;
-    font-size: 14px;
-    margin-bottom: 7px;
+    margin: 14px 0 7px;
+    color: #dbeafe;
 }
 
 input {
     width: 100%;
     padding: 13px;
+    border: none;
     border-radius: 10px;
-    border: 1px solid #475569;
-    background: #0f172a;
-    color: #fff;
     font-size: 16px;
+    background: #f8fafc;
+    color: #111827;
 }
 
 button {
     width: 100%;
     padding: 14px;
-    border: 0;
-    border-radius: 11px;
-    background: #2563eb;
-    color: #fff;
+    margin-top: 20px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #4facfe, #7c5cff);
+    color: white;
     font-size: 17px;
     font-weight: bold;
     cursor: pointer;
-    margin-top: 16px;
+    transition: 0.3s;
 }
 
 button:hover {
-    background: #1d4ed8;
+    opacity: 0.9;
+    transform: translateY(-1px);
 }
 
-.save-button {
-    background: linear-gradient(135deg, #2563eb, #7c3aed);
+.save-btn {
+    background: linear-gradient(135deg, #10b981, #059669);
 }
 
-.save-button:hover {
-    background: linear-gradient(135deg, #1d4ed8, #6d28d9);
+.results {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-top: 20px;
 }
 
 .result {
-    display: grid;
-    gap: 10px;
-    margin-top: 18px;
+    background: rgba(255,255,255,0.07);
+    padding: 18px;
+    border-radius: 14px;
+    text-align: center;
 }
 
-.row {
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-    padding: 13px 0;
-    border-bottom: 1px solid rgba(255,255,255,.1);
+.result-title {
+    color: #cbd5e1;
+    font-size: 14px;
+    margin-bottom: 8px;
 }
 
-.row:last-child {
-    border-bottom: 0;
-}
-
-.value {
+.result-value {
+    font-size: 22px;
     font-weight: bold;
-    text-align: right;
 }
 
-.big {
-    font-size: 25px;
-    color: #93c5fd;
+.main-result {
+    border: 1px solid rgba(79,172,254,0.5);
 }
 
-.net {
-    font-size: 28px;
+.main-result .result-value {
     color: #4facfe;
 }
 
-.note {
-    font-size: 13px;
+.net-result {
+    border: 1px solid rgba(16,185,129,0.5);
+}
+
+.net-result .result-value {
+    color: #34d399;
+}
+
+.crypto-info {
+    margin-top: 15px;
+    padding: 14px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 10px;
+    color: #dbeafe;
+    text-align: center;
+}
+
+.notice {
+    text-align: center;
     color: #94a3b8;
-    line-height: 1.5;
-    margin-top: 14px;
+    font-size: 13px;
+    margin-top: 12px;
 }
 
 .history-item {
-    background: #0f172a;
-    border: 1px solid #334155;
-    border-radius: 12px;
-    padding: 15px;
-    margin-top: 10px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
 }
 
 .history-top {
@@ -162,16 +169,24 @@ button:hover {
     justify-content: space-between;
     gap: 10px;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .history-date {
     font-weight: bold;
-    color: #93c5fd;
+    color: #dbeafe;
 }
 
 .history-capital {
-    font-size: 19px;
+    font-size: 21px;
     font-weight: bold;
+    color: #34d399;
+}
+
+.history-details {
+    color: #94a3b8;
+    font-size: 14px;
+    margin-top: 7px;
 }
 
 .history-buttons {
@@ -180,62 +195,97 @@ button:hover {
     margin-top: 12px;
 }
 
-.history-buttons button {
-    margin-top: 0;
-    padding: 9px;
+.small-btn {
+    width: auto;
+    margin: 0;
+    padding: 9px 13px;
     font-size: 14px;
+    background: #334155;
 }
 
-.compare-buttons {
+.delete-btn {
+    background: #7f1d1d;
+}
+
+.empty {
+    text-align: center;
+    color: #94a3b8;
+    padding: 20px;
+}
+
+.period-buttons {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    gap: 8px;
     margin-bottom: 15px;
 }
 
-.compare-buttons button {
-    margin-top: 0;
-    font-size: 14px;
+.period-buttons button {
+    margin: 0;
     padding: 11px 5px;
+    font-size: 14px;
+    background: #334155;
 }
 
-.compare-buttons button.active {
-    background: #7c3aed;
+.period-buttons button.active {
+    background: linear-gradient(135deg, #4facfe, #7c5cff);
 }
 
-.compare-select {
+select {
     width: 100%;
     padding: 13px;
+    border: none;
     border-radius: 10px;
-    border: 1px solid #475569;
-    background: #0f172a;
-    color: #fff;
-    font-size: 16px;
-    margin-bottom: 12px;
+    font-size: 15px;
+    margin-bottom: 18px;
 }
 
-.change-positive {
-    color: #4ade80;
+.compare-summary {
+    background: linear-gradient(135deg, rgba(79,172,254,0.15), rgba(124,92,255,0.15));
+    border: 1px solid rgba(79,172,254,0.35);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 18px;
 }
 
-.change-negative {
+.compare-title {
+    color: #cbd5e1;
+    margin-bottom: 8px;
+}
+
+.compare-main {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.compare-change {
+    margin-top: 8px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.positive {
+    color: #34d399;
+}
+
+.negative {
     color: #f87171;
 }
 
-.change-zero {
+.neutral {
     color: #cbd5e1;
 }
 
 .compare-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 15px;
 }
 
 .compare-table th,
 .compare-table td {
     padding: 12px 8px;
-    border-bottom: 1px solid rgba(255,255,255,.1);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
     text-align: right;
 }
 
@@ -249,55 +299,43 @@ button:hover {
     font-size: 13px;
 }
 
-.chart-wrap {
-    width: 100%;
+.change-cell {
+    font-weight: bold;
+}
+
+.graph-wrap {
+    margin-top: 10px;
     overflow-x: auto;
-    margin-top: 15px;
 }
 
 svg {
     width: 100%;
     min-width: 500px;
-    height: 280px;
-    display: block;
-    background: #0f172a;
-    border-radius: 12px;
+    height: 260px;
 }
 
-.empty {
-    color: #94a3b8;
-    text-align: center;
-    padding: 20px 5px;
+.graph-line {
+    fill: none;
+    stroke: #4facfe;
+    stroke-width: 3;
 }
 
-.footer {
+.graph-point {
+    fill: #4facfe;
+}
+
+.graph-label {
+    fill: #cbd5e1;
     font-size: 12px;
-    color: #64748b;
-    text-align: center;
-    line-height: 1.5;
-    margin-top: 25px;
 }
 
-@media(max-width:600px) {
-    .grid {
-        grid-template-columns: 1fr;
-    }
-
-    h1 {
-        font-size: 27px;
+@media (max-width: 600px) {
+    .container {
+        padding: 18px 10px 40px;
     }
 
     .card {
-        padding: 18px;
-    }
-
-    .compare-buttons {
-        grid-template-columns: 1fr;
-    }
-
-    .history-top {
-        flex-direction: column;
-        align-items: flex-start;
+        padding: 17px;
     }
 
     .compare-table {
@@ -308,6 +346,10 @@ svg {
     .compare-table td {
         padding: 9px 4px;
     }
+
+    .history-capital {
+        font-size: 19px;
+    }
 }
 </style>
 </head>
@@ -316,76 +358,76 @@ svg {
 
 <div class="container">
 
-<a class="back" href="index.html">← Все калькуляторы</a>
+<a href="index.html" class="back">← Все калькуляторы</a>
 
 <h1>💰 Мой капитал</h1>
-
 <div class="subtitle">
-Сохраняйте состояние капитала и смотрите, как он меняется со временем
+    Сохраняйте состояние капитала и смотрите, как он меняется со временем
 </div>
 
 <div class="card">
 
 <h2>Текущее состояние</h2>
 
-<div class="grid">
+<label>Вклады, ₽</label>
+<input type="number" id="deposits" placeholder="Например: 1000000">
 
-<div>
-<label for="deposits">Вклады, ₽</label>
-<input id="deposits" type="number" min="0" step="1000" value="0">
-</div>
+<label>Наличные, ₽</label>
+<input type="number" id="cash" placeholder="Например: 50000">
 
-<div>
-<label for="cash">Наличные, ₽</label>
-<input id="cash" type="number" min="0" step="1000" value="0">
-</div>
+<label>Акции и облигации, ₽</label>
+<input type="number" id="stocks" placeholder="Например: 200000">
 
-<div>
-<label for="stocks">Акции и облигации, ₽</label>
-<input id="stocks" type="number" min="0" step="1000" value="0">
-</div>
+<label>Криптовалюта, $</label>
+<input type="number" id="crypto" placeholder="Например: 1200">
 
-<div>
-<label for="crypto">Криптовалюта, $</label>
-<input id="crypto" type="number" min="0" step="10" value="0">
-</div>
+<label>Курс доллара, ₽</label>
+<input type="number" id="dollarRate" placeholder="Например: 85">
 
-<div>
-<label for="dollarRate">Курс доллара, ₽</label>
-<input id="dollarRate" type="number" min="0" step="0.01" value="0">
-</div>
+<label>Другое, ₽</label>
+<input type="number" id="other" placeholder="Например: 50000">
 
-<div>
-<label for="other">Другое, ₽</label>
-<input id="other" type="number" min="0" step="1000" value="0">
-</div>
+<label>Кредиты, ₽</label>
+<input type="number" id="credits" placeholder="Например: 20000">
 
-<div>
-<label for="credits">Кредиты, ₽</label>
-<input id="credits" type="number" min="0" step="1000" value="0">
-</div>
-
-<div>
-<label for="debts">Другие долги, ₽</label>
-<input id="debts" type="number" min="0" step="1000" value="0">
-</div>
-
-</div>
+<label>Другие долги, ₽</label>
+<input type="number" id="debts" placeholder="Например: 10000">
 
 <button onclick="calculate()">Рассчитать капитал</button>
 
-<div id="result" class="result"></div>
+<div class="results">
 
-<button class="save-button" onclick="saveState()">
-💾 Сохранить состояние
-</button>
+    <div class="result main-result">
+        <div class="result-title">Общий капитал</div>
+        <div class="result-value" id="totalAssets">0 ₽</div>
+    </div>
 
-<div class="note">
-Состояние сохраняется в браузере на этом устройстве.
+    <div class="result">
+        <div class="result-title">Долги</div>
+        <div class="result-value" id="totalDebts">0 ₽</div>
+    </div>
+
+    <div class="result net-result">
+        <div class="result-title">Чистый капитал</div>
+        <div class="result-value" id="netCapital">0 ₽</div>
+    </div>
+
+</div>
+
+<div class="crypto-info" id="cryptoInfo">
+    Криптовалюта: 0 $ = 0 ₽
+</div>
+
+<button class="save-btn" onclick="saveState()">💾 Сохранить состояние</button>
+
+<div class="notice">
+    Состояние сохраняется в браузере на этом устройстве.
 </div>
 
 </div>
 
+
+<!-- ИСТОРИЯ -->
 
 <div class="card">
 
@@ -396,49 +438,44 @@ svg {
 </div>
 
 
+<!-- СРАВНЕНИЕ -->
+
 <div class="card">
 
 <h2>🔎 Сравнение</h2>
 
-<div class="compare-buttons">
+<div class="period-buttons">
 
-<button onclick="comparePeriod(3, this)">
-3 месяца
-</button>
-
-<button onclick="comparePeriod(6, this)">
-6 месяцев
-</button>
-
-<button onclick="comparePeriod(12, this)">
-1 год
-</button>
+<button onclick="comparePeriod(3, this)">3 месяца</button>
+<button onclick="comparePeriod(6, this)">6 месяцев</button>
+<button onclick="comparePeriod(12, this)">1 год</button>
 
 </div>
 
-<select id="compareSelect" class="compare-select"
-onchange="compareSelected()">
-
-<option value="">Выберите сохранённое состояние</option>
-
+<select id="snapshotSelect" onchange="compareSelected()">
+    <option value="">Выберите сохранённое состояние</option>
 </select>
 
-<div id="comparison"></div>
+<div id="comparisonResult">
+    <div class="empty">
+        Выберите период или сохранённое состояние для сравнения
+    </div>
+</div>
 
 </div>
 
+
+<!-- ГРАФИК -->
 
 <div class="card">
 
 <h2>📈 Динамика чистого капитала</h2>
 
-<div id="chart"></div>
-
+<div class="graph-wrap">
+    <svg id="graph" viewBox="0 0 800 260" preserveAspectRatio="none">
+    </svg>
 </div>
 
-
-<div class="footer">
-История хранится локально в браузере. При очистке данных браузера история может быть удалена.
 </div>
 
 </div>
@@ -448,66 +485,62 @@ onchange="compareSelected()">
 
 const STORAGE_KEY = "finraschet_capital_history";
 
-let historyData = [];
-
-let currentState = null;
+let currentState = {
+    deposits: 0,
+    cash: 0,
+    stocks: 0,
+    crypto: 0,
+    dollarRate: 0,
+    other: 0,
+    credits: 0,
+    debts: 0,
+    totalAssets: 0,
+    totalDebts: 0,
+    netCapital: 0
+};
 
 
 /* =========================
    ФОРМАТИРОВАНИЕ
 ========================= */
 
-function money(value) {
-
-    return new Intl.NumberFormat("ru-RU", {
-        maximumFractionDigits: 0
-    }).format(Math.round(value)) + " ₽";
-
+function formatMoney(value) {
+    return Math.round(value).toLocaleString("ru-RU") + " ₽";
 }
 
-function dollars(value) {
+function formatNumber(value) {
+    return Math.round(value).toLocaleString("ru-RU");
+}
 
-    return new Intl.NumberFormat("ru-RU", {
+function formatPercent(value) {
+    return value.toLocaleString("ru-RU", {
+        minimumFractionDigits: 2,
         maximumFractionDigits: 2
-    }).format(value) + " $";
-
-}
-
-function dateText(date) {
-
-    return new Date(date).toLocaleDateString("ru-RU", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric"
-    });
-
+    }) + "%";
 }
 
 
 /* =========================
-   ПОЛУЧЕНИЕ ДАННЫХ
+   РАСЧЁТ
 ========================= */
 
-function getState() {
+function calculate() {
 
     const deposits = Number(document.getElementById("deposits").value) || 0;
     const cash = Number(document.getElementById("cash").value) || 0;
     const stocks = Number(document.getElementById("stocks").value) || 0;
-    const cryptoUSD = Number(document.getElementById("crypto").value) || 0;
+    const crypto = Number(document.getElementById("crypto").value) || 0;
     const dollarRate = Number(document.getElementById("dollarRate").value) || 0;
     const other = Number(document.getElementById("other").value) || 0;
     const credits = Number(document.getElementById("credits").value) || 0;
     const debts = Number(document.getElementById("debts").value) || 0;
 
-    if (cryptoUSD > 0 && dollarRate <= 0) {
-
-        alert("Введите курс доллара.");
-
-        return null;
-
+    if (crypto > 0 && dollarRate <= 0) {
+        alert("Введите курс доллара для расчёта стоимости криптовалюты.");
+        return;
     }
 
-    const cryptoRUB = cryptoUSD * dollarRate;
+    const cryptoRUB = crypto * dollarRate;
 
     const totalAssets =
         deposits +
@@ -524,90 +557,34 @@ function getState() {
         totalAssets -
         totalDebts;
 
-    return {
-
+    currentState = {
         deposits,
         cash,
         stocks,
-
-        cryptoUSD,
+        crypto,
         dollarRate,
-        cryptoRUB,
-
         other,
-
         credits,
         debts,
-
         totalAssets,
         totalDebts,
-
         netCapital
-
     };
 
-}
+    document.getElementById("totalAssets").textContent =
+        formatMoney(totalAssets);
 
+    document.getElementById("totalDebts").textContent =
+        formatMoney(totalDebts);
 
-/* =========================
-   РАСЧЁТ
-========================= */
+    document.getElementById("netCapital").textContent =
+        formatMoney(netCapital);
 
-function calculate() {
-
-    const state = getState();
-
-    if (!state) return;
-
-    currentState = state;
-
-    showResult(state);
-
-}
-
-
-/* =========================
-   РЕЗУЛЬТАТ
-========================= */
-
-function showResult(state) {
-
-    const result = document.getElementById("result");
-
-    result.innerHTML = `
-
-        <div class="row">
-            <span>Общий капитал</span>
-            <span class="value big">
-                ${money(state.totalAssets)}
-            </span>
-        </div>
-
-        <div class="row">
-            <span>Долги</span>
-            <span class="value">
-                ${money(state.totalDebts)}
-            </span>
-        </div>
-
-        <div class="row">
-            <span>Чистый капитал</span>
-            <span class="value net">
-                ${money(state.netCapital)}
-            </span>
-        </div>
-
-        <div class="row">
-            <span>Криптовалюта</span>
-            <span class="value">
-                ${dollars(state.cryptoUSD)}
-                =
-                ${money(state.cryptoRUB)}
-            </span>
-        </div>
-
-    `;
-
+    document.getElementById("cryptoInfo").textContent =
+        "Криптовалюта: " +
+        formatNumber(crypto) +
+        " $ = " +
+        formatMoney(cryptoRUB);
 }
 
 
@@ -617,77 +594,35 @@ function showResult(state) {
 
 function saveState() {
 
-    const state = getState();
+    calculate();
 
-    if (!state) return;
+    const history =
+        JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 
-    currentState = state;
+    const now = new Date();
 
     const snapshot = {
-
         id: Date.now(),
-
-        date: new Date().toISOString(),
-
-        ...state
-
+        date: now.toISOString(),
+        ...currentState
     };
 
-    historyData.push(snapshot);
+    history.push(snapshot);
 
-    historyData.sort(function(a, b) {
-
+    history.sort(function(a, b) {
         return new Date(a.date) - new Date(b.date);
-
     });
 
     localStorage.setItem(
         STORAGE_KEY,
-        JSON.stringify(historyData)
+        JSON.stringify(history)
     );
 
     renderHistory();
     renderSelect();
-    renderChart();
+    drawGraph();
 
-    showResult(state);
-
-    alert(
-        "Состояние капитала сохранено.\n\n" +
-        "Чистый капитал: " +
-        money(state.netCapital)
-    );
-
-}
-
-
-/* =========================
-   ЗАГРУЗКА ИСТОРИИ
-========================= */
-
-function loadHistory() {
-
-    try {
-
-        const saved =
-            localStorage.getItem(STORAGE_KEY);
-
-        if (saved) {
-
-            historyData = JSON.parse(saved);
-
-        }
-
-    } catch (error) {
-
-        historyData = [];
-
-    }
-
-    renderHistory();
-    renderSelect();
-    renderChart();
-
+    alert("Состояние капитала сохранено.");
 }
 
 
@@ -697,69 +632,80 @@ function loadHistory() {
 
 function renderHistory() {
 
-    const box =
+    const history =
+        JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+    const container =
         document.getElementById("history");
 
-    if (!historyData.length) {
+    if (history.length === 0) {
 
-        box.innerHTML = `
-            <div class="empty">
-                Пока нет сохранённых состояний.<br>
-                Рассчитайте капитал и нажмите
-                «Сохранить состояние».
-            </div>
-        `;
+        container.innerHTML =
+            '<div class="empty">Сохранённых состояний пока нет.</div>';
 
         return;
-
     }
 
-    const reversed =
-        [...historyData].reverse();
+    container.innerHTML = "";
 
-    box.innerHTML = reversed.map(function(item) {
+    const reversed = [...history].reverse();
 
-        return `
+    reversed.forEach(function(item) {
 
-        <div class="history-item">
+        const date = new Date(item.date);
 
+        const dateText =
+            date.toLocaleDateString("ru-RU") +
+            ", " +
+            date.toLocaleTimeString("ru-RU", {
+                hour: "2-digit",
+                minute: "2-digit"
+            });
+
+        const div =
+            document.createElement("div");
+
+        div.className = "history-item";
+
+        div.innerHTML = `
             <div class="history-top">
 
-                <div class="history-date">
-                    ${dateText(item.date)}
-                </div>
+                <div>
+                    <div class="history-date">
+                        ${dateText}
+                    </div>
 
-                <div class="history-capital">
-                    ${money(item.netCapital)}
+                    <div class="history-capital">
+                        ${formatMoney(item.netCapital)}
+                    </div>
                 </div>
 
             </div>
 
-            <div class="note">
-                Активы: ${money(item.totalAssets)}
-                · Долги: ${money(item.totalDebts)}
+            <div class="history-details">
+                Активы: ${formatMoney(item.totalAssets)}
+                · Долги: ${formatMoney(item.totalDebts)}
             </div>
 
             <div class="history-buttons">
 
                 <button
+                    class="small-btn"
                     onclick="compareWithSnapshot(${item.id})">
                     Сравнить
                 </button>
 
                 <button
+                    class="small-btn delete-btn"
                     onclick="deleteSnapshot(${item.id})">
                     Удалить
                 </button>
 
             </div>
-
-        </div>
-
         `;
 
-    }).join("");
-
+        container.appendChild(div);
+    });
 }
 
 
@@ -769,22 +715,31 @@ function renderHistory() {
 
 function renderSelect() {
 
+    const history =
+        JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
     const select =
-        document.getElementById("compareSelect");
+        document.getElementById("snapshotSelect");
 
     select.innerHTML =
-        `<option value="">
-            Выберите сохранённое состояние
-        </option>`;
+        '<option value="">Выберите сохранённое состояние</option>';
 
-    [...historyData]
-        .sort(function(a,b) {
-
-            return new Date(b.date) -
-                   new Date(a.date);
-
+    [...history]
+        .sort(function(a, b) {
+            return new Date(b.date) - new Date(a.date);
         })
         .forEach(function(item) {
+
+            const date =
+                new Date(item.date);
+
+            const dateText =
+                date.toLocaleDateString("ru-RU") +
+                ", " +
+                date.toLocaleTimeString("ru-RU", {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                });
 
             const option =
                 document.createElement("option");
@@ -792,270 +747,12 @@ function renderSelect() {
             option.value = item.id;
 
             option.textContent =
-                dateText(item.date) +
+                dateText +
                 " — " +
-                money(item.netCapital);
+                formatMoney(item.netCapital);
 
             select.appendChild(option);
-
         });
-
-}
-
-
-/* =========================
-   СРАВНЕНИЕ С ВЫБРАННЫМ
-========================= */
-
-function compareSelected() {
-
-    const id =
-        Number(
-            document.getElementById("compareSelect").value
-        );
-
-    if (!id) return;
-
-    compareWithSnapshot(id);
-
-}
-
-
-/* =========================
-   СРАВНЕНИЕ
-========================= */
-
-function compareWithSnapshot(id) {
-
-    if (!currentState) {
-
-        const state = getState();
-
-        if (!state) return;
-
-        currentState = state;
-
-    }
-
-    const oldState =
-        historyData.find(function(item) {
-
-            return item.id === id;
-
-        });
-
-    if (!oldState) return;
-
-    showComparison(
-        oldState,
-        currentState
-    );
-
-}
-
-
-/* =========================
-   СРАВНЕНИЕ ПО ПЕРИОДУ
-========================= */
-
-function comparePeriod(months, button) {
-
-    if (!currentState) {
-
-        const state = getState();
-
-        if (!state) return;
-
-        currentState = state;
-
-    }
-
-    document
-        .querySelectorAll(".compare-buttons button")
-        .forEach(function(btn) {
-
-            btn.classList.remove("active");
-
-        });
-
-    if (button) {
-
-        button.classList.add("active");
-
-    }
-
-    if (!historyData.length) {
-
-        document.getElementById("comparison").innerHTML = `
-            <div class="empty">
-                Нет сохранённых состояний для сравнения.
-            </div>
-        `;
-
-        return;
-
-    }
-
-    const target =
-        new Date();
-
-    target.setMonth(
-        target.getMonth() - months
-    );
-
-    let closest = null;
-
-    let closestDiff = Infinity;
-
-    historyData.forEach(function(item) {
-
-        const date =
-            new Date(item.date);
-
-        if (date > new Date()) return;
-
-        const diff =
-            Math.abs(
-                date.getTime() -
-                target.getTime()
-            );
-
-        if (diff < closestDiff) {
-
-            closestDiff = diff;
-
-            closest = item;
-
-        }
-
-    });
-
-    if (!closest) {
-
-        document.getElementById("comparison").innerHTML = `
-            <div class="empty">
-                Нет сохранения для этого периода.
-            </div>
-        `;
-
-        return;
-
-    }
-
-    document.getElementById("compareSelect").value =
-        closest.id;
-
-    showComparison(
-        closest,
-        currentState
-    );
-
-}
-
-
-/* =========================
-   ТАБЛИЦА СРАВНЕНИЯ
-========================= */
-
-function showComparison(oldState, newState) {
-
-    const box =
-        document.getElementById("comparison");
-
-    const rows = [
-
-        ["Вклады", oldState.deposits, newState.deposits],
-
-        ["Наличные", oldState.cash, newState.cash],
-
-        ["Акции и облигации", oldState.stocks, newState.stocks],
-
-        ["Криптовалюта", oldState.cryptoRUB, newState.cryptoRUB],
-
-        ["Другое", oldState.other, newState.other],
-
-        ["Долги", oldState.totalDebts, newState.totalDebts],
-
-        ["Чистый капитал", oldState.netCapital, newState.netCapital]
-
-    ];
-
-    let html = `
-
-        <div class="note">
-            Сравнение:
-            <strong>${dateText(oldState.date)}</strong>
-            →
-            <strong>сегодня</strong>
-        </div>
-
-        <table class="compare-table">
-
-            <thead>
-
-                <tr>
-                    <th>Показатель</th>
-                    <th>Тогда</th>
-                    <th>Сейчас</th>
-                    <th>Изменение</th>
-                </tr>
-
-            </thead>
-
-            <tbody>
-    `;
-
-    rows.forEach(function(row) {
-
-        const change =
-            row[2] - row[1];
-
-        let cls =
-            "change-zero";
-
-        if (change > 0) {
-
-            cls = "change-positive";
-
-        } else if (change < 0) {
-
-            cls = "change-negative";
-
-        }
-
-        const sign =
-            change > 0 ? "+" : "";
-
-        html += `
-
-            <tr>
-
-                <td>${row[0]}</td>
-
-                <td>${money(row[1])}</td>
-
-                <td>${money(row[2])}</td>
-
-                <td class="${cls}">
-                    ${sign}${money(change)}
-                </td>
-
-            </tr>
-
-        `;
-
-    });
-
-    html += `
-
-            </tbody>
-
-        </table>
-
-    `;
-
-    box.innerHTML = html;
-
 }
 
 
@@ -1065,32 +762,363 @@ function showComparison(oldState, newState) {
 
 function deleteSnapshot(id) {
 
-    if (!confirm(
-        "Удалить это сохранение?"
-    )) {
-
+    if (!confirm("Удалить это сохранённое состояние?")) {
         return;
-
     }
 
-    historyData =
-        historyData.filter(function(item) {
+    let history =
+        JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 
+    history =
+        history.filter(function(item) {
             return item.id !== id;
-
         });
 
     localStorage.setItem(
         STORAGE_KEY,
-        JSON.stringify(historyData)
+        JSON.stringify(history)
     );
 
     renderHistory();
     renderSelect();
-    renderChart();
+    drawGraph();
 
-    document.getElementById("comparison").innerHTML = "";
+    document.getElementById("comparisonResult").innerHTML =
+        '<div class="empty">Выберите период или сохранённое состояние для сравнения</div>';
+}
 
+
+/* =========================
+   ТЕКУЩЕЕ СОСТОЯНИЕ
+========================= */
+
+function getCurrentState() {
+
+    calculate();
+
+    return {
+        ...currentState
+    };
+}
+
+
+/* =========================
+   ПРОЦЕНТ ИЗМЕНЕНИЯ
+========================= */
+
+function getChange(oldValue, newValue) {
+
+    const difference =
+        newValue - oldValue;
+
+    let percent = 0;
+
+    if (oldValue !== 0) {
+        percent =
+            difference / Math.abs(oldValue) * 100;
+    }
+
+    return {
+        difference,
+        percent
+    };
+}
+
+
+/* =========================
+   КЛАСС ИЗМЕНЕНИЯ
+========================= */
+
+function changeClass(value) {
+
+    if (value > 0) return "positive";
+
+    if (value < 0) return "negative";
+
+    return "neutral";
+}
+
+
+/* =========================
+   ФОРМАТ ИЗМЕНЕНИЯ
+========================= */
+
+function formatChange(value) {
+
+    if (value > 0) {
+        return "+" + formatMoney(value);
+    }
+
+    if (value < 0) {
+        return "−" + formatMoney(Math.abs(value));
+    }
+
+    return "0 ₽";
+}
+
+
+/* =========================
+   СРАВНЕНИЕ
+========================= */
+
+function showComparison(oldState, current) {
+
+    const net =
+        getChange(
+            oldState.netCapital,
+            current.netCapital
+        );
+
+    const summaryClass =
+        changeClass(net.difference);
+
+    let summarySign = "";
+
+    if (net.difference > 0) {
+        summarySign = "+";
+    }
+
+    document.getElementById("comparisonResult").innerHTML = `
+
+        <div class="compare-summary">
+
+            <div class="compare-title">
+                Чистый капитал
+            </div>
+
+            <div class="compare-main">
+                ${formatMoney(oldState.netCapital)}
+                →
+                ${formatMoney(current.netCapital)}
+            </div>
+
+            <div class="compare-change ${summaryClass}">
+                ${summarySign}${formatMoney(net.difference)}
+                (${summarySign}${formatPercent(net.percent)})
+            </div>
+
+        </div>
+
+
+        <table class="compare-table">
+
+            <thead>
+                <tr>
+                    <th>Показатель</th>
+                    <th>Тогда</th>
+                    <th>Сейчас</th>
+                    <th>Изменение</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                ${comparisonRow(
+                    "Вклады",
+                    oldState.deposits,
+                    current.deposits
+                )}
+
+                ${comparisonRow(
+                    "Наличные",
+                    oldState.cash,
+                    current.cash
+                )}
+
+                ${comparisonRow(
+                    "Акции и облигации",
+                    oldState.stocks,
+                    current.stocks
+                )}
+
+                ${comparisonRow(
+                    "Криптовалюта",
+                    oldState.crypto * oldState.dollarRate,
+                    current.crypto * current.dollarRate
+                )}
+
+                ${comparisonRow(
+                    "Другое",
+                    oldState.other,
+                    current.other
+                )}
+
+                ${comparisonRow(
+                    "Долги",
+                    oldState.totalDebts,
+                    current.totalDebts
+                )}
+
+                ${comparisonRow(
+                    "Чистый капитал",
+                    oldState.netCapital,
+                    current.netCapital
+                )}
+
+            </tbody>
+
+        </table>
+    `;
+}
+
+
+function comparisonRow(name, oldValue, newValue) {
+
+    const change =
+        getChange(oldValue, newValue);
+
+    let sign = "";
+
+    if (change.difference > 0) {
+        sign = "+";
+    }
+
+    return `
+        <tr>
+
+            <td>${name}</td>
+
+            <td>${formatMoney(oldValue)}</td>
+
+            <td>${formatMoney(newValue)}</td>
+
+            <td class="change-cell ${changeClass(change.difference)}">
+                ${sign}${formatMoney(change.difference)}
+                <br>
+                <small>
+                    (${sign}${formatPercent(change.percent)})
+                </small>
+            </td>
+
+        </tr>
+    `;
+}
+
+
+/* =========================
+   СРАВНЕНИЕ С СОХРАНЁННЫМ
+========================= */
+
+function compareWithSnapshot(id) {
+
+    const history =
+        JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+    const snapshot =
+        history.find(function(item) {
+            return item.id === id;
+        });
+
+    if (!snapshot) return;
+
+    const current =
+        getCurrentState();
+
+    showComparison(
+        snapshot,
+        current
+    );
+
+    document.querySelector(".card:nth-of-type(3)")
+        ?.scrollIntoView({
+            behavior: "smooth"
+        });
+}
+
+
+/* =========================
+   СРАВНЕНИЕ ПО ПЕРИОДУ
+========================= */
+
+function comparePeriod(months, button) {
+
+    document
+        .querySelectorAll(".period-buttons button")
+        .forEach(function(btn) {
+            btn.classList.remove("active");
+        });
+
+    button.classList.add("active");
+
+    const history =
+        JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+    if (history.length === 0) {
+
+        document.getElementById("comparisonResult").innerHTML =
+            '<div class="empty">Сначала сохраните хотя бы одно состояние капитала.</div>';
+
+        return;
+    }
+
+    const target =
+        new Date();
+
+    target.setMonth(
+        target.getMonth() - months
+    );
+
+    /*
+       Берём последнее сохранённое состояние,
+       которое было не позже выбранной даты.
+    */
+
+    const beforeTarget =
+        history
+        .filter(function(item) {
+            return new Date(item.date) <= target;
+        })
+        .sort(function(a, b) {
+            return new Date(b.date) - new Date(a.date);
+        });
+
+    let snapshot;
+
+    if (beforeTarget.length > 0) {
+
+        snapshot =
+            beforeTarget[0];
+
+    } else {
+
+        /*
+           Если старого состояния ещё нет,
+           берём самое раннее сохранённое.
+        */
+
+        snapshot =
+            [...history].sort(function(a, b) {
+                return new Date(a.date) - new Date(b.date);
+            })[0];
+    }
+
+    document.getElementById("snapshotSelect").value =
+        snapshot.id;
+
+    const current =
+        getCurrentState();
+
+    showComparison(
+        snapshot,
+        current
+    );
+}
+
+
+/* =========================
+   SELECT СРАВНЕНИЯ
+========================= */
+
+function compareSelected() {
+
+    const id =
+        Number(
+            document.getElementById("snapshotSelect").value
+        );
+
+    if (!id) return;
+
+    compareWithSnapshot(id);
 }
 
 
@@ -1098,55 +1126,35 @@ function deleteSnapshot(id) {
    ГРАФИК
 ========================= */
 
-function renderChart() {
+function drawGraph() {
 
-    const box =
-        document.getElementById("chart");
+    const history =
+        JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 
-    if (historyData.length < 2) {
+    const svg =
+        document.getElementById("graph");
 
-        box.innerHTML = `
-            <div class="empty">
-                Сохраните минимум два состояния,
-                чтобы увидеть динамику капитала.
-            </div>
-        `;
+    svg.innerHTML = "";
 
+    if (history.length === 0) {
         return;
-
     }
 
     const data =
-        [...historyData].sort(function(a,b) {
-
-            return new Date(a.date) -
-                   new Date(b.date);
-
+        [...history].sort(function(a, b) {
+            return new Date(a.date) - new Date(b.date);
         });
 
     const width = 800;
-    const height = 280;
+    const height = 260;
 
-    const paddingLeft = 60;
-    const paddingRight = 25;
-    const paddingTop = 25;
-    const paddingBottom = 45;
-
-    const chartWidth =
-        width -
-        paddingLeft -
-        paddingRight;
-
-    const chartHeight =
-        height -
-        paddingTop -
-        paddingBottom;
+    const paddingX = 45;
+    const paddingTop = 30;
+    const paddingBottom = 40;
 
     const values =
         data.map(function(item) {
-
             return item.netCapital;
-
         });
 
     let min =
@@ -1156,174 +1164,229 @@ function renderChart() {
         Math.max(...values);
 
     if (min === max) {
-
         min -= 1;
         max += 1;
-
     }
 
-    const range =
-        max - min;
+    const points =
+        data.map(function(item, index) {
 
-    min -= range * 0.1;
-    max += range * 0.1;
+            const x =
+                data.length === 1
+                ? width / 2
+                : paddingX +
+                  index *
+                  ((width - paddingX * 2) /
+                  (data.length - 1));
 
-    function x(index) {
+            const y =
+                paddingTop +
+                (max - item.netCapital) /
+                (max - min) *
+                (height - paddingTop - paddingBottom);
 
-        if (data.length === 1) {
+            return {
+                x,
+                y,
+                value: item.netCapital,
+                date: new Date(item.date)
+            };
+        });
 
-            return paddingLeft +
-                chartWidth / 2;
 
-        }
+    /* Линия */
 
-        return paddingLeft +
-            index *
-            chartWidth /
-            (data.length - 1);
+    const polyline =
+        document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "polyline"
+        );
 
-    }
+    polyline.setAttribute(
+        "points",
+        points
+        .map(function(p) {
+            return p.x + "," + p.y;
+        })
+        .join(" ")
+    );
 
-    function y(value) {
+    polyline.setAttribute(
+        "class",
+        "graph-line"
+    );
 
-        return paddingTop +
-            (max - value) /
-            (max - min) *
-            chartHeight;
+    svg.appendChild(polyline);
 
-    }
 
-    let path = "";
+    /* Точки */
 
-    data.forEach(function(item, index) {
+    points.forEach(function(p) {
 
-        const px = x(index);
-        const py = y(item.netCapital);
+        const circle =
+            document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "circle"
+            );
 
-        if (index === 0) {
+        circle.setAttribute(
+            "cx",
+            p.x
+        );
 
-            path +=
-                "M " + px + " " + py;
+        circle.setAttribute(
+            "cy",
+            p.y
+        );
 
-        } else {
+        circle.setAttribute(
+            "r",
+            5
+        );
 
-            path +=
-                " L " + px + " " + py;
+        circle.setAttribute(
+            "class",
+            "graph-point"
+        );
 
-        }
-
+        svg.appendChild(circle);
     });
 
-    let circles = "";
 
-    data.forEach(function(item, index) {
+    /* Минимум */
 
-        circles += `
+    const minText =
+        document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "text"
+        );
 
-            <circle
-                cx="${x(index)}"
-                cy="${y(item.netCapital)}"
-                r="5"
-                fill="#4facfe"
-            />
+    minText.setAttribute(
+        "x",
+        5
+    );
 
-        `;
+    minText.setAttribute(
+        "y",
+        height - 10
+    );
 
-    });
+    minText.setAttribute(
+        "class",
+        "graph-label"
+    );
 
-    const firstLabel =
-        dateText(data[0].date);
+    minText.textContent =
+        formatMoney(min);
 
-    const lastLabel =
-        dateText(data[data.length - 1].date);
+    svg.appendChild(minText);
 
-    box.innerHTML = `
 
-        <div class="chart-wrap">
+    /* Максимум */
 
-            <svg
-                viewBox="0 0 ${width} ${height}"
-                preserveAspectRatio="none"
-            >
+    const maxText =
+        document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "text"
+        );
 
-                <line
-                    x1="${paddingLeft}"
-                    y1="${paddingTop}"
-                    x2="${paddingLeft}"
-                    y2="${height-paddingBottom}"
-                    stroke="#475569"
-                />
+    maxText.setAttribute(
+        "x",
+        5
+    );
 
-                <line
-                    x1="${paddingLeft}"
-                    y1="${height-paddingBottom}"
-                    x2="${width-paddingRight}"
-                    y2="${height-paddingBottom}"
-                    stroke="#475569"
-                />
+    maxText.setAttribute(
+        "y",
+        18
+    );
 
-                <text
-                    x="5"
-                    y="${paddingTop + 5}"
-                    fill="#94a3b8"
-                    font-size="13"
-                >
-                    ${money(max)}
-                </text>
+    maxText.setAttribute(
+        "class",
+        "graph-label"
+    );
 
-                <text
-                    x="5"
-                    y="${height-paddingBottom}"
-                    fill="#94a3b8"
-                    font-size="13"
-                >
-                    ${money(min)}
-                </text>
+    maxText.textContent =
+        formatMoney(max);
 
-                <path
-                    d="${path}"
-                    fill="none"
-                    stroke="#4facfe"
-                    stroke-width="4"
-                />
+    svg.appendChild(maxText);
 
-                ${circles}
 
-                <text
-                    x="${paddingLeft}"
-                    y="${height-15}"
-                    fill="#94a3b8"
-                    font-size="13"
-                >
-                    ${firstLabel}
-                </text>
+    /* Первая дата */
 
-                <text
-                    x="${width-paddingRight}"
-                    y="${height-15}"
-                    fill="#94a3b8"
-                    font-size="13"
-                    text-anchor="end"
-                >
-                    ${lastLabel}
-                </text>
+    const firstDate =
+        points[0].date;
 
-            </svg>
+    const firstText =
+        document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "text"
+        );
 
-        </div>
+    firstText.setAttribute(
+        "x",
+        points[0].x
+    );
 
-    `;
+    firstText.setAttribute(
+        "y",
+        height - 12
+    );
 
+    firstText.setAttribute(
+        "class",
+        "graph-label"
+    );
+
+    firstText.textContent =
+        firstDate.toLocaleDateString("ru-RU");
+
+    svg.appendChild(firstText);
+
+
+    /* Последняя дата */
+
+    if (points.length > 1) {
+
+        const lastDate =
+            points[points.length - 1].date;
+
+        const lastText =
+            document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "text"
+            );
+
+        lastText.setAttribute(
+            "x",
+            points[points.length - 1].x - 70
+        );
+
+        lastText.setAttribute(
+            "y",
+            height - 12
+        );
+
+        lastText.setAttribute(
+            "class",
+            "graph-label"
+        );
+
+        lastText.textContent =
+            lastDate.toLocaleDateString("ru-RU");
+
+        svg.appendChild(lastText);
+    }
 }
 
 
 /* =========================
-   СТАРТ
+   ЗАГРУЗКА
 ========================= */
 
-loadHistory();
-
 calculate();
+renderHistory();
+renderSelect();
+drawGraph();
 
 </script>
 

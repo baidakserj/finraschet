@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ФинРасчёт — Мой капитал</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #111827, #1e293b);
+    color: white;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.back {
+    display: inline-block;
+    color: #4facfe;
+    text-decoration: none;
+    font-size: 16px;
+    margin-bottom: 20px;
+    transition: 0.3s;
+}
+
+.back:hover {
+    color: #8f7cff;
+}
+
+h1 {
+    text-align: center;
+    margin: 10px 0 8px;
+    font-size: 32px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #cbd5e1;
+    margin-bottom: 25px;
+}
+
+.card {
+    background: rgba(30, 41, 59, 0.9);
+    border-radius: 18px;
+    padding: 22px;
+    margin-bottom: 18px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+}
+
+.card h2 {
+    margin-top: 0;
+    font-size: 21px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 7px;
+    color: #cbd5e1;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #475569;
+    border-radius: 10px;
+    background: #0f172a;
+    color: white;
+    font-size: 17px;
+    outline: none;
+}
+
+.input-group input:focus {
+    border-color: #4facfe;
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #4facfe, #7c5cff);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: translateY(-1px);
+    opacity: 0.92;
+}
+
+.results {
+    display: none;
+}
+
+.result-box {
+    background: #0f172a;
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 12px;
+}
+
+.result-title {
+    color: #94a3b8;
+    font-size: 15px;
+    margin-bottom: 7px;
+}
+
+.result-value {
+    font-size: 27px;
+    font-weight: bold;
+}
+
+.net {
+    border: 1px solid #4facfe;
+}
+
+.net .result-value {
+    color: #4facfe;
+}
+
+.structure-item {
+    margin-bottom: 16px;
+}
+
+.structure-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    gap: 10px;
+}
+
+.structure-name {
+    color: #e2e8f0;
+}
+
+.structure-percent {
+    color: #94a3b8;
+}
+
+.bar {
+    width: 100%;
+    height: 10px;
+    background: #1e293b;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4facfe, #7c5cff);
+    border-radius: 10px;
+    width: 0;
+    transition: width 0.6s ease;
+}
+
+.note {
+    color: #94a3b8;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-top: 18px;
+}
+
+.negative {
+    color: #ff7b7b !important;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 27px;
+    }
+
+    .card {
+        padding: 18px;
+    }
+
+    .result-value {
+        font-size: 24px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <a href="index.html" class="back">← Все калькуляторы</a>
+
+    <h1>💰 Мой капитал</h1>
+
+    <div class="subtitle">
+        Посчитайте свои активы, долги и чистый капитал
+    </div>
+
+    <div class="card">
+
+        <h2>Активы</h2>
+
+        <div class="input-group">
+            <label>Вклады, ₽</label>
+            <input type="number" id="deposits" min="0" placeholder="0">
+        </div>
+
+        <div class="input-group">
+            <label>Наличные, ₽</label>
+            <input type="number" id="cash" min="0" placeholder="0">
+        </div>
+
+        <div class="input-group">
+            <label>Акции и облигации, ₽</label>
+            <input type="number" id="stocks" min="0" placeholder="0">
+        </div>
+
+        <div class="input-group">
+            <label>Криптовалюта, ₽</label>
+            <input type="number" id="crypto" min="0" placeholder="0">
+        </div>
+
+        <div class="input-group">
+            <label>Другое, ₽</label>
+            <input type="number" id="otherAssets" min="0" placeholder="0">
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        <h2>Долги</h2>
+
+        <div class="input-group">
+            <label>Кредиты, ₽</label>
+            <input type="number" id="loans" min="0" placeholder="0">
+        </div>
+
+        <div class="input-group">
+            <label>Другие долги, ₽</label>
+            <input type="number" id="otherDebts" min="0" placeholder="0">
+        </div>
+
+    </div>
+
+    <div class="card">
+        <button onclick="calculate()">Рассчитать капитал</button>
+    </div>
+
+    <div class="results" id="results">
+
+        <div class="card">
+
+            <h2>Результат</h2>
+
+            <div class="result-box">
+                <div class="result-title">Общий капитал</div>
+                <div class="result-value" id="totalAssets">0 ₽</div>
+            </div>
+
+            <div class="result-box">
+                <div class="result-title">Долги</div>
+                <div class="result-value" id="totalDebts">0 ₽</div>
+            </div>
+
+            <div class="result-box net">
+                <div class="result-title">Чистый капитал</div>
+                <div class="result-value" id="netCapital">0 ₽</div>
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <h2>Структура капитала</h2>
+
+            <div id="structure"></div>
+
+            <div class="note">
+                Доля показывает, какую часть общего капитала занимает каждый вид актива.
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function getValue(id) {
+    const value = parseFloat(document.getElementById(id).value);
+    return isNaN(value) ? 0 : value;
+}
+
+function formatMoney(value) {
+    return Math.round(value).toLocaleString('ru-RU') + ' ₽';
+}
+
+function calculate() {
+
+    const assets = [
+        {
+            name: 'Вклады',
+            value: getValue('deposits')
+        },
+        {
+            name: 'Наличные',
+            value: getValue('cash')
+        },
+        {
+            name: 'Акции и облигации',
+            value: getValue('stocks')
+        },
+        {
+            name: 'Криптовалюта',
+            value: getValue('crypto')
+        },
+        {
+            name: 'Другое',
+            value: getValue('otherAssets')
+        }
+    ];
+
+    const loans = getValue('loans');
+    const otherDebts = getValue('otherDebts');
+
+    const totalAssets = assets.reduce((sum, item) => sum + item.value, 0);
+    const totalDebts = loans + otherDebts;
+    const netCapital = totalAssets - totalDebts;
+
+    document.getElementById('totalAssets').textContent =
+        formatMoney(totalAssets);
+
+    document.getElementById('totalDebts').textContent =
+        formatMoney(totalDebts);
+
+    const netElement = document.getElementById('netCapital');
+
+    netElement.textContent = formatMoney(netCapital);
+
+    if (netCapital < 0) {
+        netElement.classList.add('negative');
+    } else {
+        netElement.classList.remove('negative');
+    }
+
+    const structure = document.getElementById('structure');
+    structure.innerHTML = '';
+
+    assets.forEach(asset => {
+
+        if (asset.value <= 0) return;
+
+        const percent = totalAssets > 0
+            ? (asset.value / totalAssets * 100)
+            : 0;
+
+        const item = document.createElement('div');
+        item.className = 'structure-item';
+
+        item.innerHTML = `
+            <div class="structure-top">
+                <span class="structure-name">${asset.name}</span>
+                <span class="structure-percent">
+                    ${percent.toFixed(1)}%
+                </span>
+            </div>
+
+            <div class="bar">
+                <div class="bar-fill"
+                     style="width: ${percent}%">
+                </div>
+            </div>
+        `;
+
+        structure.appendChild(item);
+    });
+
+    if (totalAssets === 0) {
+        structure.innerHTML = `
+            <div class="note">
+                Введите данные об активах, чтобы увидеть структуру капитала.
+            </div>
+        `;
+    }
+
+    document.getElementById('results').style.display = 'block';
+
+    document.getElementById('results').scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+    });
+}
+
+</script>
+
+</body>
+</html>

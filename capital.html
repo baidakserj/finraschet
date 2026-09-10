@@ -15,14 +15,14 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
     background: linear-gradient(135deg, #111827, #1e293b);
-    color: white;
+    color: #fff;
     min-height: 100vh;
-    padding: 20px;
 }
 
 .container {
-    max-width: 700px;
-    margin: 0 auto;
+    max-width: 900px;
+    margin: auto;
+    padding: 25px 15px 40px;
 }
 
 .back {
@@ -31,7 +31,6 @@ body {
     text-decoration: none;
     font-size: 16px;
     margin-bottom: 20px;
-    transition: 0.3s;
 }
 
 .back:hover {
@@ -39,165 +38,249 @@ body {
 }
 
 h1 {
-    text-align: center;
-    margin: 10px 0 8px;
+    margin: 0 0 8px;
     font-size: 32px;
 }
 
 .subtitle {
-    text-align: center;
-    color: #cbd5e1;
+    color: #94a3b8;
     margin-bottom: 25px;
+    line-height: 1.5;
 }
 
 .card {
-    background: rgba(30, 41, 59, 0.9);
+    background: rgba(30, 41, 59, 0.92);
     border-radius: 18px;
     padding: 22px;
-    margin-bottom: 18px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+    margin-bottom: 20px;
+    box-shadow: 0 8px 30px rgba(0,0,0,.25);
 }
 
-.card h2 {
+h2 {
     margin-top: 0;
     font-size: 21px;
 }
 
-.input-group {
-    margin-bottom: 15px;
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
 }
 
-.input-group label {
+label {
     display: block;
-    margin-bottom: 7px;
     color: #cbd5e1;
+    font-size: 14px;
+    margin-bottom: 7px;
 }
 
-.input-group input {
+input {
     width: 100%;
     padding: 13px;
-    border: 1px solid #475569;
     border-radius: 10px;
+    border: 1px solid #475569;
     background: #0f172a;
-    color: white;
-    font-size: 17px;
-    outline: none;
-}
-
-.input-group input:focus {
-    border-color: #4facfe;
-}
-
-.small-note {
-    color: #94a3b8;
-    font-size: 13px;
-    margin-top: -7px;
-    margin-bottom: 15px;
+    color: #fff;
+    font-size: 16px;
 }
 
 button {
     width: 100%;
-    padding: 15px;
-    border: none;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #4facfe, #7c5cff);
-    color: white;
-    font-size: 18px;
+    padding: 14px;
+    border: 0;
+    border-radius: 11px;
+    background: #2563eb;
+    color: #fff;
+    font-size: 17px;
     font-weight: bold;
     cursor: pointer;
-    transition: 0.3s;
+    margin-top: 16px;
 }
 
 button:hover {
-    transform: translateY(-1px);
-    opacity: 0.92;
+    background: #1d4ed8;
 }
 
-.results {
-    display: none;
+.save-button {
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
 }
 
-.result-box {
-    background: #0f172a;
-    border-radius: 14px;
-    padding: 18px;
-    margin-bottom: 12px;
+.save-button:hover {
+    background: linear-gradient(135deg, #1d4ed8, #6d28d9);
 }
 
-.result-title {
-    color: #94a3b8;
-    font-size: 15px;
-    margin-bottom: 7px;
-}
-
-.result-value {
-    font-size: 27px;
-    font-weight: bold;
-}
-
-.net {
-    border: 1px solid #4facfe;
-}
-
-.net .result-value {
-    color: #4facfe;
-}
-
-.structure-item {
-    margin-bottom: 16px;
-}
-
-.structure-top {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 6px;
+.result {
+    display: grid;
     gap: 10px;
-}
-
-.structure-name {
-    color: #e2e8f0;
-}
-
-.structure-percent {
-    color: #94a3b8;
-}
-
-.bar {
-    width: 100%;
-    height: 10px;
-    background: #1e293b;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #4facfe, #7c5cff);
-    border-radius: 10px;
-    width: 0;
-    transition: width 0.6s ease;
-}
-
-.note {
-    color: #94a3b8;
-    font-size: 14px;
-    line-height: 1.5;
     margin-top: 18px;
 }
 
-.negative {
-    color: #ff7b7b !important;
+.row {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 13px 0;
+    border-bottom: 1px solid rgba(255,255,255,.1);
 }
 
-.crypto-result {
-    color: #aab5ca;
+.row:last-child {
+    border-bottom: 0;
+}
+
+.value {
+    font-weight: bold;
+    text-align: right;
+}
+
+.big {
+    font-size: 25px;
+    color: #93c5fd;
+}
+
+.net {
+    font-size: 28px;
+    color: #4facfe;
+}
+
+.note {
+    font-size: 13px;
+    color: #94a3b8;
+    line-height: 1.5;
+    margin-top: 14px;
+}
+
+.history-item {
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 15px;
+    margin-top: 10px;
+}
+
+.history-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+}
+
+.history-date {
+    font-weight: bold;
+    color: #93c5fd;
+}
+
+.history-capital {
+    font-size: 19px;
+    font-weight: bold;
+}
+
+.history-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.history-buttons button {
+    margin-top: 0;
+    padding: 9px;
     font-size: 14px;
-    margin-top: 6px;
 }
 
-@media (max-width: 600px) {
-    body {
-        padding: 15px;
+.compare-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.compare-buttons button {
+    margin-top: 0;
+    font-size: 14px;
+    padding: 11px 5px;
+}
+
+.compare-buttons button.active {
+    background: #7c3aed;
+}
+
+.compare-select {
+    width: 100%;
+    padding: 13px;
+    border-radius: 10px;
+    border: 1px solid #475569;
+    background: #0f172a;
+    color: #fff;
+    font-size: 16px;
+    margin-bottom: 12px;
+}
+
+.change-positive {
+    color: #4ade80;
+}
+
+.change-negative {
+    color: #f87171;
+}
+
+.change-zero {
+    color: #cbd5e1;
+}
+
+.compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.compare-table th,
+.compare-table td {
+    padding: 12px 8px;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+    text-align: right;
+}
+
+.compare-table th:first-child,
+.compare-table td:first-child {
+    text-align: left;
+}
+
+.compare-table th {
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+.chart-wrap {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 15px;
+}
+
+svg {
+    width: 100%;
+    min-width: 500px;
+    height: 280px;
+    display: block;
+    background: #0f172a;
+    border-radius: 12px;
+}
+
+.empty {
+    color: #94a3b8;
+    text-align: center;
+    padding: 20px 5px;
+}
+
+.footer {
+    font-size: 12px;
+    color: #64748b;
+    text-align: center;
+    line-height: 1.5;
+    margin-top: 25px;
+}
+
+@media(max-width:600px) {
+    .grid {
+        grid-template-columns: 1fr;
     }
 
     h1 {
@@ -208,8 +291,22 @@ button:hover {
         padding: 18px;
     }
 
-    .result-value {
-        font-size: 24px;
+    .compare-buttons {
+        grid-template-columns: 1fr;
+    }
+
+    .history-top {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .compare-table {
+        font-size: 13px;
+    }
+
+    .compare-table th,
+    .compare-table td {
+        padding: 9px 4px;
     }
 }
 </style>
@@ -219,275 +316,1014 @@ button:hover {
 
 <div class="container">
 
-    <a href="index.html" class="back">← Все калькуляторы</a>
+<a class="back" href="index.html">← Все калькуляторы</a>
 
-    <h1>💰 Мой капитал</h1>
+<h1>💰 Мой капитал</h1>
 
-    <div class="subtitle">
-        Посчитайте свои активы, долги и чистый капитал
-    </div>
+<div class="subtitle">
+Сохраняйте состояние капитала и смотрите, как он меняется со временем
+</div>
 
+<div class="card">
 
-    <div class="card">
+<h2>Текущее состояние</h2>
 
-        <h2>Активы</h2>
+<div class="grid">
 
-        <div class="input-group">
-            <label>Вклады, ₽</label>
-            <input type="number" id="deposits" min="0" placeholder="0">
-        </div>
+<div>
+<label for="deposits">Вклады, ₽</label>
+<input id="deposits" type="number" min="0" step="1000" value="0">
+</div>
 
-        <div class="input-group">
-            <label>Наличные, ₽</label>
-            <input type="number" id="cash" min="0" placeholder="0">
-        </div>
+<div>
+<label for="cash">Наличные, ₽</label>
+<input id="cash" type="number" min="0" step="1000" value="0">
+</div>
 
-        <div class="input-group">
-            <label>Акции и облигации, ₽</label>
-            <input type="number" id="stocks" min="0" placeholder="0">
-        </div>
+<div>
+<label for="stocks">Акции и облигации, ₽</label>
+<input id="stocks" type="number" min="0" step="1000" value="0">
+</div>
 
+<div>
+<label for="crypto">Криптовалюта, $</label>
+<input id="crypto" type="number" min="0" step="10" value="0">
+</div>
 
-        <div class="input-group">
-            <label>Криптовалюта, $</label>
-            <input type="number" id="crypto" min="0" placeholder="0">
-        </div>
+<div>
+<label for="dollarRate">Курс доллара, ₽</label>
+<input id="dollarRate" type="number" min="0" step="0.01" value="0">
+</div>
 
-        <div class="input-group">
-            <label>Курс доллара, ₽</label>
-            <input type="number" id="dollarRate" min="0" step="0.01" placeholder="0">
-        </div>
+<div>
+<label for="other">Другое, ₽</label>
+<input id="other" type="number" min="0" step="1000" value="0">
+</div>
 
-        <div class="small-note">
-            Стоимость криптовалюты будет автоматически переведена в рубли.
-        </div>
+<div>
+<label for="credits">Кредиты, ₽</label>
+<input id="credits" type="number" min="0" step="1000" value="0">
+</div>
 
+<div>
+<label for="debts">Другие долги, ₽</label>
+<input id="debts" type="number" min="0" step="1000" value="0">
+</div>
 
-        <div class="input-group">
-            <label>Другое, ₽</label>
-            <input type="number" id="otherAssets" min="0" placeholder="0">
-        </div>
+</div>
 
-    </div>
+<button onclick="calculate()">Рассчитать капитал</button>
 
+<div id="result" class="result"></div>
 
-    <div class="card">
+<button class="save-button" onclick="saveState()">
+💾 Сохранить состояние
+</button>
 
-        <h2>Долги</h2>
+<div class="note">
+Состояние сохраняется в браузере на этом устройстве.
+</div>
 
-        <div class="input-group">
-            <label>Кредиты, ₽</label>
-            <input type="number" id="loans" min="0" placeholder="0">
-        </div>
-
-        <div class="input-group">
-            <label>Другие долги, ₽</label>
-            <input type="number" id="otherDebts" min="0" placeholder="0">
-        </div>
-
-    </div>
-
-
-    <div class="card">
-        <button onclick="calculate()">Рассчитать капитал</button>
-    </div>
+</div>
 
 
-    <div class="results" id="results">
+<div class="card">
 
-        <div class="card">
+<h2>📊 История капитала</h2>
 
-            <h2>Результат</h2>
+<div id="history"></div>
 
-            <div class="result-box">
-                <div class="result-title">Общий капитал</div>
-                <div class="result-value" id="totalAssets">0 ₽</div>
-            </div>
-
-            <div class="result-box">
-                <div class="result-title">Долги</div>
-                <div class="result-value" id="totalDebts">0 ₽</div>
-            </div>
-
-            <div class="result-box net">
-                <div class="result-title">Чистый капитал</div>
-                <div class="result-value" id="netCapital">0 ₽</div>
-            </div>
-
-        </div>
+</div>
 
 
-        <div class="card">
+<div class="card">
 
-            <h2>Структура капитала</h2>
+<h2>🔎 Сравнение</h2>
 
-            <div id="structure"></div>
+<div class="compare-buttons">
 
-            <div class="note">
-                Доля показывает, какую часть общего капитала занимает каждый вид актива.
-            </div>
+<button onclick="comparePeriod(3, this)">
+3 месяца
+</button>
 
-        </div>
+<button onclick="comparePeriod(6, this)">
+6 месяцев
+</button>
 
-    </div>
+<button onclick="comparePeriod(12, this)">
+1 год
+</button>
+
+</div>
+
+<select id="compareSelect" class="compare-select"
+onchange="compareSelected()">
+
+<option value="">Выберите сохранённое состояние</option>
+
+</select>
+
+<div id="comparison"></div>
+
+</div>
+
+
+<div class="card">
+
+<h2>📈 Динамика чистого капитала</h2>
+
+<div id="chart"></div>
+
+</div>
+
+
+<div class="footer">
+История хранится локально в браузере. При очистке данных браузера история может быть удалена.
+</div>
 
 </div>
 
 
 <script>
 
-function getValue(id) {
-    const value = parseFloat(document.getElementById(id).value);
-    return isNaN(value) ? 0 : value;
+const STORAGE_KEY = "finraschet_capital_history";
+
+let historyData = [];
+
+let currentState = null;
+
+
+/* =========================
+   ФОРМАТИРОВАНИЕ
+========================= */
+
+function money(value) {
+
+    return new Intl.NumberFormat("ru-RU", {
+        maximumFractionDigits: 0
+    }).format(Math.round(value)) + " ₽";
+
+}
+
+function dollars(value) {
+
+    return new Intl.NumberFormat("ru-RU", {
+        maximumFractionDigits: 2
+    }).format(value) + " $";
+
+}
+
+function dateText(date) {
+
+    return new Date(date).toLocaleDateString("ru-RU", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+    });
+
 }
 
 
-function formatMoney(value) {
-    return Math.round(value).toLocaleString('ru-RU') + ' ₽';
-}
+/* =========================
+   ПОЛУЧЕНИЕ ДАННЫХ
+========================= */
 
+function getState() {
 
-function calculate() {
-
-    const deposits = getValue('deposits');
-    const cash = getValue('cash');
-    const stocks = getValue('stocks');
-    const cryptoUSD = getValue('crypto');
-    const dollarRate = getValue('dollarRate');
-    const otherAssets = getValue('otherAssets');
-
-    const loans = getValue('loans');
-    const otherDebts = getValue('otherDebts');
-
+    const deposits = Number(document.getElementById("deposits").value) || 0;
+    const cash = Number(document.getElementById("cash").value) || 0;
+    const stocks = Number(document.getElementById("stocks").value) || 0;
+    const cryptoUSD = Number(document.getElementById("crypto").value) || 0;
+    const dollarRate = Number(document.getElementById("dollarRate").value) || 0;
+    const other = Number(document.getElementById("other").value) || 0;
+    const credits = Number(document.getElementById("credits").value) || 0;
+    const debts = Number(document.getElementById("debts").value) || 0;
 
     if (cryptoUSD > 0 && dollarRate <= 0) {
-        alert('Введите курс доллара для расчёта стоимости криптовалюты.');
-        return;
-    }
 
+        alert("Введите курс доллара.");
+
+        return null;
+
+    }
 
     const cryptoRUB = cryptoUSD * dollarRate;
 
+    const totalAssets =
+        deposits +
+        cash +
+        stocks +
+        cryptoRUB +
+        other;
 
-    const assets = [
-        {
-            name: 'Вклады',
-            value: deposits
-        },
-        {
-            name: 'Наличные',
-            value: cash
-        },
-        {
-            name: 'Акции и облигации',
-            value: stocks
-        },
-        {
-            name: 'Криптовалюта',
-            value: cryptoRUB
-        },
-        {
-            name: 'Другое',
-            value: otherAssets
-        }
-    ];
+    const totalDebts =
+        credits +
+        debts;
 
+    const netCapital =
+        totalAssets -
+        totalDebts;
 
-    const totalAssets = assets.reduce(
-        (sum, item) => sum + item.value,
-        0
-    );
+    return {
 
+        deposits,
+        cash,
+        stocks,
 
-    const totalDebts = loans + otherDebts;
+        cryptoUSD,
+        dollarRate,
+        cryptoRUB,
 
-    const netCapital = totalAssets - totalDebts;
+        other,
 
+        credits,
+        debts,
 
-    document.getElementById('totalAssets').textContent =
-        formatMoney(totalAssets);
+        totalAssets,
+        totalDebts,
 
-    document.getElementById('totalDebts').textContent =
-        formatMoney(totalDebts);
+        netCapital
 
-
-    const netElement = document.getElementById('netCapital');
-
-    netElement.textContent = formatMoney(netCapital);
-
-
-    if (netCapital < 0) {
-        netElement.classList.add('negative');
-    } else {
-        netElement.classList.remove('negative');
-    }
-
-
-    const structure = document.getElementById('structure');
-
-    structure.innerHTML = '';
-
-
-    assets.forEach(asset => {
-
-        if (asset.value <= 0) return;
-
-
-        const percent = totalAssets > 0
-            ? (asset.value / totalAssets * 100)
-            : 0;
-
-
-        const item = document.createElement('div');
-
-        item.className = 'structure-item';
-
-
-        item.innerHTML = `
-            <div class="structure-top">
-                <span class="structure-name">
-                    ${asset.name}
-                </span>
-
-                <span class="structure-percent">
-                    ${percent.toFixed(1)}%
-                </span>
-            </div>
-
-            <div class="bar">
-                <div class="bar-fill"
-                     style="width: ${percent}%">
-                </div>
-            </div>
-        `;
-
-
-        structure.appendChild(item);
-
-    });
-
-
-    if (totalAssets === 0) {
-
-        structure.innerHTML = `
-            <div class="note">
-                Введите данные об активах,
-                чтобы увидеть структуру капитала.
-            </div>
-        `;
-
-    }
-
-
-    document.getElementById('results').style.display = 'block';
-
-
-    document.getElementById('results').scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-    });
+    };
 
 }
+
+
+/* =========================
+   РАСЧЁТ
+========================= */
+
+function calculate() {
+
+    const state = getState();
+
+    if (!state) return;
+
+    currentState = state;
+
+    showResult(state);
+
+}
+
+
+/* =========================
+   РЕЗУЛЬТАТ
+========================= */
+
+function showResult(state) {
+
+    const result = document.getElementById("result");
+
+    result.innerHTML = `
+
+        <div class="row">
+            <span>Общий капитал</span>
+            <span class="value big">
+                ${money(state.totalAssets)}
+            </span>
+        </div>
+
+        <div class="row">
+            <span>Долги</span>
+            <span class="value">
+                ${money(state.totalDebts)}
+            </span>
+        </div>
+
+        <div class="row">
+            <span>Чистый капитал</span>
+            <span class="value net">
+                ${money(state.netCapital)}
+            </span>
+        </div>
+
+        <div class="row">
+            <span>Криптовалюта</span>
+            <span class="value">
+                ${dollars(state.cryptoUSD)}
+                =
+                ${money(state.cryptoRUB)}
+            </span>
+        </div>
+
+    `;
+
+}
+
+
+/* =========================
+   СОХРАНЕНИЕ
+========================= */
+
+function saveState() {
+
+    const state = getState();
+
+    if (!state) return;
+
+    currentState = state;
+
+    const snapshot = {
+
+        id: Date.now(),
+
+        date: new Date().toISOString(),
+
+        ...state
+
+    };
+
+    historyData.push(snapshot);
+
+    historyData.sort(function(a, b) {
+
+        return new Date(a.date) - new Date(b.date);
+
+    });
+
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(historyData)
+    );
+
+    renderHistory();
+    renderSelect();
+    renderChart();
+
+    showResult(state);
+
+    alert(
+        "Состояние капитала сохранено.\n\n" +
+        "Чистый капитал: " +
+        money(state.netCapital)
+    );
+
+}
+
+
+/* =========================
+   ЗАГРУЗКА ИСТОРИИ
+========================= */
+
+function loadHistory() {
+
+    try {
+
+        const saved =
+            localStorage.getItem(STORAGE_KEY);
+
+        if (saved) {
+
+            historyData = JSON.parse(saved);
+
+        }
+
+    } catch (error) {
+
+        historyData = [];
+
+    }
+
+    renderHistory();
+    renderSelect();
+    renderChart();
+
+}
+
+
+/* =========================
+   ИСТОРИЯ
+========================= */
+
+function renderHistory() {
+
+    const box =
+        document.getElementById("history");
+
+    if (!historyData.length) {
+
+        box.innerHTML = `
+            <div class="empty">
+                Пока нет сохранённых состояний.<br>
+                Рассчитайте капитал и нажмите
+                «Сохранить состояние».
+            </div>
+        `;
+
+        return;
+
+    }
+
+    const reversed =
+        [...historyData].reverse();
+
+    box.innerHTML = reversed.map(function(item) {
+
+        return `
+
+        <div class="history-item">
+
+            <div class="history-top">
+
+                <div class="history-date">
+                    ${dateText(item.date)}
+                </div>
+
+                <div class="history-capital">
+                    ${money(item.netCapital)}
+                </div>
+
+            </div>
+
+            <div class="note">
+                Активы: ${money(item.totalAssets)}
+                · Долги: ${money(item.totalDebts)}
+            </div>
+
+            <div class="history-buttons">
+
+                <button
+                    onclick="compareWithSnapshot(${item.id})">
+                    Сравнить
+                </button>
+
+                <button
+                    onclick="deleteSnapshot(${item.id})">
+                    Удалить
+                </button>
+
+            </div>
+
+        </div>
+
+        `;
+
+    }).join("");
+
+}
+
+
+/* =========================
+   SELECT
+========================= */
+
+function renderSelect() {
+
+    const select =
+        document.getElementById("compareSelect");
+
+    select.innerHTML =
+        `<option value="">
+            Выберите сохранённое состояние
+        </option>`;
+
+    [...historyData]
+        .sort(function(a,b) {
+
+            return new Date(b.date) -
+                   new Date(a.date);
+
+        })
+        .forEach(function(item) {
+
+            const option =
+                document.createElement("option");
+
+            option.value = item.id;
+
+            option.textContent =
+                dateText(item.date) +
+                " — " +
+                money(item.netCapital);
+
+            select.appendChild(option);
+
+        });
+
+}
+
+
+/* =========================
+   СРАВНЕНИЕ С ВЫБРАННЫМ
+========================= */
+
+function compareSelected() {
+
+    const id =
+        Number(
+            document.getElementById("compareSelect").value
+        );
+
+    if (!id) return;
+
+    compareWithSnapshot(id);
+
+}
+
+
+/* =========================
+   СРАВНЕНИЕ
+========================= */
+
+function compareWithSnapshot(id) {
+
+    if (!currentState) {
+
+        const state = getState();
+
+        if (!state) return;
+
+        currentState = state;
+
+    }
+
+    const oldState =
+        historyData.find(function(item) {
+
+            return item.id === id;
+
+        });
+
+    if (!oldState) return;
+
+    showComparison(
+        oldState,
+        currentState
+    );
+
+}
+
+
+/* =========================
+   СРАВНЕНИЕ ПО ПЕРИОДУ
+========================= */
+
+function comparePeriod(months, button) {
+
+    if (!currentState) {
+
+        const state = getState();
+
+        if (!state) return;
+
+        currentState = state;
+
+    }
+
+    document
+        .querySelectorAll(".compare-buttons button")
+        .forEach(function(btn) {
+
+            btn.classList.remove("active");
+
+        });
+
+    if (button) {
+
+        button.classList.add("active");
+
+    }
+
+    if (!historyData.length) {
+
+        document.getElementById("comparison").innerHTML = `
+            <div class="empty">
+                Нет сохранённых состояний для сравнения.
+            </div>
+        `;
+
+        return;
+
+    }
+
+    const target =
+        new Date();
+
+    target.setMonth(
+        target.getMonth() - months
+    );
+
+    let closest = null;
+
+    let closestDiff = Infinity;
+
+    historyData.forEach(function(item) {
+
+        const date =
+            new Date(item.date);
+
+        if (date > new Date()) return;
+
+        const diff =
+            Math.abs(
+                date.getTime() -
+                target.getTime()
+            );
+
+        if (diff < closestDiff) {
+
+            closestDiff = diff;
+
+            closest = item;
+
+        }
+
+    });
+
+    if (!closest) {
+
+        document.getElementById("comparison").innerHTML = `
+            <div class="empty">
+                Нет сохранения для этого периода.
+            </div>
+        `;
+
+        return;
+
+    }
+
+    document.getElementById("compareSelect").value =
+        closest.id;
+
+    showComparison(
+        closest,
+        currentState
+    );
+
+}
+
+
+/* =========================
+   ТАБЛИЦА СРАВНЕНИЯ
+========================= */
+
+function showComparison(oldState, newState) {
+
+    const box =
+        document.getElementById("comparison");
+
+    const rows = [
+
+        ["Вклады", oldState.deposits, newState.deposits],
+
+        ["Наличные", oldState.cash, newState.cash],
+
+        ["Акции и облигации", oldState.stocks, newState.stocks],
+
+        ["Криптовалюта", oldState.cryptoRUB, newState.cryptoRUB],
+
+        ["Другое", oldState.other, newState.other],
+
+        ["Долги", oldState.totalDebts, newState.totalDebts],
+
+        ["Чистый капитал", oldState.netCapital, newState.netCapital]
+
+    ];
+
+    let html = `
+
+        <div class="note">
+            Сравнение:
+            <strong>${dateText(oldState.date)}</strong>
+            →
+            <strong>сегодня</strong>
+        </div>
+
+        <table class="compare-table">
+
+            <thead>
+
+                <tr>
+                    <th>Показатель</th>
+                    <th>Тогда</th>
+                    <th>Сейчас</th>
+                    <th>Изменение</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+    `;
+
+    rows.forEach(function(row) {
+
+        const change =
+            row[2] - row[1];
+
+        let cls =
+            "change-zero";
+
+        if (change > 0) {
+
+            cls = "change-positive";
+
+        } else if (change < 0) {
+
+            cls = "change-negative";
+
+        }
+
+        const sign =
+            change > 0 ? "+" : "";
+
+        html += `
+
+            <tr>
+
+                <td>${row[0]}</td>
+
+                <td>${money(row[1])}</td>
+
+                <td>${money(row[2])}</td>
+
+                <td class="${cls}">
+                    ${sign}${money(change)}
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+    html += `
+
+            </tbody>
+
+        </table>
+
+    `;
+
+    box.innerHTML = html;
+
+}
+
+
+/* =========================
+   УДАЛЕНИЕ
+========================= */
+
+function deleteSnapshot(id) {
+
+    if (!confirm(
+        "Удалить это сохранение?"
+    )) {
+
+        return;
+
+    }
+
+    historyData =
+        historyData.filter(function(item) {
+
+            return item.id !== id;
+
+        });
+
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(historyData)
+    );
+
+    renderHistory();
+    renderSelect();
+    renderChart();
+
+    document.getElementById("comparison").innerHTML = "";
+
+}
+
+
+/* =========================
+   ГРАФИК
+========================= */
+
+function renderChart() {
+
+    const box =
+        document.getElementById("chart");
+
+    if (historyData.length < 2) {
+
+        box.innerHTML = `
+            <div class="empty">
+                Сохраните минимум два состояния,
+                чтобы увидеть динамику капитала.
+            </div>
+        `;
+
+        return;
+
+    }
+
+    const data =
+        [...historyData].sort(function(a,b) {
+
+            return new Date(a.date) -
+                   new Date(b.date);
+
+        });
+
+    const width = 800;
+    const height = 280;
+
+    const paddingLeft = 60;
+    const paddingRight = 25;
+    const paddingTop = 25;
+    const paddingBottom = 45;
+
+    const chartWidth =
+        width -
+        paddingLeft -
+        paddingRight;
+
+    const chartHeight =
+        height -
+        paddingTop -
+        paddingBottom;
+
+    const values =
+        data.map(function(item) {
+
+            return item.netCapital;
+
+        });
+
+    let min =
+        Math.min(...values);
+
+    let max =
+        Math.max(...values);
+
+    if (min === max) {
+
+        min -= 1;
+        max += 1;
+
+    }
+
+    const range =
+        max - min;
+
+    min -= range * 0.1;
+    max += range * 0.1;
+
+    function x(index) {
+
+        if (data.length === 1) {
+
+            return paddingLeft +
+                chartWidth / 2;
+
+        }
+
+        return paddingLeft +
+            index *
+            chartWidth /
+            (data.length - 1);
+
+    }
+
+    function y(value) {
+
+        return paddingTop +
+            (max - value) /
+            (max - min) *
+            chartHeight;
+
+    }
+
+    let path = "";
+
+    data.forEach(function(item, index) {
+
+        const px = x(index);
+        const py = y(item.netCapital);
+
+        if (index === 0) {
+
+            path +=
+                "M " + px + " " + py;
+
+        } else {
+
+            path +=
+                " L " + px + " " + py;
+
+        }
+
+    });
+
+    let circles = "";
+
+    data.forEach(function(item, index) {
+
+        circles += `
+
+            <circle
+                cx="${x(index)}"
+                cy="${y(item.netCapital)}"
+                r="5"
+                fill="#4facfe"
+            />
+
+        `;
+
+    });
+
+    const firstLabel =
+        dateText(data[0].date);
+
+    const lastLabel =
+        dateText(data[data.length - 1].date);
+
+    box.innerHTML = `
+
+        <div class="chart-wrap">
+
+            <svg
+                viewBox="0 0 ${width} ${height}"
+                preserveAspectRatio="none"
+            >
+
+                <line
+                    x1="${paddingLeft}"
+                    y1="${paddingTop}"
+                    x2="${paddingLeft}"
+                    y2="${height-paddingBottom}"
+                    stroke="#475569"
+                />
+
+                <line
+                    x1="${paddingLeft}"
+                    y1="${height-paddingBottom}"
+                    x2="${width-paddingRight}"
+                    y2="${height-paddingBottom}"
+                    stroke="#475569"
+                />
+
+                <text
+                    x="5"
+                    y="${paddingTop + 5}"
+                    fill="#94a3b8"
+                    font-size="13"
+                >
+                    ${money(max)}
+                </text>
+
+                <text
+                    x="5"
+                    y="${height-paddingBottom}"
+                    fill="#94a3b8"
+                    font-size="13"
+                >
+                    ${money(min)}
+                </text>
+
+                <path
+                    d="${path}"
+                    fill="none"
+                    stroke="#4facfe"
+                    stroke-width="4"
+                />
+
+                ${circles}
+
+                <text
+                    x="${paddingLeft}"
+                    y="${height-15}"
+                    fill="#94a3b8"
+                    font-size="13"
+                >
+                    ${firstLabel}
+                </text>
+
+                <text
+                    x="${width-paddingRight}"
+                    y="${height-15}"
+                    fill="#94a3b8"
+                    font-size="13"
+                    text-anchor="end"
+                >
+                    ${lastLabel}
+                </text>
+
+            </svg>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================
+   СТАРТ
+========================= */
+
+loadHistory();
+
+calculate();
 
 </script>
 

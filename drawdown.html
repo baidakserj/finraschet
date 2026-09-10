@@ -181,6 +181,7 @@ button:hover {
 <a href="index.html" class="back">← Все калькуляторы</a>
 
 <h1>📉 Калькулятор просадки</h1>
+
 <div class="subtitle">
     Узнайте размер потери и сколько нужно заработать для восстановления капитала
 </div>
@@ -220,25 +221,33 @@ button:hover {
     </div>
 
     <div class="result-item">
-        <span class="result-label">Нужно вернуть</span>
+        <span class="result-label">Нужно восстановить</span>
         <span class="result-value need" id="restore"></span>
     </div>
 
     <div class="result-item">
-        <span class="result-label">Нужна доходность для восстановления</span>
+        <span class="result-label">Рост от текущего капитала</span>
         <span class="result-value need" id="recovery"></span>
     </div>
 
+    <div class="result-item">
+        <span class="result-label">Итоговый капитал</span>
+        <span class="result-value need" id="finalCapital"></span>
+    </div>
+
     <div class="highlight">
+
         <div class="highlight-title">
             Чтобы вернуться к исходному капиталу, нужно заработать
         </div>
+
         <div class="highlight-value" id="highlight"></div>
+
     </div>
 
     <div class="note">
-        Важно: процент потери и процент, необходимый для восстановления,
-        различаются. Например, после падения на 50% потребуется рост на 100%,
+        Процент потери и процент, необходимый для восстановления, различаются.
+        Например, после падения на 50% потребуется рост на 100%,
         чтобы вернуться к исходной сумме.
     </div>
 
@@ -247,6 +256,7 @@ button:hover {
 </div>
 
 <script>
+
 function formatMoney(value) {
     return value.toLocaleString('ru-RU', {
         minimumFractionDigits: 0,
@@ -255,6 +265,7 @@ function formatMoney(value) {
 }
 
 function calculate() {
+
     const initial = parseFloat(document.getElementById('initial').value);
     const current = parseFloat(document.getElementById('current').value);
 
@@ -269,37 +280,56 @@ function calculate() {
     }
 
     const loss = initial - current;
+
     const drawdown = (loss / initial) * 100;
 
     let recovery = 0;
 
     if (current > 0) {
         recovery = (loss / current) * 100;
-    } else {
-        recovery = Infinity;
     }
 
-    document.getElementById('was').textContent = formatMoney(initial);
-    document.getElementById('became').textContent = formatMoney(current);
-    document.getElementById('loss').textContent = formatMoney(loss);
-    document.getElementById('drawdown').textContent = drawdown.toFixed(2) + '%';
-    document.getElementById('restore').textContent = formatMoney(loss);
+    document.getElementById('was').textContent =
+        formatMoney(initial);
 
-    if (isFinite(recovery)) {
+    document.getElementById('became').textContent =
+        formatMoney(current);
+
+    document.getElementById('loss').textContent =
+        formatMoney(loss);
+
+    document.getElementById('drawdown').textContent =
+        drawdown.toFixed(2) + '%';
+
+    document.getElementById('restore').textContent =
+        formatMoney(loss);
+
+    document.getElementById('finalCapital').textContent =
+        formatMoney(initial);
+
+    if (current > 0) {
+
         document.getElementById('recovery').textContent =
             recovery.toFixed(2) + '%';
 
         document.getElementById('highlight').textContent =
             formatMoney(loss) + ' (' + recovery.toFixed(2) + '%)';
+
     } else {
-        document.getElementById('recovery').textContent = '∞';
+
+        document.getElementById('recovery').textContent =
+            '∞';
 
         document.getElementById('highlight').textContent =
             'Невозможно рассчитать';
+
     }
 
-    document.getElementById('result').style.display = 'block';
+    document.getElementById('result').style.display =
+        'block';
 }
+
 </script>
 
 </body>
+</html>

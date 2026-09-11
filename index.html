@@ -92,6 +92,56 @@ body {
     background: rgba(79,172,254,.12);
 }
 
+/* ГЛАВНЫЙ ИНСТРУМЕНТ */
+
+.main-card {
+    grid-column: 1 / -1;
+    border: 1px solid rgba(79,172,254,.45);
+    background:
+        linear-gradient(135deg, rgba(28,43,82,.97), rgba(30,25,65,.97));
+    box-shadow:
+        0 20px 70px rgba(0,0,0,.35),
+        0 0 35px rgba(79,172,254,.08);
+}
+
+.main-card::before {
+    width: 260px;
+    height: 260px;
+    right: -90px;
+    top: -110px;
+    background: rgba(79,172,254,.16);
+}
+
+.main-badge {
+    display: inline-block;
+    margin-bottom: 14px;
+    padding: 7px 13px;
+    border-radius: 20px;
+    background: rgba(79,172,254,.15);
+    border: 1px solid rgba(79,172,254,.25);
+    color: #7fc0ff;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.main-card .icon {
+    font-size: 46px;
+}
+
+.main-card h2 {
+    font-size: 29px;
+}
+
+.main-card p {
+    max-width: 800px;
+}
+
+.main-card .link {
+    background: linear-gradient(90deg, #1677ff, #7b61ff);
+    padding: 14px 24px;
+    font-size: 16px;
+}
+
 .icon {
     font-size: 42px;
     margin-bottom: 15px;
@@ -149,8 +199,13 @@ footer {
 }
 
 @media (max-width: 700px) {
+
     .cards {
         grid-template-columns: 1fr;
+    }
+
+    .main-card {
+        grid-column: auto;
     }
 
     .header h1 {
@@ -186,6 +241,34 @@ footer {
 
 
     <div class="cards">
+
+
+        <!-- МОЙ КАПИТАЛ — ГЛАВНЫЙ ИНСТРУМЕНТ -->
+
+        <div class="card main-card">
+
+            <div class="main-badge">
+                ⭐ ГЛАВНЫЙ ИНСТРУМЕНТ
+            </div>
+
+            <div class="icon">💰</div>
+
+            <h2>
+                Мой капитал
+            </h2>
+
+            <p>
+                Соберите в одном месте свои активы и долги,
+                чтобы узнать общий и чистый капитал,
+                увидеть структуру своих денег и следить,
+                как меняется ваше финансовое положение со временем.
+            </p>
+
+            <a class="link" href="capital.html">
+                Открыть «Мой капитал» →
+            </a>
+
+        </div>
 
 
         <!-- ВКЛАД -->
@@ -383,29 +466,6 @@ footer {
 
             <a class="link" href="drawdown.html">
                 Открыть калькулятор →
-            </a>
-
-        </div>
-
-
-        <!-- МОЙ КАПИТАЛ -->
-
-        <div class="card">
-
-            <div class="icon">💰</div>
-
-            <h2>
-                Мой капитал
-            </h2>
-
-            <p>
-                Соберите в одном месте свои активы и долги,
-                чтобы узнать общий и чистый капитал
-                и увидеть структуру своих денег.
-            </p>
-
-            <a class="link" href="capital.html">
-                Открыть → 
             </a>
 
         </div>

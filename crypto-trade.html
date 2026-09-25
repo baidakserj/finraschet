@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ФинРасчёт — калькулятор криптосделок</title>
+<style>
+*{box-sizing:border-box}
+body{
+margin:0;padding:28px 15px;min-height:100vh;color:#e8edf7;
+font-family:Arial,sans-serif;background:#0b1020;
+background-image:radial-gradient(circle at 20% 10%,#243b80 0,transparent 35%),
+radial-gradient(circle at 80% 20%,#4b1f72 0,transparent 35%)
+}
+.container{max-width:1150px;margin:auto}
+.back{display:inline-block;color:#4facfe;text-decoration:none;margin-bottom:20px}
+.back:hover{color:#8f7cff}
+h1{margin:0 0 8px}
+.sub{color:#aeb8cc;margin-bottom:22px}
+.card{
+background:rgba(18,25,48,.92);border:1px solid #293453;
+border-radius:16px;padding:20px;margin-bottom:18px
+}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.tab{
+background:#11182c;color:#b9c5db;border:1px solid #34415f;
+border-radius:9px;padding:10px 16px;cursor:pointer
+}
+.tab.active{background:#4facfe;color:#fff;border-color:#4facfe}
+.grid{
+display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px
+}
+.field label{
+display:block;color:#9da9c2;font-size:12px;margin-bottom:6px
+}
+.field input,.field select{
+width:100%;background:#11182c;color:#e8edf7;
+border:1px solid #34415f;border-radius:8px;
+padding:10px 12px;font-size:14px
+}
+.field input:focus,.field select:focus{
+outline:none;border-color:#4facfe
+}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+button{
+background:#4facfe;color:#fff;border:0;border-radius:8px;
+padding:10px 15px;font-size:14px;cursor:pointer
+}
+button:hover{background:#8f7cff}
+button.secondary{
+background:#11182c;border:1px solid #34415f
+}
+.hint{color:#8f9bb3;font-size:12px;margin-top:7px}
+.rows{overflow:auto;margin-top:15px}
+table{
+width:100%;border-collapse:collapse;min-width:980px
+}
+th,td{
+padding:10px 8px;border-bottom:1px solid #293453;
+text-align:left;white-space:nowrap
+}
+th{color:#9da9c2;font-size:12px}
+.row-input{
+width:100%;min-width:90px;background:#11182c;
+color:#e8edf7;border:1px solid #34415f;
+border-radius:7px;padding:8px
+}
+.del{
+background:#2a1830;border:1px solid #5b315e;
+padding:7px 10px
+}
+.summary{
+display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));
+gap:10px
+}
+.stat{
+background:#11182c;border-radius:11px;padding:13px
+}
+.label{font-size:12px;color:#9da9c2}
+.value{display:block;font-size:20px;margin-top:6px}
+.good{color:#63d68a}
+.bad{color:#ff7d7d}
+.notice{
+padding:11px;background:#151e35;border-radius:9px;
+color:#bdc8dc;margin-top:12px
+}
+.hidden{display:none}
+.drop{
+display:block;border:2px dashed #42527d;border-radius:14px;
+padding:30px;text-align:center;cursor:pointer
+}
+.drop:hover{border-color:#4facfe}
+.drop input{display:none}
+.small{font-size:12px;color:#8f9bb3}
+
+@media(max-width:800px){
+.grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:500px){
+.grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<a class="back" href="index.html">← Все калькуляторы</a>
+
+<h1>₿ Калькулятор криптосделок</h1>
+
+<div class="sub">
+Несколько входов и выходов · LONG / SHORT · Spot / Futures · комиссии · Funding
+</div>
+
+<div class="tabs">
+<button class="tab active" data-tab="manual">Ручной расчёт</button>
+<button class="tab" data-tab="csv">Анализ CSV Bybit</button>
+</div>
+
+
+<section id="manual" class="tabpane">
+
+<div class="card">
+
+<div class="grid">
+
+<div class="field">
+<label>Тип сделки</label>
+<select id="type">
+<option value="FUTURES">Futures</option>
+<option value="SPOT">Spot</option>
+</select>
+</div>
+
+<div class="field">
+<label>Контракт</label>
+<select id="contract">
+<option value="linear">Linear (USDT)</option>
+<option value="inverse">Inverse (USD)</option>
+</select>
+</div>
+
+<div class="field">
+<label>Сторона</label>
+<select id="side">
+<option value="LONG">LONG</option>
+<option value="SHORT">SHORT</option>
+</select>
+</div>
+
+<div class="field">
+<label>Режим</label>
+<select id="mode">
+<option value="one-way">One-way</option>
+<option value="hedge">Hedge</option>
+</select>
+</div>
+
+</div>
+
+<div class="hint">
+Для Spot автоматически используется LONG. Funding для Spot не учитывается.
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>Сделки</h2>
+
+<div class="grid">
+
+<div class="field">
+<label>Действие</label>
+<select id="action">
+<option value="OPEN">Открытие / добавление</option>
+<option value="CLOSE">Закрытие / уменьшение</option>
+</select>
+</div>
+
+<div class="field">
+<label>Количество</label>
+<input id="qty" type="number" step="any" min="0"
+placeholder="Например 0.5">
+</div>
+
+<div class="field">
+<label>Цена</label>
+<input id="price" type="number" step="any" min="0"
+placeholder="Например 2500">
+</div>
+
+<div class="field">
+<label>Комиссия</label>
+<input id="fee" type="number" step="any" min="0" value="0">
+</div>
+
+</div>
+
+
+<div class="grid" style="margin-top:12px">
+
+<div class="field">
+<label>Валюта комиссии</label>
+<input id="feeCurrency" value="USDT"
+placeholder="USDT / BTC / USD">
+</div>
+
+<div class="field">
+<label>Время (необязательно)</label>
+<input id="time" type="datetime-local">
+</div>
+
+<div class="field">
+<label>Funding (только Futures)</label>
+<input id="funding" type="number" step="any"
+value="0"
+placeholder="Фактически списанный/полученный">
+</div>
+
+<div class="field">
+<label>Валюта Funding</label>
+<input id="fundingCurrency" value="USDT">
+</div>
+
+</div>
+
+
+<div class="actions">
+
+<button id="addTrade">+ Добавить сделку</button>
+
+<button class="secondary" id="clearTrades">
+Очистить всё
+</button>
+
+</div>
+
+
+<div class="rows">
+
+<table>
+
+<thead>
+<tr>
+<th>#</th>
+<th>Действие</th>
+<th>Кол-во</th>
+<th>Цена</th>
+<th>Комиссия</th>
+<th>Валюта</th>
+<th>Funding</th>
+<th>Время</th>
+<th></th>
+</tr>
+</thead>
+
+<tbody id="tradeRows"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>Результат</h2>
+
+<div id="result" class="notice">
+Добавьте хотя бы одну сделку.
+</div>
+
+<div id="stats" class="summary" style="margin-top:12px"></div>
+
+</div>
+
+</section>
+
+
+<section id="csv" class="tabpane hidden">
+
+<div class="card">
+
+<label class="drop" for="csvFile">
+
+<b>Выберите CSV-файл Bybit</b>
+
+<br>
+
+<span class="small">
+Сохраняем поддержку уже проверенного формата
+</span>
+
+<input id="csvFile" type="file" accept=".csv">
+
+</label>
+
+<div id="csvMsg" class="notice hidden"></div>
+
+</div>
+
+
+<div id="csvResult" class="card hidden">
+
+<div id="csvStats" class="summary"></div>
+
+<div class="rows">
+
+<table>
+
+<thead>
+
+<tr>
+<th>Рынок</th>
+<th>Сторона</th>
+<th>Кол-во</th>
+<th>Средний вход</th>
+<th>Валовой PnL</th>
+<th>Комиссии</th>
+<th>Funding</th>
+<th>Чистый PnL</th>
+<th>Статус</th>
+</tr>
+
+</thead>
+
+<tbody id="csvRows"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+
+<script>
+
+const $=id=>document.getElementById(id);
+
+const num=v=>Number(v)||0;
+
+let trades=[];
+
+
+/* Переключение вкладок */
+
+document.querySelectorAll('.tab').forEach(b=>{
+
+b.onclick=()=>{
+
+document.querySelectorAll('.tab')
+.forEach(x=>x.classList.remove('active'));
+
+b.classList.add('active');
+
+document.querySelectorAll('.tabpane')
+.forEach(x=>x.classList.add('hidden'));
+
+$(b.dataset.tab).classList.remove('hidden');
+
+};
+
+});
+
+
+/* Spot */
+
+$('type').onchange=()=>{
+
+if($('type').value==='SPOT'){
+
+$('side').value='LONG';
+$('side').disabled=true;
+
+$('mode').value='one-way';
+$('mode').disabled=true;
+
+$('contract').value='linear';
+$('contract').disabled=true;
+
+$('funding').value=0;
+
+}else{
+
+$('side').disabled=false;
+$('mode').disabled=false;
+$('contract').disabled=false;
+
+}
+
+};
+
+
+/* Добавление сделки */
+
+$('addTrade').onclick=()=>{
+
+const q=num($('qty').value);
+const p=num($('price').value);
+
+if(q<=0||p<=0){
+
+alert('Укажите количество и цену.');
+
+return;
+
+}
+
+trades.push({
+
+action:$('action').value,
+
+quantity:q,
+
+price:p,
+
+fee:num($('fee').value),
+
+feeCurrency:$('feeCurrency').value.trim(),
+
+funding:$('type').value==='FUTURES'
+?num($('funding').value):0,
+
+fundingCurrency:$('fundingCurrency').value.trim(),
+
+time:$('time').value||new Date().toISOString()
+
+});
+
+
+renderTrades();
+
+calculate();
+
+$('qty').value='';
+$('price').value='';
+$('fee').value='0';
+$('funding').value='0';
+
+};
+
+
+/* Очистка */
+
+$('clearTrades').onclick=()=>{
+
+trades=[];
+
+renderTrades();
+
+calculate();
+
+};
+
+
+/* Таблица сделок */
+
+function renderTrades(){
+
+$('tradeRows').innerHTML=trades.map((t,i)=>`
+
+<tr>
+
+<td>${i+1}</td>
+
+<td>${t.action==='OPEN'
+?'Открытие':'Закрытие'}</td>
+
+<td>${t.quantity}</td>
+
+<td>${t.price}</td>
+
+<td>${t.fee}</td>
+
+<td>${t.feeCurrency||'—'}</td>
+
+<td>${t.funding}</td>
+
+<td>${new Date(t.time)
+.toLocaleString('ru-RU')}</td>
+
+<td>
+<button class="del"
+onclick="removeTrade(${i})">×</button>
+</td>
+
+</tr>
+
+`).join('');
+
+}
+
+
+window.removeTrade=i=>{
+
+trades.splice(i,1);
+
+renderTrades();
+
+calculate();
+
+};
+
+
+/* Расчёт */
+
+function calculate(){
+
+if(!trades.length){
+
+$('result').textContent='Добавьте хотя бы одну сделку.';
+
+$('stats').innerHTML='';
+
+return;
+
+}
+
+const type=$('type').value;
+
+const contract=$('contract').value;
+
+const side=type==='SPOT'
+?'LONG'
+:$('side').value;
+
+
+let qty=0;
+let cost=0;
+let gross=0;
+let entryFees=0;
+let exitFees=0;
+let funding=0;
+let avg=0;
+let status='OPEN';
+
+
+for(const t of trades){
+
+if(t.action==='OPEN'){
+
+cost+=contract==='inverse'
+?t.quantity/t.price
+:t.quantity*t.price;
+
+qty+=t.quantity;
+
+avg=contract==='inverse'
+?qty/cost
+:cost/qty;
+
+entryFees+=t.fee;
+
+}else{
+
+if(!qty){
+
+$('result').innerHTML=
+'<span class="bad">Ошибка: закрытие указано раньше открытия.</span>';
+
+return;
+
+}
+
+const closeQ=Math.min(t.quantity,qty);
+
+const a=avg;
+
+
+gross+=contract==='inverse'
+
+?(side==='LONG'
+?closeQ*(1/a-1/t.price)
+:closeQ*(1/t.price-1/a))
+
+:(side==='LONG'
+?closeQ*(t.price-a)
+:closeQ*(a-t.price));
+
+
+const ratio=closeQ/qty;
+
+cost*=1-ratio;
+
+qty-=closeQ;
+
+exitFees+=t.fee;
+
+
+if(qty<=1e-12){
+
+qty=0;
+cost=0;
+avg=0;
+status='CLOSED';
+
+}else{
+
+avg=contract==='inverse'
+?qty/cost
+:cost/qty;
+
+}
+
+}
+
+
+if(type==='FUTURES'){
+
+funding+=t.funding;
+
+}
+
+}
+
+
+const net=gross-entryFees-exitFees-funding;
+
+
+$('result').innerHTML=
+
+`<b>${
+status==='CLOSED'
+?'Сделка полностью закрыта'
+:'Позиция остаётся открытой'
+}</b>${
+status==='OPEN'
+?' — PnL показывает только уже реализованную часть.'
+:''}`;
+
+
+$('stats').innerHTML=[
+
+['Сторона',side],
+
+['Средний вход',
+avg?avg.toFixed(8):'—'],
+
+['Остаток',
+qty.toFixed(8)],
+
+['Валовой PnL',
+gross.toFixed(8)],
+
+['Комиссии',
+(entryFees+exitFees).toFixed(8)],
+
+['Funding',
+funding.toFixed(8)],
+
+['Чистый PnL',
+net.toFixed(8)]
+
+].map(x=>`
+
+<div class="stat">
+
+<span class="label">${x[0]}</span>
+
+<span class="value ${
+x[0].includes('PnL')
+?(Number(x[1])>=0?'good':'bad')
+:''
+}">${x[1]}</span>
+
+</div>
+
+`).join('');
+
+}
+
+
+/* CSV */
+
+function parseCSV(s){
+
+s=s.replace(/^\uFEFF/,'');
+
+const lines=s.split(/\r?\n/).filter(x=>x.trim());
+
+if(!lines.length)return[];
+
+
+function row(line){
+
+let a=[],v='',q=false;
+
+for(let i=0;i<line.length;i++){
+
+let c=line[i];
+
+if(c==='"'&&line[i+1]==='"'){
+
+v+='"';
+i++;
+continue;
+
+}
+
+if(c==='"'){
+
+q=!q;
+continue;
+
+}
+
+if(c===','&&!q){
+
+a.push(v);
+v='';
+
+}else{
+
+v+=c;
+
+}
+
+}
+
+a.push(v);
+
+return a;
+
+}
+
+
+const h=row(lines[0]).map(x=>x.trim());
+
+return lines.slice(1).map(l=>{
+
+const a=row(l),o={};
+
+h.forEach((x,i)=>o[x]=a[i]??'');
+
+return o;
+
+});
+
+}
+
+
+/* Анализ CSV */
+
+function analyzeCSV(raw){
+
+const out=[];
+
+
+for(const market of
+[...new Set(raw.map(r=>r.Market).filter(Boolean))]){
+
+const r=raw.filter(x=>x.Market===market);
+
+const inverse=market.endsWith('USD');
+
+const hedge=market.endsWith('USDT');
+
+
+const trades=r
+
+.filter(x=>x['Filled Type']==='Trade')
+
+.map(x=>({
+
+side:String(x.Direction).toUpperCase(),
+
+q:num(x['Filled Quantity']),
+
+p:num(x['Filled Price']),
+
+fee:num(x['Trading Fee']),
+
+t:x['Transaction Time(UTC+0)']
+||x['Transaction Time(UTC+0']
+||''
+
+}))
+
+.filter(x=>x.q&&x.p)
+
+.sort((a,b)=>new Date(a.t)-new Date(b.t));
+
+
+const funds=r
+
+.filter(x=>x['Filled Type']==='Funding')
+
+.map(x=>({
+
+amount:num(x['Trading Fee']),
+
+side:String(x.Direction||'').toUpperCase(),
+
+t:x['Transaction Time(UTC+0)']
+||x['Transaction Time(UTC+0']
+||''
+
+}))
+
+.sort((a,b)=>new Date(a.t)-new Date(b.t));
+
+
+const states=hedge
+?{LONG:null,SHORT:null}
+:{NET:null};
+
+
+const make=(side,t)=>({
+
+market,
+side,
+q:0,
+cost:0,
+avg:0,
+gross:0,
+fees:0,
+funding:0,
+opened:t.t,
+closed:null,
+status:'OPEN'
+
+});
+
+
+const add=(p,t,q)=>{
+
+p.q+=q;
+
+p.cost+=inverse
+?q/t.p
+:q*t.p;
+
+p.avg=inverse
+?p.q/p.cost
+:p.cost/p.q;
+
+p.fees+=t.fee;
+
+};
+
+
+const close=(p,t,q)=>{
+
+const old=p.q;
+
+const a=p.avg;
+
+
+p.gross+=inverse
+
+?(p.side==='LONG'
+?q*(1/a-1/t.p)
+:q*(1/t.p-1/a))
+
+:(p.side==='LONG'
+?q*(t.p-a)
+:q*(a-t.p));
+
+
+p.cost*=((old-q)/old);
+
+p.q-=q;
+
+p.fees+=t.fee;
+
+
+if(p.q<1e-10){
+
+p.q=0;
+p.status='CLOSED';
+p.closed=t.t;
+
+}else{
+
+p.avg=inverse
+?p.q/p.cost
+:p.cost/p.q;
+
+}
+
+};
+
+
+for(const t of trades){
+
+if(hedge){
+
+let p=states[t.side];
+
+let opp=
+states[t.side==='LONG'
+?'SHORT':'LONG'];
+
+
+if(p){
+
+add(p,t,t.q);
+
+continue;
+
+}
+
+
+if(opp){
+
+const q=Math.min(t.q,opp.q);
+
+close(opp,t,q);
+
+let rest=t.q-q;
+
+
+if(opp.status==='CLOSED'){
+
+out.push(opp);
+
+states[opp.side]=null;
+
+}
+
+
+if(rest>1e-10){
+
+p=make(t.side,t);
+
+states[t.side]=p;
+
+add(p,t,rest);
+
+}
+
+}else{
+
+p=make(t.side,t);
+
+states[t.side]=p;
+
+add(p,t,t.q);
+
+}
+
+}else{
+
+let p=states.NET;
+
+
+if(!p){
+
+p=make(t.side,t);
+
+states.NET=p;
+
+add(p,t,t.q);
+
+}else if(p.side===t.side){
+
+add(p,t,t.q);
+
+}else{
+
+const q=Math.min(t.q,p.q);
+
+close(p,t,q);
+
+
+if(p.status==='CLOSED'){
+
+out.push(p);
+
+states.NET=null;
+
+}
+
+
+const rest=t.q-q;
+
+
+if(rest>1e-10){
+
+p=make(t.side,t);
+
+states.NET=p;
+
+add(p,t,rest);
+
+}
+
+}
+
+}
+
+}
+
+
+/* Funding */
+
+for(const f of funds){
+
+let candidates=[];
+
+
+Object.values(states).forEach(p=>{
+
+if(p&&p.opened<=f.t)
+candidates.push(p);
+
+});
+
+
+out.forEach(p=>{
+
+if(
+p.market===market &&
+p.opened<=f.t &&
+p.closed &&
+f.t<=p.closed
+)
+
+candidates.push(p);
+
+});
+
+
+const u=[...new Set(candidates)];
+
+
+if(u.length===1){
+
+u[0].funding+=f.amount;
+
+}
+
+}
+
+
+/* Открытые позиции */
+
+Object.values(states).forEach(p=>{
+
+if(p)out.push(p);
+
+});
+
+}
+
+
+return out;
+
+}
+
+
+/* Загрузка CSV */
+
+$('csvFile').onchange=e=>{
+
+const f=e.target.files[0];
+
+if(!f)return;
+
+
+const rd=new FileReader();
+
+
+rd.onload=()=>{
+
+try{
+
+const ps=analyzeCSV(parseCSV(rd.result));
+
+
+$('csvResult').classList.remove('hidden');
+
+
+$('csvStats').innerHTML=[
+
+['Позиций',ps.length],
+
+['Закрыто',
+ps.filter(p=>p.status==='CLOSED').length],
+
+['Открыто',
+ps.filter(p=>p.status==='OPEN').length],
+
+['Валовой PnL',
+ps.reduce((s,p)=>s+p.gross,0).toFixed(8)],
+
+['Комиссии',
+ps.reduce((s,p)=>s+p.fees,0).toFixed(8)],
+
+['Funding',
+ps.reduce((s,p)=>s+p.funding,0).toFixed(8)],
+
+['Чистый PnL',
+ps.reduce(
+(s,p)=>s+p.gross-p.fees-p.funding,0
+).toFixed(8)]
+
+].map(x=>`
+
+<div class="stat">
+
+<span class="label">${x[0]}</span>
+
+<span class="value">${x[1]}</span>
+
+</div>
+
+`).join('');
+
+
+$('csvRows').innerHTML=ps.map(p=>{
+
+const net=p.gross-p.fees-p.funding;
+
+
+return `<tr>
+
+<td>${p.market}</td>
+
+<td>${p.side}</td>
+
+<td>${p.q.toFixed(8)}</td>
+
+<td>${p.avg.toFixed(8)}</td>
+
+<td>${p.gross.toFixed(8)}</td>
+
+<td>${p.fees.toFixed(8)}</td>
+
+<td>${p.funding.toFixed(8)}</td>
+
+<td class="${net>=0?'good':'bad'}">
+${net.toFixed(8)}
+</td>
+
+<td>
+${p.status==='CLOSED'
+?'Закрыта'
+:'Открыта'}
+</td>
+
+</tr>`;
+
+}).join('');
+
+
+$('csvMsg').classList.remove('hidden');
+
+$('csvMsg').textContent=
+'Готово: '+ps.length+
+' позиций восстановлено.';
+
+
+}catch(err){
+
+$('csvMsg').classList.remove('hidden');
+
+$('csvMsg').textContent=
+'Ошибка: '+err.message;
+
+}
+
+};
+
+rd.readAsText(f);
+
+};
+
+</script>
+
+</body>
+</html>

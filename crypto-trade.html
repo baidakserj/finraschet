@@ -2,172 +2,177 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ФинРасчёт — криптоторговля</title>
 
 <style>
 *{box-sizing:border-box}
 body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:
-      radial-gradient(circle at top left,#243b80 0,transparent 35%),
-      radial-gradient(circle at bottom right,#4b1f72 0,transparent 35%),
-      #0b1020;
-    color:#fff;
-    min-height:100vh;
+margin:0;
+background:radial-gradient(circle at top left,#243b80,transparent 35%),
+radial-gradient(circle at bottom right,#4b1f72,transparent 35%),#0b1020;
+color:#eef2ff;
+font:15px Arial,sans-serif
 }
-.container{width:min(1250px,96%);margin:auto;padding:28px 0 50px}
-.back{color:#4facfe;text-decoration:none;font-weight:bold}
-.back:hover{color:#8f7cff}
-h1{text-align:center;margin:18px 0 6px}
-.subtitle{text-align:center;color:#aeb8cc;margin-bottom:25px}
-
+.wrap{width:min(1300px,96%);margin:auto;padding:26px 0 50px}
+.back{color:#55adff;text-decoration:none}
+h1{text-align:center;margin:18px 0 5px}
+.sub{text-align:center;color:#aab7d2;margin-bottom:25px}
 .card{
-    background:rgba(17,24,39,.94);
-    border:1px solid #293653;
-    border-radius:16px;
-    padding:18px;
-    margin-bottom:18px;
-    box-shadow:0 12px 30px rgba(0,0,0,.18);
+background:#111827f2;
+border:1px solid #2b3a5b;
+border-radius:15px;
+padding:19px;
+margin-bottom:17px
 }
-
-.tabs{display:flex;gap:10px;flex-wrap:wrap}
-button,.btn{
-    border:0;
-    border-radius:9px;
-    padding:10px 15px;
-    cursor:pointer;
-    font-weight:bold;
+.controls,.buttons{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+align-items:center
 }
-.primary{background:#2563eb;color:white}
-.secondary{background:#27334d;color:#e7edfa}
-.danger{background:#672936;color:#fff}
-.active{background:#7c3aed!important;color:#fff}
-
 .setup{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:12px;
-    margin-top:15px;
+display:grid;
+grid-template-columns:repeat(4,minmax(0,1fr));
+gap:12px
 }
-
-label{font-size:13px;color:#aeb8cc}
+label{color:#b6c3dc;font-size:13px}
 input,select{
-    width:100%;
-    margin-top:5px;
-    padding:10px;
-    border-radius:8px;
-    border:1px solid #34425f;
-    background:#0d1526;
-    color:white;
+background:#0c1425;
+border:1px solid #354665;
+border-radius:8px;
+color:#fff;
+padding:9px;
+width:100%;
+margin-top:5px;
+font:inherit
 }
-
-.table-wrap{overflow:auto;margin-top:15px}
-table{border-collapse:collapse;width:100%;min-width:1180px}
+button{
+border:0;
+border-radius:9px;
+padding:11px 16px;
+cursor:pointer;
+font-weight:bold;
+color:white;
+background:#2563eb
+}
+.alt{background:#283650}
+.danger{background:#712d3b}
+.active{background:#7c3aed}
+.scroll{overflow:auto;margin-top:16px}
+table{
+border-collapse:collapse;
+min-width:1450px;
+width:100%
+}
 th,td{
-    padding:8px;
-    border-bottom:1px solid #27334d;
-    text-align:left;
-    font-size:13px;
+padding:7px;
+border-bottom:1px solid #293853;
+text-align:left;
+font-size:13px
 }
-th{color:#aeb8cc}
-td input,td select{margin:0;padding:7px}
-
-.summary{
-    display:grid;
-    grid-template-columns:repeat(5,1fr);
-    gap:12px;
+th{color:#aab8d1}
+td input,td select{padding:7px;margin:0}
+td button{padding:7px 11px}
+.stats{
+display:grid;
+grid-template-columns:repeat(4,minmax(0,1fr));
+gap:12px
 }
-.box{
-    background:#0d1526;
-    border:1px solid #293653;
-    border-radius:12px;
-    padding:14px;
+.stat{
+background:#10192d;
+border:1px solid #2b3a5b;
+border-radius:12px;
+padding:14px;
+overflow-wrap:anywhere
 }
-.box span{color:#95a3bd;font-size:12px}
-.box b{display:block;font-size:19px;margin-top:5px}
-.green{color:#57d18c}
-.red{color:#ff7180}
-.note{color:#9daac0;font-size:13px;line-height:1.5}
+.stat small{color:#aebbd2}
+.stat strong{
+display:block;
+font-size:19px;
+margin-top:8px
+}
+.note{
+font-size:13px;
+color:#b7c4da;
+line-height:1.6
+}
+.green{color:#60d994}
+.red{color:#ff7989}
 .hidden{display:none}
+#result{line-height:1.9;overflow-wrap:anywhere}
+#result b{color:#fff}
 
-@media(max-width:800px){
-    .setup,.summary{grid-template-columns:1fr 1fr}
+@media(max-width:850px){
+.setup,.stats{
+grid-template-columns:repeat(2,minmax(0,1fr))
+}
+}
+@media(max-width:450px){
+.setup,.stats{grid-template-columns:1fr}
 }
 </style>
 </head>
 
 <body>
-<div class="container">
+<main class="wrap">
 
 <a href="index.html" class="back">← Все калькуляторы</a>
 
 <h1>Криптоторговля</h1>
-<div class="subtitle">Spot и Futures · несколько бирж · комиссии · Funding · частичные входы и выходы</div>
+<p class="sub">
+Spot и Futures · биржи · комиссии · Funding · частичные входы и выходы
+</p>
 
-<div class="card">
-    <div class="tabs">
-        <button id="manualTab" class="primary active">✍ Ручной ввод</button>
-        <button id="csvTab" class="secondary">📂 Импорт CSV</button>
-    </div>
-</div>
+<section class="card buttons">
+<button id="manualTab" class="active">✍ Ручной ввод</button>
+<button id="csvTab" class="alt">📂 Импорт CSV</button>
+</section>
 
 <div id="manualBlock">
 
-<div class="card">
+<section class="card setup">
 
-<div class="setup">
-
-<label>
-Биржа
-<input id="exchange" list="exchangeList" value="Bybit" placeholder="Bybit">
-<datalist id="exchangeList">
+<label>Биржа
+<input id="exchange" list="exchanges" value="Bybit">
+<datalist id="exchanges">
 <option value="Bybit">
 <option value="OKX">
 <option value="Binance">
 <option value="BingX">
 <option value="MEXC">
-<option value="Gate.io">
 </datalist>
 </label>
 
-<label>
-Тип торговли
-<select id="tradeType">
+<label>Тип торговли
+<select id="type">
 <option value="spot">Spot</option>
 <option value="linear">Futures Linear</option>
 <option value="inverse">Futures Inverse</option>
 </select>
 </label>
 
-<label>
-Торговая пара
-<input id="pair" value="BTC/USDT" placeholder="BTC/USDT">
+<label>Пара
+<input id="pair" value="LTC/USDT">
 </label>
 
-<label>
-Название сделки
-<input id="tradeName" placeholder="Например: BTC сентябрь">
+<label>Название сделки
+<input id="name" placeholder="Например: LTC октябрь">
 </label>
 
-</div>
+</section>
 
-</div>
+<section class="card">
 
-<div class="card">
-
-<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
-<strong>Операции</strong>
-
-<div>
-<button class="primary" onclick="addRow()">+ Добавить операцию</button>
-<button class="danger" onclick="clearRows()">Очистить</button>
+<div class="controls" style="justify-content:space-between">
+<b>Операции</b>
+<div class="buttons">
+<button id="add">+ Добавить операцию</button>
+<button id="clear" class="danger">Очистить</button>
 </div>
 </div>
 
-<div class="table-wrap">
-
+<div class="scroll">
 <table>
 <thead>
 <tr>
@@ -178,166 +183,224 @@ td input,td select{margin:0;padding:7px}
 <th>Цена</th>
 <th>Комиссия</th>
 <th>Валюта комиссии</th>
+<th>Курс комиссии к валюте PnL*</th>
 <th>Funding</th>
 <th>Валюта Funding</th>
 <th>Дата / время</th>
 <th></th>
 </tr>
 </thead>
-
-<tbody id="operations"></tbody>
+<tbody id="ops"></tbody>
 </table>
-
-</div>
-
-</div>
-
-<div class="card">
-
-<button class="primary" onclick="calculate()">Рассчитать</button>
-
-</div>
-
-<div class="summary">
-
-<div class="box">
-<span>Открыто позиции</span>
-<b id="positionQty">0</b>
-</div>
-
-<div class="box">
-<span>Средняя цена</span>
-<b id="avgPrice">0</b>
-</div>
-
-<div class="box">
-<span>Realized PnL</span>
-<b id="gross">0</b>
-</div>
-
-<div class="box">
-<span>Комиссии</span>
-<b id="fees">0</b>
-</div>
-
-<div class="box">
-<span>Funding</span>
-<b id="funding">0</b>
-</div>
-
-</div>
-
-<div class="card" style="margin-top:15px">
-
-<h3 style="margin-top:0">Результат</h3>
-
-<div id="result" class="note">
-Добавь операции и нажми «Рассчитать».
-</div>
-
-</div>
-
-</div>
-
-
-<div id="csvBlock" class="hidden">
-
-<div class="card">
-
-<h3 style="margin-top:0">Импорт истории биржи</h3>
-
-<div class="setup">
-
-<label>
-Биржа
-<select id="csvExchange">
-<option value="Bybit">Bybit</option>
-<option value="OKX">OKX</option>
-<option value="Binance">Binance</option>
-<option value="Other">Другая</option>
-</select>
-</label>
-
-<label>
-CSV файл
-<input type="file" id="csvFile" accept=".csv">
-</label>
-
 </div>
 
 <p class="note">
-Импорт будет использовать тот же расчётный движок, что и ручной режим.
-Сначала проверяем математику ручных сделок, затем подключаем адаптеры CSV каждой биржи.
+* Курс нужен только для комиссии в третьей валюте,
+например BTC при торговле LTC/USDT.
+Вводи стоимость 1 BTC в USDT на момент операции.
+Для LTC и USDT курс берётся из цены сделки.
 </p>
 
-<button class="secondary" onclick="readCSV()">Прочитать CSV</button>
+</section>
 
-<div id="csvInfo" class="note" style="margin-top:15px"></div>
+<section class="card">
+<button id="calc">Рассчитать</button>
+</section>
 
+<div class="stats">
+
+<div class="stat">
+<small>Остаток позиции</small>
+<strong id="sQty">—</strong>
+</div>
+
+<div class="stat">
+<small>Средняя цена</small>
+<strong id="sAvg">—</strong>
+</div>
+
+<div class="stat">
+<small>Gross PnL</small>
+<strong id="sGross">—</strong>
+</div>
+
+<div class="stat">
+<small>Net PnL</small>
+<strong id="sNet">—</strong>
+</div>
+
+<div class="stat">
+<small>Комиссии по валютам</small>
+<strong id="sFees">—</strong>
+</div>
+
+<div class="stat">
+<small>Funding по валютам</small>
+<strong id="sFund">—</strong>
 </div>
 
 </div>
 
+<section class="card" style="margin-top:17px">
+<h3>Результат</h3>
+<div id="result" class="note">
+Добавь операции и нажми «Рассчитать».
 </div>
+</section>
+
+</div>
+
+<div id="csvBlock" class="hidden">
+<section class="card">
+
+<h3>Импорт CSV</h3>
+
+<label>Биржа
+<select id="csvExchange">
+<option>Bybit</option>
+<option>OKX</option>
+<option>Binance</option>
+<option>Другая</option>
+</select>
+</label>
+
+<p>
+<input id="csvFile" type="file" accept=".csv">
+</p>
+
+<button id="readCsv">Прочитать файл</button>
+
+<p class="note" id="csvInfo">
+Пока доступна проверка файла.
+Расчёт импортированных сделок подключим
+после проверки ручного режима.
+</p>
+
+</section>
+</div>
+
+</main>
 
 <script>
+'use strict';
 
-const EPS = 1e-12;
+const $ = id => document.getElementById(id);
+const EPS = 1e-10;
 
-const operations = document.getElementById("operations");
+const num = v => {
+    let x = Number(
+        String(v ?? '').trim().replace(',', '.')
+    );
+    return Number.isFinite(x) ? x : NaN;
+};
 
-function money(v,d=10){
-    if(!Number.isFinite(v)) return "—";
-    return v.toLocaleString("ru-RU",{maximumFractionDigits:d});
+const fmt = (x,d=10) =>
+    Number.isFinite(x)
+        ? x.toLocaleString('ru-RU',{
+            maximumFractionDigits:d
+          })
+        : '—';
+
+const add = (m,c,x) => {
+    if(x) m[c] = (m[c] || 0) + x;
+};
+
+const display = m =>
+    Object.entries(m).length
+        ? Object.entries(m)
+            .map(([c,x]) => fmt(x)+' '+c)
+            .join(' · ')
+        : '0';
+
+const safe = s =>
+    String(s).replace(/[&<>"']/g,c=>({
+        '&':'&amp;',
+        '<':'&lt;',
+        '>':'&gt;',
+        '"':'&quot;',
+        "'":'&#39;'
+    }[c]));
+
+function currencies(){
+
+    let p = $('pair').value
+        .toUpperCase()
+        .replace(/\s/g,'');
+
+    let a = p.split(/[\/-]/);
+
+    if(a.length===2 && a[0] && a[1])
+        return a;
+
+    for(const q of [
+        'USDT','USDC','USD','BTC','ETH','BNB'
+    ]){
+        if(p.endsWith(q) && p.length>q.length)
+            return [p.slice(0,-q.length),q];
+    }
+
+    return [null,null];
 }
 
-function value(el){
-    return parseFloat(el.value.replace(",",".")) || 0;
-}
+function newRow(){
 
-function rowHTML(){
+    const [base,quote] = currencies();
 
-    return `
-    <tr>
+    const tr = document.createElement('tr');
 
-    <td class="num"></td>
+    tr.innerHTML = `
+    <td class="idx"></td>
 
     <td>
-    <select class="operation">
-        <option value="trade">Сделка</option>
-        <option value="funding">Funding</option>
+    <select class="op">
+    <option value="trade">Сделка</option>
+    <option value="funding">Funding</option>
     </select>
     </td>
 
     <td>
     <select class="side">
-        <option value="buy">Buy / Long</option>
-        <option value="sell">Sell / Short</option>
+    <option value="buy">Buy / Long</option>
+    <option value="sell">Sell / Short</option>
     </select>
     </td>
 
     <td>
-    <input class="qty" type="number" step="any" placeholder="0">
+    <input class="qty" type="number"
+    step="any" min="0" placeholder="0">
     </td>
 
     <td>
-    <input class="price" type="number" step="any" placeholder="0">
+    <input class="price" type="number"
+    step="any" min="0" placeholder="0">
     </td>
 
     <td>
-    <input class="fee" type="number" step="any" placeholder="0">
+    <input class="fee" type="number"
+    step="any" min="0" placeholder="0">
     </td>
 
     <td>
-    <input class="feeCurrency" placeholder="USDT">
+    <input class="coin"
+    value="${safe(quote||'')}"
+    placeholder="USDT">
     </td>
 
     <td>
-    <input class="fund" type="number" step="any" placeholder="0">
+    <input class="rate" type="number"
+    step="any" min="0"
+    placeholder="при необходимости">
     </td>
 
     <td>
-    <input class="fundCurrency" placeholder="USDT">
+    <input class="fund" type="number"
+    step="any" placeholder="0">
+    </td>
+
+    <td>
+    <input class="fcoin"
+    value="${safe(quote||'')}"
+    placeholder="USDT">
     </td>
 
     <td>
@@ -345,151 +408,260 @@ function rowHTML(){
     </td>
 
     <td>
-    <button class="danger" onclick="removeRow(this)">×</button>
+    <button class="danger remove">×</button>
     </td>
+    `;
 
-    </tr>`;
-}
+    tr.querySelector('.remove').onclick = () => {
+        tr.remove();
+        renumber();
+    };
 
-function addRow(){
-    operations.insertAdjacentHTML("beforeend",rowHTML());
-    renumber();
-}
-
-function removeRow(btn){
-    btn.closest("tr").remove();
+    $('ops').append(tr);
     renumber();
 }
 
 function renumber(){
-    [...operations.rows].forEach((r,i)=>{
-        r.querySelector(".num").textContent=i+1;
+    [...$('ops').children].forEach((r,i)=>{
+        r.querySelector('.idx').textContent=i+1;
     });
 }
 
-function clearRows(){
-    operations.innerHTML="";
-    addRow();
+function data(){
+
+    return [...$('ops').children].map((tr,i)=>{
+
+        const v=c=>tr.querySelector('.'+c).value;
+
+        return {
+            i:i+1,
+            op:v('op'),
+            side:v('side'),
+            qty:num(v('qty')),
+            price:num(v('price')),
+            fee:num(v('fee'))||0,
+            coin:v('coin').trim().toUpperCase(),
+            rate:num(v('rate')),
+            fund:num(v('fund'))||0,
+            fcoin:v('fcoin').trim().toUpperCase(),
+            time:v('time')
+        };
+    });
 }
 
-function getRows(){
+function calc(){
 
-    return [...operations.rows].map((r,index)=>({
+try{
 
-        index:index+1,
+    const [base,quote]=currencies();
 
-        operation:r.querySelector(".operation").value,
+    if(!base||!quote)
+        throw Error(
+            'Укажи пару, например LTC/USDT.'
+        );
 
-        side:r.querySelector(".side").value,
-
-        qty:value(r.querySelector(".qty")),
-
-        price:value(r.querySelector(".price")),
-
-        fee:value(r.querySelector(".fee")),
-
-        feeCurrency:r.querySelector(".feeCurrency").value.trim().toUpperCase(),
-
-        funding:value(r.querySelector(".fund")),
-
-        fundingCurrency:r.querySelector(".fundCurrency").value.trim().toUpperCase(),
-
-        time:r.querySelector(".time").value
-
-    }));
-}
-
-function addCurrency(map,currency,amount){
-
-    if(!amount) return;
-
-    currency=currency || "?";
-
-    map[currency]=(map[currency]||0)+amount;
-}
-
-function mapText(map){
-
-    const entries=Object.entries(map);
-
-    if(!entries.length) return "0";
-
-    return entries
-        .map(([c,v])=>`${money(v)} ${c}`)
-        .join(" + ");
-}
-
-function calculate(){
-
-    const type=document.getElementById("tradeType").value;
-
-    const rows=getRows();
+    const type=$('type').value;
+    const unit=type==='inverse'?base:quote;
 
     let qty=0;
     let basis=0;
+    let side='';
+    let gross=0;
+    let net=0;
+    let netKnown=true;
 
-    let positionSide=null;
+    let fees={};
+    let funds={};
 
-    let realized=0;
+    let count=0;
+    let fc=0;
+    let notes=[];
 
-    const fees={};
-    const funding={};
+    for(const r of data()){
 
-    let tradeCount=0;
-    let fundingCount=0;
+        if(
+            r.op==='trade' &&
+            (!Number.isFinite(r.qty) ||
+             !Number.isFinite(r.price)) &&
+            !(r.qty===0 && r.price===0)
+        ){
+            throw Error(
+                'Строка '+r.i+
+                ': укажи количество и цену.'
+            );
+        }
 
-    for(const r of rows){
-
-        addCurrency(fees,r.feeCurrency,r.fee);
-
-        if(r.operation==="funding"){
-
-            addCurrency(
-                funding,
-                r.fundingCurrency,
-                r.funding
+        if(r.fee<0 || !Number.isFinite(r.fee))
+            throw Error(
+                'Строка '+r.i+
+                ': комиссия должна быть неотрицательной.'
             );
 
-            fundingCount++;
+        if(r.op==='funding'){
+
+            if(type==='spot')
+                throw Error(
+                    'Funding бывает на фьючерсах, '+
+                    'не на споте (строка '+r.i+').'
+                );
+
+            if(!r.fcoin && r.fund)
+                throw Error(
+                    'Строка '+r.i+
+                    ': укажи валюту Funding.'
+                );
+
+            if(r.fund){
+
+                add(funds,r.fcoin,r.fund);
+                fc++;
+
+                if(r.fcoin===unit){
+                    net-=r.fund;
+                }else{
+                    netKnown=false;
+                    notes.push(
+                        'Funding в '+r.fcoin+
+                        ' не пересчитан в '+unit
+                    );
+                }
+            }
+
             continue;
         }
 
-        if(r.qty<=0 || r.price<=0)
+        if(!r.qty && !r.price && !r.fee)
             continue;
 
-        tradeCount++;
+        if(!(r.qty>0 && r.price>0))
+            throw Error(
+                'Строка '+r.i+
+                ': количество и цена должны быть больше нуля.'
+            );
 
-        const incoming=
-            r.side==="buy"
-                ? "long"
-                : "short";
+        if(r.fee && !r.coin)
+            throw Error(
+                'Строка '+r.i+
+                ': укажи валюту комиссии.'
+            );
 
+        count++;
 
-        // SPOT ---------------------------------
+        add(fees,r.coin,r.fee);
 
-        if(type==="spot"){
+        let feeUnit=0;
 
-            if(r.side==="buy"){
+        if(r.fee){
 
-                basis += r.qty*r.price;
-                qty += r.qty;
+            if(r.coin===unit){
+
+                feeUnit=r.fee;
+
+            }else if(
+                type==='spot' &&
+                r.coin===base
+            ){
+
+                feeUnit=r.fee*r.price;
+
+            }else if(
+                type==='linear' &&
+                r.coin===base
+            ){
+
+                feeUnit=r.fee*r.price;
+
+            }else if(
+                type==='inverse' &&
+                r.coin===quote
+            ){
+
+                feeUnit=r.fee/r.price;
+
+            }else if(
+                Number.isFinite(r.rate) &&
+                r.rate>0
+            ){
+
+                feeUnit=r.fee*r.rate;
 
             }else{
 
-                if(qty<=EPS)
-                    continue;
+                netKnown=false;
 
-                const closeQty=Math.min(qty,r.qty);
+                notes.push(
+                    'Строка '+r.i+
+                    ': нужен курс '+r.coin+
+                    ' → '+unit
+                );
+            }
+        }
 
-                const avg=basis/qty;
+        // SPOT
 
-                realized +=
-                    closeQty*(r.price-avg);
+        if(type==='spot'){
 
-                basis -=
-                    avg*closeQty;
+            if(r.side==='buy'){
 
-                qty -= closeQty;
+                let received=
+                    r.qty-
+                    (r.coin===base?r.fee:0);
+
+                if(received<=0)
+                    throw Error(
+                        'Строка '+r.i+
+                        ': комиссия превышает '+
+                        'купленное количество.'
+                    );
+
+                qty+=received;
+
+                basis+=
+                    r.qty*r.price+
+                    (r.coin===quote?r.fee:0);
+
+                if(
+                    r.coin!==base &&
+                    r.coin!==quote &&
+                    feeUnit
+                ){
+                    basis+=feeUnit;
+                }
+
+            }else{
+
+                let used=
+                    r.qty+
+                    (r.coin===base?r.fee:0);
+
+                if(used>qty+EPS)
+                    throw Error(
+                        'Строка '+r.i+
+                        ': продажа с комиссией '+
+                        'превышает остаток '+
+                        fmt(qty)+' '+base
+                    );
+
+                let avg=basis/qty;
+
+                gross+=
+                    r.qty*(r.price-avg);
+
+                let revenue=
+                    r.qty*r.price-
+                    (r.coin===quote?r.fee:0);
+
+                net+=
+                    revenue-
+                    used*avg-
+                    (
+                        r.coin!==base &&
+                        r.coin!==quote
+                            ?feeUnit:0
+                    );
+
+                basis-=used*avg;
+                qty-=used;
 
                 if(qty<EPS){
                     qty=0;
@@ -500,266 +672,314 @@ function calculate(){
             continue;
         }
 
+        // FUTURES
 
-        // FUTURES ------------------------------
-
-        if(qty<=EPS){
-
-            positionSide=incoming;
-
-            qty=r.qty;
-
-            basis=
-                type==="inverse"
-                    ? r.qty/r.price
-                    : r.qty*r.price;
-
-            continue;
-        }
-
-
-        // ДОБОР
-
-        if(positionSide===incoming){
-
-            if(type==="inverse")
-                basis += r.qty/r.price;
-            else
-                basis += r.qty*r.price;
-
-            qty += r.qty;
-
-            continue;
-        }
-
-
-        // ЗАКРЫТИЕ
+        let incoming=
+            r.side==='buy'?'long':'short';
 
         let remaining=r.qty;
 
-        const closeQty=
-            Math.min(qty,remaining);
+        if(qty<EPS){
 
-        const avg=
-            type==="inverse"
-                ? qty/basis
-                : basis/qty;
+            qty=remaining;
+            side=incoming;
 
+            basis=
+                type==='inverse'
+                    ?remaining/r.price
+                    :remaining*r.price;
 
-        if(type==="inverse"){
+        }else if(side===incoming){
 
-            if(positionSide==="long")
+            basis+=
+                type==='inverse'
+                    ?remaining/r.price
+                    :remaining*r.price;
 
-                realized +=
-                    closeQty*
-                    (1/avg-1/r.price);
-
-            else
-
-                realized +=
-                    closeQty*
-                    (1/r.price-1/avg);
+            qty+=remaining;
 
         }else{
 
-            if(positionSide==="long")
+            let closed=Math.min(qty,remaining);
 
-                realized +=
-                    closeQty*
-                    (r.price-avg);
+            let avg=
+                type==='inverse'
+                    ?qty/basis
+                    :basis/qty;
 
-            else
+            let g=
+                type==='inverse'
+                    ?closed*(
+                        side==='long'
+                            ?(1/avg-1/r.price)
+                            :(1/r.price-1/avg)
+                    )
+                    :closed*(
+                        side==='long'
+                            ?(r.price-avg)
+                            :(avg-r.price)
+                    );
 
-                realized +=
-                    closeQty*
-                    (avg-r.price);
+            gross+=g;
+            net+=g;
+
+            basis*=1-closed/qty;
+            qty-=closed;
+            remaining-=closed;
+
+            if(qty<EPS){
+                qty=0;
+                basis=0;
+                side='';
+            }
+
+            if(remaining>EPS){
+
+                qty=remaining;
+                side=incoming;
+
+                basis=
+                    type==='inverse'
+                        ?remaining/r.price
+                        :remaining*r.price;
+            }
         }
 
-
-        const ratio=
-            closeQty/qty;
-
-        basis *= (1-ratio);
-
-        qty -= closeQty;
-
-        remaining -= closeQty;
-
-
-        if(qty<EPS){
-
-            qty=0;
-            basis=0;
-            positionSide=null;
-        }
-
-
-        // ПЕРЕВОРОТ
-
-        if(remaining>EPS){
-
-            positionSide=incoming;
-
-            qty=remaining;
-
-            basis=
-                type==="inverse"
-                    ? remaining/r.price
-                    : remaining*r.price;
-        }
+        net-=feeUnit;
     }
 
+    if(type==='spot'){
 
-    let avg=0;
+        // Gross без комиссий
 
-    if(qty>EPS){
+        let q=0;
+        let b=0;
+        let g=0;
 
-        avg=
-            type==="inverse"
-                ? qty/basis
-                : basis/qty;
+        for(const r of data()){
+
+            if(
+                r.op!=='trade' ||
+                !(r.qty>0 && r.price>0)
+            ) continue;
+
+            if(r.side==='buy'){
+
+                q+=r.qty;
+                b+=r.qty*r.price;
+
+            }else{
+
+                let close=Math.min(q,r.qty);
+
+                if(close>0){
+
+                    let a=b/q;
+
+                    g+=close*(r.price-a);
+
+                    q-=close;
+                    b-=close*a;
+                }
+            }
+        }
+
+        gross=g;
     }
 
+    const avg=
+        qty>EPS
+            ?(
+                type==='inverse'
+                    ?qty/basis
+                    :basis/qty
+            )
+            :0;
 
-    document.getElementById("positionQty").textContent=
-        money(qty,8);
+    $('sQty').textContent=
+        fmt(qty,8)+' '+
+        (type==='spot'?base:'контр.');
 
-    document.getElementById("avgPrice").textContent=
-        qty ? money(avg) : "—";
+    $('sAvg').textContent=
+        qty>EPS
+            ?fmt(avg)+' '+quote
+            :'—';
 
-    document.getElementById("gross").textContent=
-        money(realized);
+    $('sGross').textContent=
+        fmt(gross)+' '+unit;
 
-    document.getElementById("fees").textContent=
-        mapText(fees);
+    $('sNet').textContent=
+        netKnown
+            ?fmt(net)+' '+unit
+            :'Нужен курс';
 
-    document.getElementById("funding").textContent=
-        mapText(funding);
+    $('sFees').textContent=display(fees);
+    $('sFund').textContent=display(funds);
 
+    $('result').innerHTML=`
 
-    const exchange=
-        document.getElementById("exchange").value || "—";
+    <b>Биржа:</b>
+    ${safe($('exchange').value)}
 
-    const pair=
-        document.getElementById("pair").value || "—";
+    · <b>Пара:</b>
+    ${safe(base+'/'+quote)}
 
+    · <b>Режим:</b>
+    ${safe(type)}
 
-    let html=`
+    <br>
 
-    <b>Биржа:</b> ${exchange}<br>
+    <b>Операций:</b> ${count}
 
-    <b>Пара:</b> ${pair}<br>
+    · <b>Funding:</b> ${fc}
 
-    <b>Тип:</b>
+    <br>
+
+    <b>Остаток:</b>
+    ${fmt(qty,8)}
+    ${type==='spot'?base:'контрактов'}
+
+    · <b>Средняя:</b>
+    ${qty?fmt(avg):'—'}
+
+    <br>
+
+    <b>Gross PnL:</b>
+    ${fmt(gross)} ${unit}
+
+    <br>
+
+    <b>Net PnL:</b>
+
+    <span class="${net>=0?'green':'red'}">
     ${
-        type==="spot"
-            ? "Spot"
-            : type==="linear"
-                ? "Futures Linear"
-                : "Futures Inverse"
-    }<br><br>
+        netKnown
+            ?fmt(net)+' '+unit
+            :'не определён'
+    }
+    </span>
 
-    Обработано сделок: <b>${tradeCount}</b><br>
+    <br>
 
-    Funding событий: <b>${fundingCount}</b><br>
+    <b>Комиссии:</b>
+    ${display(fees)}
 
+    <br>
+
+    <b>Funding:</b>
+    ${display(funds)}
+
+    ${
+        notes.length
+            ?'<br><span class="red">'+
+             notes.map(safe).join('; ')+
+             '</span>'
+            :''
+    }
+
+    <br>
+
+    <span class="note">
+    Spot: Net PnL — реализованный результат
+    с учётом комиссий проданной части;
+    стоимость оставшихся монет учитывает
+    комиссии покупки.
+
+    Futures: результат по закрытой части
+    за вычетом всех введённых комиссий
+    и Funding.
+
+    Для неполной истории он может
+    не совпасть с биржей.
+    </span>
     `;
 
+}catch(e){
 
-    if(type!=="spot"){
-
-        html +=
-        `Текущая сторона:
-        <b>${
-            qty
-                ? positionSide.toUpperCase()
-                : "позиция закрыта"
-        }</b><br>`;
-    }
-
-
-    html +=
-    `Остаток позиции:
-    <b>${money(qty,8)}</b><br>
-
-    Средняя цена:
-    <b>${qty ? money(avg) : "—"}</b><br><br>
-
-    Realized PnL:
-    <b class="${realized>=0?"green":"red"}">
-    ${money(realized)}
-    </b><br>
-
-    Комиссии:
-    <b>${mapText(fees)}</b><br>
-
-    Funding:
-    <b>${mapText(funding)}</b>`;
-
-
-    document.getElementById("result").innerHTML=html;
+    $('result').textContent=
+        'Ошибка: '+e.message;
+}
 }
 
 
-// TABS --------------------------------------
+// КНОПКИ
 
-document.getElementById("manualTab").onclick=()=>{
+$('add').onclick=newRow;
 
-    document.getElementById("manualBlock").classList.remove("hidden");
-    document.getElementById("csvBlock").classList.add("hidden");
+$('clear').onclick=()=>{
 
-    manualTab.classList.add("active");
-    csvTab.classList.remove("active");
+    $('ops').innerHTML='';
+
+    newRow();
+
+    $('result').textContent=
+        'Добавь операции и нажми «Рассчитать».';
 };
 
-document.getElementById("csvTab").onclick=()=>{
-
-    document.getElementById("manualBlock").classList.add("hidden");
-    document.getElementById("csvBlock").classList.remove("hidden");
-
-    csvTab.classList.add("active");
-    manualTab.classList.remove("active");
-};
+$('calc').onclick=calc;
 
 
-// CSV ---------------------------------------
+// ВКЛАДКИ
 
-function readCSV(){
+function tab(which){
 
-    const f=document.getElementById("csvFile").files[0];
+    $('manualBlock').classList.toggle(
+        'hidden',which!=='manual'
+    );
+
+    $('csvBlock').classList.toggle(
+        'hidden',which!=='csv'
+    );
+
+    $('manualTab').classList.toggle(
+        'active',which==='manual'
+    );
+
+    $('csvTab').classList.toggle(
+        'active',which==='csv'
+    );
+}
+
+$('manualTab').onclick=()=>tab('manual');
+$('csvTab').onclick=()=>tab('csv');
+
+
+// CSV
+
+$('readCsv').onclick=()=>{
+
+    let f=$('csvFile').files[0];
 
     if(!f){
 
-        document.getElementById("csvInfo").textContent=
-            "Сначала выбери CSV.";
-
+        $('csvInfo').textContent='Выбери CSV';
         return;
     }
 
-    const reader=new FileReader();
+    let reader=new FileReader();
 
     reader.onload=()=>{
 
-        const lines=
-            reader.result
-            .replace(/^\uFEFF/,"")
-            .split(/\r?\n/)
-            .filter(x=>x.trim());
-
-        document.getElementById("csvInfo").innerHTML=
-            `<b>${f.name}</b><br>
-            Найдено строк: ${Math.max(0,lines.length-1)}.<br><br>
-            Файл прочитан. Следующий этап — адаптер формата выбранной биржи.`;
+        $('csvInfo').textContent=
+            f.name+
+            ': файл прочитан ('+
+            Math.max(
+                0,
+                reader.result.trim()
+                    .split(/\r?\n/).length-1
+            )+
+            ' строк). Автоматический расчёт '+
+            'импорта пока не подключён.';
     };
 
-    reader.readAsText(f,"UTF-8");
-}
+    reader.readAsText(f,'UTF-8');
+};
 
 
-// START -------------------------------------
+// СТАРТ
 
-addRow();
-addRow();
+newRow();
+newRow();
 
 </script>
 

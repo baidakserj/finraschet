@@ -9,12 +9,15 @@
 *{box-sizing:border-box}
 body{
  margin:0;color:#edf2ff;font:15px Arial,sans-serif;
- background:radial-gradient(circle at top left,#243b80,transparent 35%),
- radial-gradient(circle at bottom right,#4b1f72,transparent 35%),#0b1020;
+ background:
+ radial-gradient(circle at top left,#243b80,transparent 35%),
+ radial-gradient(circle at bottom right,#4b1f72,transparent 35%),
+ #0b1020;
  min-height:100vh
 }
 .wrap{width:min(1350px,96%);margin:auto;padding:25px 0 50px}
-a{color:#57adff;text-decoration:none}
+a{color:#57adff;text-decoration:none;transition:color .2s ease}
+a:hover{color:#8f7cff}
 h1{text-align:center;margin:18px 0 5px}
 .sub{text-align:center;color:#aebbd5;margin-bottom:25px}
 .card{
@@ -22,7 +25,10 @@ h1{text-align:center;margin:18px 0 5px}
  border-radius:15px;padding:18px;margin-bottom:16px
 }
 .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.setup{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.setup{
+ display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+ gap:12px
+}
 label{font-size:13px;color:#b7c4dc}
 input,select{
  width:100%;margin-top:5px;padding:9px;
@@ -37,9 +43,13 @@ button:hover{filter:brightness(1.12)}
 .alt{background:#283650}
 .active{background:#7c3aed}
 .danger{background:#712d3b}
+.success{background:#18795b}
 .scroll{overflow:auto;margin-top:15px}
 table{border-collapse:collapse;min-width:1420px;width:100%}
-th,td{padding:7px;border-bottom:1px solid #293853;text-align:left;font-size:13px}
+th,td{
+ padding:7px;border-bottom:1px solid #293853;
+ text-align:left;font-size:13px
+}
 th{color:#aab8d1}
 td input,td select{margin:0;padding:7px}
 td button{padding:7px 11px}
@@ -56,9 +66,10 @@ td button{padding:7px 11px}
 .note{color:#aebbd2;font-size:13px;line-height:1.6}
 .green{color:#60d994}
 .red{color:#ff7989}
+.warning{color:#ffd28b}
 .hidden{display:none}
 #result{line-height:1.9;overflow-wrap:anywhere}
-.warning{color:#ffd28b}
+#saveStatus{font-size:12px;color:#9db1d0}
 @media(max-width:850px){
  .setup,.stats{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
@@ -71,6 +82,7 @@ td button{padding:7px 11px}
 <main class="wrap">
 
 <a href="index.html">← Все калькуляторы</a>
+
 <h1>Криптоторговля</h1>
 <p class="sub">
 Spot и Futures · несколько бирж · комиссии · Funding · частичные закрытия
@@ -145,27 +157,55 @@ Spot и Futures · несколько бирж · комиссии · Funding ·
 </div>
 
 <p class="note">
-* Курс комиссии указывается только для сторонней монеты.
-Например, если комиссия в BTC при торговле LTC/USDT,
-введи цену 1 BTC в USDT на момент операции.
+* Курс комиссии нужен только для сторонней монеты.
+Например, при комиссии в BTC для LTC/USDT укажи стоимость
+1 BTC в USDT на момент операции.
 Для LTC и USDT используется цена самой сделки.
+</p>
+
+<p class="note">
+Funding: <span class="red">− расход</span>,
+<span class="green">+ доход</span>.
+Для Funding выбери соответствующий тип операции.
 </p>
 </section>
 
-<section class="card">
+<section class="card controls">
 <button id="calc">Рассчитать</button>
+<button id="exportJson" class="success">⬇ Сохранить копию JSON</button>
+<button id="importJson" class="alt">⬆ Загрузить копию JSON</button>
+<input id="jsonFile" type="file" accept=".json" class="hidden">
+<span id="saveStatus">Автосохранение включено</span>
 </section>
 
 <div class="stats">
-<div class="stat"><small>Остаток позиции</small><strong id="sQty">—</strong></div>
-<div class="stat"><small>Средняя цена</small><strong id="sAvg">—</strong></div>
-<div class="stat"><small>Gross PnL</small><strong id="sGross">—</strong></div>
-<div class="stat"><small>Стоимость комиссий</small><strong id="sCost">—</strong></div>
-<div class="stat"><small>Net PnL</small><strong id="sNet">—</strong></div>
-<div class="stat"><small>Комиссии по валютам</small><strong id="sFees">—</strong></div>
-<div class="stat"><small>Funding по валютам</small><strong id="sFund">—</strong></div>
-<div class="stat"><small>Сделок</small><strong id="sCount">0</strong></div>
-<div class="stat"><small>Направление</small><strong id="sSide">—</strong></div>
+<div class="stat">
+<small>Остаток позиции</small><strong id="sQty">—</strong>
+</div>
+<div class="stat">
+<small>Средняя цена</small><strong id="sAvg">—</strong>
+</div>
+<div class="stat">
+<small>Gross PnL</small><strong id="sGross">—</strong>
+</div>
+<div class="stat">
+<small>Стоимость комиссий</small><strong id="sCost">—</strong>
+</div>
+<div class="stat">
+<small>Net PnL</small><strong id="sNet">—</strong>
+</div>
+<div class="stat">
+<small>Комиссии по валютам</small><strong id="sFees">—</strong>
+</div>
+<div class="stat">
+<small>Funding по валютам</small><strong id="sFund">—</strong>
+</div>
+<div class="stat">
+<small>Сделок</small><strong id="sCount">0</strong>
+</div>
+<div class="stat">
+<small>Направление</small><strong id="sSide">—</strong>
+</div>
 </div>
 
 <section class="card">
@@ -191,8 +231,8 @@ Spot и Futures · несколько бирж · комиссии · Funding ·
 <p><input id="csvFile" type="file" accept=".csv"></p>
 <button id="readCsv">Прочитать файл</button>
 <p id="csvInfo" class="note">
-Пока доступна проверка файла. Автоматический анализ сделок
-из CSV подключим после проверки ручных расчётов.
+Пока доступна проверка файла.
+Автоматический анализ CSV подключим после проверки расчётов.
 </p>
 </section>
 </div>
@@ -204,6 +244,7 @@ Spot и Futures · несколько бирж · комиссии · Funding ·
 
 const $=id=>document.getElementById(id);
 const EPS=1e-10;
+const STORAGE_KEY='finraschet_crypto_trade_v2';
 
 function number(v){
  const s=String(v??'').trim().replace(',','.');
@@ -239,6 +280,7 @@ function mapText(map){
 function currencies(){
  const pair=$('pair').value.toUpperCase().replace(/\s/g,'');
  const parts=pair.split(/[\/-]/);
+
  if(parts.length===2&&parts[0]&&parts[1])return parts;
 
  for(const q of ['USDT','USDC','USD','BTC','ETH','BNB']){
@@ -248,8 +290,8 @@ function currencies(){
  return [null,null];
 }
 
-function newRow(){
- const [base,quote]=currencies();
+function newRow(values={}){
+ const [,quote]=currencies();
  const tr=document.createElement('tr');
 
  tr.innerHTML=`
@@ -265,21 +307,35 @@ function newRow(){
  <td><input class="qty" type="number" min="0" step="any"></td>
  <td><input class="price" type="number" min="0" step="any"></td>
  <td><input class="fee" type="number" min="0" step="any"></td>
- <td><input class="coin" value="${escapeHTML(quote||'')}"></td>
+ <td><input class="coin"></td>
  <td><input class="rate" type="number" min="0" step="any"
  placeholder="если нужно"></td>
  <td><input class="fund" type="number" step="any"></td>
- <td><input class="fcoin" value="${escapeHTML(quote||'')}"></td>
+ <td><input class="fcoin"></td>
  <td><input class="time" type="datetime-local"></td>
  <td><button class="danger remove">×</button></td>`;
+
+ const defaults={
+  op:'trade',side:'buy',qty:'',price:'',fee:'',
+  coin:quote||'',rate:'',fund:'',fcoin:quote||'',time:''
+ };
+
+ const row={...defaults,...values};
+
+ for(const [key,value] of Object.entries(row)){
+  const el=tr.querySelector('.'+key);
+  if(el)el.value=value??'';
+ }
 
  tr.querySelector('.remove').onclick=()=>{
   tr.remove();
   renumber();
+  save();
  };
 
  $('ops').append(tr);
  renumber();
+ return tr;
 }
 
 function renumber(){
@@ -288,30 +344,106 @@ function renumber(){
  });
 }
 
-function getRows(){
- return [...$('ops').children].map((tr,i)=>{
+function getRawRows(){
+ return [...$('ops').children].map(tr=>{
   const v=c=>tr.querySelector('.'+c).value;
   return {
-   index:i+1,
    op:v('op'),
    side:v('side'),
-   qty:number(v('qty')),
-   price:number(v('price')),
-   fee:number(v('fee')),
-   coin:v('coin').trim().toUpperCase(),
-   rate:number(v('rate')),
-   funding:number(v('fund')),
-   fcoin:v('fcoin').trim().toUpperCase(),
+   qty:v('qty'),
+   price:v('price'),
+   fee:v('fee'),
+   coin:v('coin'),
+   rate:v('rate'),
+   fund:v('fund'),
+   fcoin:v('fcoin'),
    time:v('time')
   };
  });
 }
 
+function getRows(){
+ return getRawRows().map((r,i)=>({
+  index:i+1,
+  op:r.op,
+  side:r.side,
+  qty:number(r.qty),
+  price:number(r.price),
+  fee:number(r.fee),
+  coin:r.coin.trim().toUpperCase(),
+  rate:number(r.rate),
+  funding:number(r.fund),
+  fcoin:r.fcoin.trim().toUpperCase(),
+  time:r.time
+ }));
+}
+
+function snapshot(){
+ return {
+  version:2,
+  exchange:$('exchange').value,
+  type:$('type').value,
+  pair:$('pair').value,
+  tradeName:$('tradeName').value,
+  rows:getRawRows()
+ };
+}
+
+function save(){
+ try{
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(snapshot()));
+  $('saveStatus').textContent='✓ Данные сохранены в браузере';
+ }catch(e){
+  $('saveStatus').textContent='Не удалось сохранить данные';
+ }
+}
+
+function restore(data){
+ if(!data||typeof data!=='object'||!Array.isArray(data.rows))
+  throw Error('Неверный формат резервной копии.');
+
+ if(data.rows.length>20000)
+  throw Error('Слишком много операций в файле.');
+
+ $('exchange').value=String(data.exchange??'Bybit');
+ $('type').value=['spot','linear','inverse'].includes(data.type)
+  ?data.type:'spot';
+ $('pair').value=String(data.pair??'LTC/USDT');
+ $('tradeName').value=String(data.tradeName??'');
+
+ $('ops').innerHTML='';
+
+ for(const row of data.rows){
+  if(row&&typeof row==='object')newRow(row);
+ }
+
+ if(!$('ops').children.length)newRow();
+
+ save();
+}
+
+function init(){
+ try{
+  const stored=localStorage.getItem(STORAGE_KEY);
+  if(stored){
+   restore(JSON.parse(stored));
+   return;
+  }
+ }catch(e){
+  console.warn('Ошибка восстановления:',e);
+ }
+
+ newRow();
+ newRow();
+ save();
+}
+
 function calculate(){
  try{
   const [base,quote]=currencies();
+
   if(!base||!quote)
-   throw Error('Укажи торговую пару, например LTC/USDT.');
+   throw Error('Укажи пару, например LTC/USDT.');
 
   const type=$('type').value;
   const unit=type==='inverse'?base:quote;
@@ -328,12 +460,11 @@ function calculate(){
   let fundingCount=0;
   let warnings=[];
 
-  const fees={};
-  const funds={};
-
-  // Отдельный учёт реализованного результата по себестоимости
   let accountingPnL=0;
   let accountingKnown=true;
+
+  const fees={};
+  const funds={};
 
   function feeInUnit(r){
    if(!r.fee)return 0;
@@ -358,6 +489,7 @@ function calculate(){
 
   function fundingInUnit(r){
    if(!r.funding)return 0;
+
    if(r.fcoin===unit)return r.funding;
 
    netKnown=false;
@@ -379,10 +511,10 @@ function calculate(){
     }
 
     if(!Number.isFinite(r.funding))
-     throw Error('Некорректный Funding в строке '+r.index);
+     throw Error('Некорректный Funding, строка '+r.index);
 
     if(r.funding&&!r.fcoin)
-     throw Error('Укажи валюту Funding в строке '+r.index);
+     throw Error('Укажи валюту Funding, строка '+r.index);
 
     if(r.funding){
      addMap(funds,r.fcoin,r.funding);
@@ -395,7 +527,9 @@ function calculate(){
    if(!r.qty&&!r.price&&!r.fee)continue;
 
    if(!(r.qty>0&&r.price>0))
-    throw Error('Количество и цена должны быть больше нуля, строка '+r.index);
+    throw Error(
+     'Количество и цена должны быть больше нуля, строка '+r.index
+    );
 
    if(!Number.isFinite(r.fee)||r.fee<0)
     throw Error('Некорректная комиссия, строка '+r.index);
@@ -418,8 +552,6 @@ function calculate(){
      const received=r.qty-(r.coin===base?r.fee:0);
 
      qty+=received;
-
-     // Себестоимость фактически полученных монет.
      basis+=r.qty*r.price;
 
      if(r.coin===quote)basis+=r.fee;
@@ -437,17 +569,14 @@ function calculate(){
 
      if(used>qty+EPS)
       throw Error(
-       'Продажа и комиссия превышают остаток в строке '+
+       'Продажа и комиссия превышают остаток, строка '+
        r.index+'. Доступно '+fmt(qty)+' '+base
       );
 
      const avg=basis/qty;
 
-     // Gross по торговому объёму, без комиссий.
      gross+=r.qty*(r.price-avg);
 
-     // Реализованный результат по себестоимости,
-     // включая списанные монеты в комиссию.
      let proceeds=r.qty*r.price;
      if(r.coin===quote)proceeds-=r.fee;
 
@@ -470,7 +599,7 @@ function calculate(){
     continue;
    }
 
-   // FUTURES
+   // Futures Linear и Inverse.
    const incoming=r.side==='buy'?'long':'short';
    let remaining=r.qty;
 
@@ -525,9 +654,7 @@ function calculate(){
    }
   }
 
-  // Для Spot торговый Gross рассчитывается без комиссий.
-  // Поэтому дополнительно пересчитываем его по исходным
-  // торговым количествам, независимо от способа оплаты комиссий.
+  // Spot: Gross без комиссий.
   if(type==='spot'){
    let q=0,b=0,g=0;
 
@@ -539,13 +666,19 @@ function calculate(){
      b+=r.qty*r.price;
     }else{
      if(q+EPS<r.qty)
-      throw Error('Продажа превышает купленный объём в строке '+r.index);
+      throw Error(
+       'Продажа превышает купленный объём, строка '+r.index
+      );
 
      const avg=b/q;
      g+=r.qty*(r.price-avg);
      b-=r.qty*avg;
      q-=r.qty;
-     if(q<EPS){q=0;b=0;}
+
+     if(q<EPS){
+      q=0;
+      b=0;
+     }
     }
    }
 
@@ -556,22 +689,19 @@ function calculate(){
    ?(type==='inverse'?qty/basis:basis/qty)
    :0;
 
-  // Net в рыночной оценке комиссии на момент сделки.
-  // Для Spot с незакрытым остатком это аналитический
-  // показатель, а не бухгалтерский реализованный PnL.
-  const net=gross-feeValue-fundingValue;
+  // Funding теперь подписан:
+  // отрицательный — расход, положительный — доход.
+  const net=gross-feeValue+fundingValue;
 
-  $('sQty').textContent=
-   fmt(qty,8)+' '+(type==='spot'?base:'контр.');
+  const qtyUnit=type==='inverse'?'контр.':base;
 
-  $('sAvg').textContent=
-   qty>EPS?fmt(avg)+' '+quote:'—';
-
+  $('sQty').textContent=fmt(qty,8)+' '+qtyUnit;
+  $('sAvg').textContent=qty>EPS?fmt(avg)+' '+quote:'—';
   $('sGross').textContent=fmt(gross)+' '+unit;
 
   $('sCost').textContent=netKnown
    ?fmt(feeValue)+' '+unit
-   :'Не все курсы';
+   :'Нужен курс';
 
   $('sNet').textContent=netKnown
    ?fmt(net)+' '+unit
@@ -580,6 +710,7 @@ function calculate(){
   $('sFees').textContent=mapText(fees);
   $('sFund').textContent=mapText(funds);
   $('sCount').textContent=tradeCount;
+
   $('sSide').textContent=type==='spot'
    ?'Spot'
    :(qty>EPS?side.toUpperCase():'Закрыта');
@@ -591,13 +722,12 @@ function calculate(){
    <br>
    <b>Название:</b> ${escapeHTML($('tradeName').value||'—')}
    <br>
-   <b>Операций:</b> ${tradeCount}
+   <b>Сделок:</b> ${tradeCount}
    · <b>Funding событий:</b> ${fundingCount}
    <br>
-   <b>Остаток:</b> ${fmt(qty,8)}
-   ${type==='spot'?base:'контрактов'}
+   <b>Остаток:</b> ${fmt(qty,8)} ${qtyUnit}
    <br>
-   <b>Средняя цена:</b> ${qty?fmt(avg):'—'}
+   <b>Средняя цена:</b> ${qty?fmt(avg)+' '+quote:'—'}
    <br>
    <b>Gross PnL:</b> ${fmt(gross)} ${unit}
    <br>
@@ -621,23 +751,22 @@ function calculate(){
     ${accountingKnown?fmt(accountingPnL)+' '+quote:'нужен курс'}
     <br>
     <span class="note">
-    Net PnL выше — аналитическая оценка:
-    торговая прибыль минус рыночная стоимость всех
-    введённых комиссий. Если комиссия списана в LTC,
-    её стоимость берётся по цене операции.
+    Net PnL — аналитическая оценка:
+    торговая прибыль минус рыночная стоимость всех комиссий.
     Реализованный результат по себестоимости отдельно
-    учитывает списание LTC из остатка.
-    Эти два показателя нельзя складывать.
+    учитывает списание монет из остатка.
+    Эти показатели нельзя складывать.
     </span>
    `;
   }else{
    html+=`
     <br>
     <span class="note">
-    Futures: Gross учитывает закрытые части позиции.
+    Gross учитывает закрытые части позиции.
     Net дополнительно учитывает все введённые комиссии
-    и Funding. Для открытой позиции результат
-    не включает нереализованную прибыль.
+    и Funding. Нереализованная прибыль открытой позиции
+    не включена.
+    Funding: минус — расход, плюс — доход.
     </span>
    `;
   }
@@ -654,15 +783,27 @@ function calculate(){
  }
 }
 
-$('add').onclick=newRow;
+$('add').onclick=()=>{
+ newRow();
+ save();
+};
 
 $('clear').onclick=()=>{
+ if(!confirm('Удалить все введённые операции?'))return;
+
  $('ops').innerHTML='';
  newRow();
- $('result').textContent='Добавь операции и нажми «Рассчитать».';
+
+ $('result').textContent=
+  'Добавь операции и нажми «Рассчитать».';
+
+ save();
 };
 
 $('calc').onclick=calculate;
+
+$('manualBlock').addEventListener('input',save);
+$('manualBlock').addEventListener('change',save);
 
 function tab(mode){
  $('manualBlock').classList.toggle('hidden',mode!=='manual');
@@ -673,6 +814,49 @@ function tab(mode){
 
 $('manualTab').onclick=()=>tab('manual');
 $('csvTab').onclick=()=>tab('csv');
+
+$('exportJson').onclick=()=>{
+ const json=JSON.stringify(snapshot(),null,2);
+ const blob=new Blob([json],{type:'application/json'});
+ const url=URL.createObjectURL(blob);
+
+ const a=document.createElement('a');
+ a.href=url;
+ a.download='finraschet-crypto-trade-'+
+  new Date().toISOString().slice(0,10)+'.json';
+
+ document.body.append(a);
+ a.click();
+ a.remove();
+
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+};
+
+$('importJson').onclick=()=>$('jsonFile').click();
+
+$('jsonFile').onchange=async e=>{
+ const file=e.target.files[0];
+ if(!file)return;
+
+ try{
+  const text=await file.text();
+  const data=JSON.parse(text);
+
+  if(!confirm(
+   'Загрузить резервную копию? Текущие операции будут заменены.'
+  ))return;
+
+  restore(data);
+  $('result').textContent=
+   'Резервная копия загружена. Нажми «Рассчитать».';
+
+  alert('Операции восстановлены!');
+ }catch(err){
+  alert('Ошибка загрузки JSON: '+err.message);
+ }
+
+ e.target.value='';
+};
 
 $('readCsv').onclick=()=>{
  const file=$('csvFile').files[0];
@@ -696,8 +880,7 @@ $('readCsv').onclick=()=>{
  reader.readAsText(file,'UTF-8');
 };
 
-newRow();
-newRow();
+init();
 </script>
 </body>
 </html>

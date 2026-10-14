@@ -17,7 +17,7 @@ body{
 }
 .wrap{width:min(1350px,96%);margin:auto;padding:25px 0 50px}
 a{color:#57adff;text-decoration:none;transition:color .2s ease}
-a:hover{color:#8f7cff}
+a:hover{color:#b18cff;text-shadow:0 0 10px rgba(177,140,255,.45)}
 h1{text-align:center;margin:18px 0 5px}
 .sub{text-align:center;color:#aebbd5;margin-bottom:25px}
 .card{
@@ -310,7 +310,7 @@ function newRow(values={}){
  <td><input class="coin"></td>
  <td><input class="rate" type="number" min="0" step="any"
  placeholder="если нужно"></td>
- <td><input class="fund" type="number" step="any"></td>
+ <td><input class="fund" type="text" inputmode="decimal" placeholder="− расход, + доход"></td>
  <td><input class="fcoin"></td>
  <td><input class="time" type="datetime-local"></td>
  <td><button class="danger remove">×</button></td>`;
@@ -786,6 +786,7 @@ function calculate(){
 $('add').onclick=()=>{
  newRow();
  save();
+ calculate();
 };
 
 $('clear').onclick=()=>{
@@ -798,12 +799,17 @@ $('clear').onclick=()=>{
   'Добавь операции и нажми «Рассчитать».';
 
  save();
+ calculate();
 };
 
 $('calc').onclick=calculate;
 
-$('manualBlock').addEventListener('input',save);
-$('manualBlock').addEventListener('change',save);
+function saveAndCalculate(){
+ save();
+ calculate();
+}
+$('manualBlock').addEventListener('input',saveAndCalculate);
+$('manualBlock').addEventListener('change',saveAndCalculate);
 
 function tab(mode){
  $('manualBlock').classList.toggle('hidden',mode!=='manual');
@@ -847,8 +853,7 @@ $('jsonFile').onchange=async e=>{
   ))return;
 
   restore(data);
-  $('result').textContent=
-   'Резервная копия загружена. Нажми «Рассчитать».';
+  calculate();
 
   alert('Операции восстановлены!');
  }catch(err){
@@ -881,6 +886,7 @@ $('readCsv').onclick=()=>{
 };
 
 init();
+calculate();
 </script>
 </body>
 </html>

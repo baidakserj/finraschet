@@ -1,130 +1,82 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ФинРасчёт — криптоторговля</title>
-
 <style>
 *{box-sizing:border-box}
 body{
-margin:0;
-background:radial-gradient(circle at top left,#243b80,transparent 35%),
-radial-gradient(circle at bottom right,#4b1f72,transparent 35%),#0b1020;
-color:#eef2ff;
-font:15px Arial,sans-serif
+ margin:0;color:#edf2ff;font:15px Arial,sans-serif;
+ background:radial-gradient(circle at top left,#243b80,transparent 35%),
+ radial-gradient(circle at bottom right,#4b1f72,transparent 35%),#0b1020;
+ min-height:100vh
 }
-.wrap{width:min(1300px,96%);margin:auto;padding:26px 0 50px}
-.back{color:#55adff;text-decoration:none}
+.wrap{width:min(1350px,96%);margin:auto;padding:25px 0 50px}
+a{color:#57adff;text-decoration:none}
 h1{text-align:center;margin:18px 0 5px}
-.sub{text-align:center;color:#aab7d2;margin-bottom:25px}
+.sub{text-align:center;color:#aebbd5;margin-bottom:25px}
 .card{
-background:#111827f2;
-border:1px solid #2b3a5b;
-border-radius:15px;
-padding:19px;
-margin-bottom:17px
+ background:#111827f2;border:1px solid #2b3a5b;
+ border-radius:15px;padding:18px;margin-bottom:16px
 }
-.controls,.buttons{
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-align-items:center
-}
-.setup{
-display:grid;
-grid-template-columns:repeat(4,minmax(0,1fr));
-gap:12px
-}
-label{color:#b6c3dc;font-size:13px}
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.setup{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+label{font-size:13px;color:#b7c4dc}
 input,select{
-background:#0c1425;
-border:1px solid #354665;
-border-radius:8px;
-color:#fff;
-padding:9px;
-width:100%;
-margin-top:5px;
-font:inherit
+ width:100%;margin-top:5px;padding:9px;
+ background:#0c1425;color:#fff;border:1px solid #354665;
+ border-radius:8px;font:inherit
 }
 button{
-border:0;
-border-radius:9px;
-padding:11px 16px;
-cursor:pointer;
-font-weight:bold;
-color:white;
-background:#2563eb
+ border:0;border-radius:9px;padding:11px 15px;
+ background:#2563eb;color:#fff;cursor:pointer;font-weight:bold
 }
+button:hover{filter:brightness(1.12)}
 .alt{background:#283650}
-.danger{background:#712d3b}
 .active{background:#7c3aed}
-.scroll{overflow:auto;margin-top:16px}
-table{
-border-collapse:collapse;
-min-width:1450px;
-width:100%
-}
-th,td{
-padding:7px;
-border-bottom:1px solid #293853;
-text-align:left;
-font-size:13px
-}
+.danger{background:#712d3b}
+.scroll{overflow:auto;margin-top:15px}
+table{border-collapse:collapse;min-width:1420px;width:100%}
+th,td{padding:7px;border-bottom:1px solid #293853;text-align:left;font-size:13px}
 th{color:#aab8d1}
-td input,td select{padding:7px;margin:0}
+td input,td select{margin:0;padding:7px}
 td button{padding:7px 11px}
 .stats{
-display:grid;
-grid-template-columns:repeat(4,minmax(0,1fr));
-gap:12px
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:12px;margin-bottom:17px
 }
 .stat{
-background:#10192d;
-border:1px solid #2b3a5b;
-border-radius:12px;
-padding:14px;
-overflow-wrap:anywhere
+ background:#10192d;border:1px solid #2b3a5b;
+ border-radius:12px;padding:15px;overflow-wrap:anywhere
 }
 .stat small{color:#aebbd2}
-.stat strong{
-display:block;
-font-size:19px;
-margin-top:8px
-}
-.note{
-font-size:13px;
-color:#b7c4da;
-line-height:1.6
-}
+.stat strong{display:block;font-size:19px;margin-top:8px}
+.note{color:#aebbd2;font-size:13px;line-height:1.6}
 .green{color:#60d994}
 .red{color:#ff7989}
 .hidden{display:none}
 #result{line-height:1.9;overflow-wrap:anywhere}
-#result b{color:#fff}
-
+.warning{color:#ffd28b}
 @media(max-width:850px){
-.setup,.stats{
-grid-template-columns:repeat(2,minmax(0,1fr))
-}
+ .setup,.stats{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:450px){
-.setup,.stats{grid-template-columns:1fr}
+ .setup,.stats{grid-template-columns:1fr}
 }
 </style>
 </head>
-
 <body>
 <main class="wrap">
 
-<a href="index.html" class="back">← Все калькуляторы</a>
-
+<a href="index.html">← Все калькуляторы</a>
 <h1>Криптоторговля</h1>
 <p class="sub">
-Spot и Futures · биржи · комиссии · Funding · частичные входы и выходы
+Spot и Futures · несколько бирж · комиссии · Funding · частичные закрытия
 </p>
 
-<section class="card buttons">
+<section class="card controls">
 <button id="manualTab" class="active">✍ Ручной ввод</button>
 <button id="csvTab" class="alt">📂 Импорт CSV</button>
 </section>
@@ -132,7 +84,6 @@ Spot и Futures · биржи · комиссии · Funding · частичны
 <div id="manualBlock">
 
 <section class="card setup">
-
 <label>Биржа
 <input id="exchange" list="exchanges" value="Bybit">
 <datalist id="exchanges">
@@ -141,6 +92,7 @@ Spot и Futures · биржи · комиссии · Funding · частичны
 <option value="Binance">
 <option value="BingX">
 <option value="MEXC">
+<option value="Gate.io">
 </datalist>
 </label>
 
@@ -152,21 +104,19 @@ Spot и Futures · биржи · комиссии · Funding · частичны
 </select>
 </label>
 
-<label>Пара
+<label>Торговая пара
 <input id="pair" value="LTC/USDT">
 </label>
 
 <label>Название сделки
-<input id="name" placeholder="Например: LTC октябрь">
+<input id="tradeName" placeholder="Например: LTC октябрь">
 </label>
-
 </section>
 
 <section class="card">
-
 <div class="controls" style="justify-content:space-between">
-<b>Операции</b>
-<div class="buttons">
+<strong>Операции</strong>
+<div class="controls">
 <button id="add">+ Добавить операцию</button>
 <button id="clear" class="danger">Очистить</button>
 </div>
@@ -183,7 +133,7 @@ Spot и Futures · биржи · комиссии · Funding · частичны
 <th>Цена</th>
 <th>Комиссия</th>
 <th>Валюта комиссии</th>
-<th>Курс комиссии к валюте PnL*</th>
+<th>Курс комиссии*</th>
 <th>Funding</th>
 <th>Валюта Funding</th>
 <th>Дата / время</th>
@@ -195,12 +145,11 @@ Spot и Futures · биржи · комиссии · Funding · частичны
 </div>
 
 <p class="note">
-* Курс нужен только для комиссии в третьей валюте,
-например BTC при торговле LTC/USDT.
-Вводи стоимость 1 BTC в USDT на момент операции.
-Для LTC и USDT курс берётся из цены сделки.
+* Курс комиссии указывается только для сторонней монеты.
+Например, если комиссия в BTC при торговле LTC/USDT,
+введи цену 1 BTC в USDT на момент операции.
+Для LTC и USDT используется цена самой сделки.
 </p>
-
 </section>
 
 <section class="card">
@@ -208,41 +157,19 @@ Spot и Futures · биржи · комиссии · Funding · частичны
 </section>
 
 <div class="stats">
-
-<div class="stat">
-<small>Остаток позиции</small>
-<strong id="sQty">—</strong>
+<div class="stat"><small>Остаток позиции</small><strong id="sQty">—</strong></div>
+<div class="stat"><small>Средняя цена</small><strong id="sAvg">—</strong></div>
+<div class="stat"><small>Gross PnL</small><strong id="sGross">—</strong></div>
+<div class="stat"><small>Стоимость комиссий</small><strong id="sCost">—</strong></div>
+<div class="stat"><small>Net PnL</small><strong id="sNet">—</strong></div>
+<div class="stat"><small>Комиссии по валютам</small><strong id="sFees">—</strong></div>
+<div class="stat"><small>Funding по валютам</small><strong id="sFund">—</strong></div>
+<div class="stat"><small>Сделок</small><strong id="sCount">0</strong></div>
+<div class="stat"><small>Направление</small><strong id="sSide">—</strong></div>
 </div>
 
-<div class="stat">
-<small>Средняя цена</small>
-<strong id="sAvg">—</strong>
-</div>
-
-<div class="stat">
-<small>Gross PnL</small>
-<strong id="sGross">—</strong>
-</div>
-
-<div class="stat">
-<small>Net PnL</small>
-<strong id="sNet">—</strong>
-</div>
-
-<div class="stat">
-<small>Комиссии по валютам</small>
-<strong id="sFees">—</strong>
-</div>
-
-<div class="stat">
-<small>Funding по валютам</small>
-<strong id="sFund">—</strong>
-</div>
-
-</div>
-
-<section class="card" style="margin-top:17px">
-<h3>Результат</h3>
+<section class="card">
+<h3>Результат расчёта</h3>
 <div id="result" class="note">
 Добавь операции и нажми «Рассчитать».
 </div>
@@ -252,9 +179,7 @@ Spot и Futures · биржи · комиссии · Funding · частичны
 
 <div id="csvBlock" class="hidden">
 <section class="card">
-
 <h3>Импорт CSV</h3>
-
 <label>Биржа
 <select id="csvExchange">
 <option>Bybit</option>
@@ -263,19 +188,12 @@ Spot и Futures · биржи · комиссии · Funding · частичны
 <option>Другая</option>
 </select>
 </label>
-
-<p>
-<input id="csvFile" type="file" accept=".csv">
-</p>
-
+<p><input id="csvFile" type="file" accept=".csv"></p>
 <button id="readCsv">Прочитать файл</button>
-
-<p class="note" id="csvInfo">
-Пока доступна проверка файла.
-Расчёт импортированных сделок подключим
-после проверки ручного режима.
+<p id="csvInfo" class="note">
+Пока доступна проверка файла. Автоматический анализ сделок
+из CSV подключим после проверки ручных расчётов.
 </p>
-
 </section>
 </div>
 
@@ -284,704 +202,502 @@ Spot и Futures · биржи · комиссии · Funding · частичны
 <script>
 'use strict';
 
-const $ = id => document.getElementById(id);
-const EPS = 1e-10;
+const $=id=>document.getElementById(id);
+const EPS=1e-10;
 
-const num = v => {
-    let x = Number(
-        String(v ?? '').trim().replace(',', '.')
-    );
-    return Number.isFinite(x) ? x : NaN;
-};
+function number(v){
+ const s=String(v??'').trim().replace(',','.');
+ if(!s)return 0;
+ const n=Number(s);
+ return Number.isFinite(n)?n:NaN;
+}
 
-const fmt = (x,d=10) =>
-    Number.isFinite(x)
-        ? x.toLocaleString('ru-RU',{
-            maximumFractionDigits:d
-          })
-        : '—';
+function fmt(n,d=10){
+ return Number.isFinite(n)
+ ?n.toLocaleString('ru-RU',{maximumFractionDigits:d})
+ :'—';
+}
 
-const add = (m,c,x) => {
-    if(x) m[c] = (m[c] || 0) + x;
-};
+function escapeHTML(s){
+ return String(s).replace(/[&<>"']/g,c=>({
+ '&':'&amp;','<':'&lt;','>':'&gt;',
+ '"':'&quot;',"'":'&#39;'
+ }[c]));
+}
 
-const display = m =>
-    Object.entries(m).length
-        ? Object.entries(m)
-            .map(([c,x]) => fmt(x)+' '+c)
-            .join(' · ')
-        : '0';
+function addMap(map,currency,amount){
+ if(!amount)return;
+ map[currency]=(map[currency]||0)+amount;
+}
 
-const safe = s =>
-    String(s).replace(/[&<>"']/g,c=>({
-        '&':'&amp;',
-        '<':'&lt;',
-        '>':'&gt;',
-        '"':'&quot;',
-        "'":'&#39;'
-    }[c]));
+function mapText(map){
+ const items=Object.entries(map);
+ if(!items.length)return '0';
+ return items.map(([c,v])=>fmt(v)+' '+c).join(' · ');
+}
 
 function currencies(){
+ const pair=$('pair').value.toUpperCase().replace(/\s/g,'');
+ const parts=pair.split(/[\/-]/);
+ if(parts.length===2&&parts[0]&&parts[1])return parts;
 
-    let p = $('pair').value
-        .toUpperCase()
-        .replace(/\s/g,'');
-
-    let a = p.split(/[\/-]/);
-
-    if(a.length===2 && a[0] && a[1])
-        return a;
-
-    for(const q of [
-        'USDT','USDC','USD','BTC','ETH','BNB'
-    ]){
-        if(p.endsWith(q) && p.length>q.length)
-            return [p.slice(0,-q.length),q];
-    }
-
-    return [null,null];
+ for(const q of ['USDT','USDC','USD','BTC','ETH','BNB']){
+  if(pair.endsWith(q)&&pair.length>q.length)
+   return [pair.slice(0,-q.length),q];
+ }
+ return [null,null];
 }
 
 function newRow(){
+ const [base,quote]=currencies();
+ const tr=document.createElement('tr');
 
-    const [base,quote] = currencies();
+ tr.innerHTML=`
+ <td class="idx"></td>
+ <td><select class="op">
+ <option value="trade">Сделка</option>
+ <option value="funding">Funding</option>
+ </select></td>
+ <td><select class="side">
+ <option value="buy">Buy / Long</option>
+ <option value="sell">Sell / Short</option>
+ </select></td>
+ <td><input class="qty" type="number" min="0" step="any"></td>
+ <td><input class="price" type="number" min="0" step="any"></td>
+ <td><input class="fee" type="number" min="0" step="any"></td>
+ <td><input class="coin" value="${escapeHTML(quote||'')}"></td>
+ <td><input class="rate" type="number" min="0" step="any"
+ placeholder="если нужно"></td>
+ <td><input class="fund" type="number" step="any"></td>
+ <td><input class="fcoin" value="${escapeHTML(quote||'')}"></td>
+ <td><input class="time" type="datetime-local"></td>
+ <td><button class="danger remove">×</button></td>`;
 
-    const tr = document.createElement('tr');
+ tr.querySelector('.remove').onclick=()=>{
+  tr.remove();
+  renumber();
+ };
 
-    tr.innerHTML = `
-    <td class="idx"></td>
-
-    <td>
-    <select class="op">
-    <option value="trade">Сделка</option>
-    <option value="funding">Funding</option>
-    </select>
-    </td>
-
-    <td>
-    <select class="side">
-    <option value="buy">Buy / Long</option>
-    <option value="sell">Sell / Short</option>
-    </select>
-    </td>
-
-    <td>
-    <input class="qty" type="number"
-    step="any" min="0" placeholder="0">
-    </td>
-
-    <td>
-    <input class="price" type="number"
-    step="any" min="0" placeholder="0">
-    </td>
-
-    <td>
-    <input class="fee" type="number"
-    step="any" min="0" placeholder="0">
-    </td>
-
-    <td>
-    <input class="coin"
-    value="${safe(quote||'')}"
-    placeholder="USDT">
-    </td>
-
-    <td>
-    <input class="rate" type="number"
-    step="any" min="0"
-    placeholder="при необходимости">
-    </td>
-
-    <td>
-    <input class="fund" type="number"
-    step="any" placeholder="0">
-    </td>
-
-    <td>
-    <input class="fcoin"
-    value="${safe(quote||'')}"
-    placeholder="USDT">
-    </td>
-
-    <td>
-    <input class="time" type="datetime-local">
-    </td>
-
-    <td>
-    <button class="danger remove">×</button>
-    </td>
-    `;
-
-    tr.querySelector('.remove').onclick = () => {
-        tr.remove();
-        renumber();
-    };
-
-    $('ops').append(tr);
-    renumber();
+ $('ops').append(tr);
+ renumber();
 }
 
 function renumber(){
-    [...$('ops').children].forEach((r,i)=>{
-        r.querySelector('.idx').textContent=i+1;
-    });
+ [...$('ops').children].forEach((tr,i)=>{
+  tr.querySelector('.idx').textContent=i+1;
+ });
 }
 
-function data(){
-
-    return [...$('ops').children].map((tr,i)=>{
-
-        const v=c=>tr.querySelector('.'+c).value;
-
-        return {
-            i:i+1,
-            op:v('op'),
-            side:v('side'),
-            qty:num(v('qty')),
-            price:num(v('price')),
-            fee:num(v('fee'))||0,
-            coin:v('coin').trim().toUpperCase(),
-            rate:num(v('rate')),
-            fund:num(v('fund'))||0,
-            fcoin:v('fcoin').trim().toUpperCase(),
-            time:v('time')
-        };
-    });
+function getRows(){
+ return [...$('ops').children].map((tr,i)=>{
+  const v=c=>tr.querySelector('.'+c).value;
+  return {
+   index:i+1,
+   op:v('op'),
+   side:v('side'),
+   qty:number(v('qty')),
+   price:number(v('price')),
+   fee:number(v('fee')),
+   coin:v('coin').trim().toUpperCase(),
+   rate:number(v('rate')),
+   funding:number(v('fund')),
+   fcoin:v('fcoin').trim().toUpperCase(),
+   time:v('time')
+  };
+ });
 }
 
-function calc(){
-
-try{
-
-    const [base,quote]=currencies();
-
-    if(!base||!quote)
-        throw Error(
-            'Укажи пару, например LTC/USDT.'
-        );
-
-    const type=$('type').value;
-    const unit=type==='inverse'?base:quote;
-
-    let qty=0;
-    let basis=0;
-    let side='';
-    let gross=0;
-    let net=0;
-    let netKnown=true;
-
-    let fees={};
-    let funds={};
-
-    let count=0;
-    let fc=0;
-    let notes=[];
-
-    for(const r of data()){
-
-        if(
-            r.op==='trade' &&
-            (!Number.isFinite(r.qty) ||
-             !Number.isFinite(r.price)) &&
-            !(r.qty===0 && r.price===0)
-        ){
-            throw Error(
-                'Строка '+r.i+
-                ': укажи количество и цену.'
-            );
-        }
-
-        if(r.fee<0 || !Number.isFinite(r.fee))
-            throw Error(
-                'Строка '+r.i+
-                ': комиссия должна быть неотрицательной.'
-            );
-
-        if(r.op==='funding'){
-
-            if(type==='spot')
-                throw Error(
-                    'Funding бывает на фьючерсах, '+
-                    'не на споте (строка '+r.i+').'
-                );
-
-            if(!r.fcoin && r.fund)
-                throw Error(
-                    'Строка '+r.i+
-                    ': укажи валюту Funding.'
-                );
-
-            if(r.fund){
-
-                add(funds,r.fcoin,r.fund);
-                fc++;
-
-                if(r.fcoin===unit){
-                    net-=r.fund;
-                }else{
-                    netKnown=false;
-                    notes.push(
-                        'Funding в '+r.fcoin+
-                        ' не пересчитан в '+unit
-                    );
-                }
-            }
-
-            continue;
-        }
-
-        if(!r.qty && !r.price && !r.fee)
-            continue;
-
-        if(!(r.qty>0 && r.price>0))
-            throw Error(
-                'Строка '+r.i+
-                ': количество и цена должны быть больше нуля.'
-            );
-
-        if(r.fee && !r.coin)
-            throw Error(
-                'Строка '+r.i+
-                ': укажи валюту комиссии.'
-            );
-
-        count++;
-
-        add(fees,r.coin,r.fee);
-
-        let feeUnit=0;
-
-        if(r.fee){
-
-            if(r.coin===unit){
-
-                feeUnit=r.fee;
-
-            }else if(
-                type==='spot' &&
-                r.coin===base
-            ){
-
-                feeUnit=r.fee*r.price;
-
-            }else if(
-                type==='linear' &&
-                r.coin===base
-            ){
-
-                feeUnit=r.fee*r.price;
-
-            }else if(
-                type==='inverse' &&
-                r.coin===quote
-            ){
-
-                feeUnit=r.fee/r.price;
-
-            }else if(
-                Number.isFinite(r.rate) &&
-                r.rate>0
-            ){
-
-                feeUnit=r.fee*r.rate;
-
-            }else{
-
-                netKnown=false;
-
-                notes.push(
-                    'Строка '+r.i+
-                    ': нужен курс '+r.coin+
-                    ' → '+unit
-                );
-            }
-        }
-
-        // SPOT
-
-        if(type==='spot'){
-
-            if(r.side==='buy'){
-
-                let received=
-                    r.qty-
-                    (r.coin===base?r.fee:0);
-
-                if(received<=0)
-                    throw Error(
-                        'Строка '+r.i+
-                        ': комиссия превышает '+
-                        'купленное количество.'
-                    );
-
-                qty+=received;
-
-                basis+=
-                    r.qty*r.price+
-                    (r.coin===quote?r.fee:0);
-
-                if(
-                    r.coin!==base &&
-                    r.coin!==quote &&
-                    feeUnit
-                ){
-                    basis+=feeUnit;
-                }
-
-            }else{
-
-                let used=
-                    r.qty+
-                    (r.coin===base?r.fee:0);
-
-                if(used>qty+EPS)
-                    throw Error(
-                        'Строка '+r.i+
-                        ': продажа с комиссией '+
-                        'превышает остаток '+
-                        fmt(qty)+' '+base
-                    );
-
-                let avg=basis/qty;
-
-                gross+=
-                    r.qty*(r.price-avg);
-
-                let revenue=
-                    r.qty*r.price-
-                    (r.coin===quote?r.fee:0);
-
-                net+=
-                    revenue-
-                    used*avg-
-                    (
-                        r.coin!==base &&
-                        r.coin!==quote
-                            ?feeUnit:0
-                    );
-
-                basis-=used*avg;
-                qty-=used;
-
-                if(qty<EPS){
-                    qty=0;
-                    basis=0;
-                }
-            }
-
-            continue;
-        }
-
-        // FUTURES
-
-        let incoming=
-            r.side==='buy'?'long':'short';
-
-        let remaining=r.qty;
-
-        if(qty<EPS){
-
-            qty=remaining;
-            side=incoming;
-
-            basis=
-                type==='inverse'
-                    ?remaining/r.price
-                    :remaining*r.price;
-
-        }else if(side===incoming){
-
-            basis+=
-                type==='inverse'
-                    ?remaining/r.price
-                    :remaining*r.price;
-
-            qty+=remaining;
-
-        }else{
-
-            let closed=Math.min(qty,remaining);
-
-            let avg=
-                type==='inverse'
-                    ?qty/basis
-                    :basis/qty;
-
-            let g=
-                type==='inverse'
-                    ?closed*(
-                        side==='long'
-                            ?(1/avg-1/r.price)
-                            :(1/r.price-1/avg)
-                    )
-                    :closed*(
-                        side==='long'
-                            ?(r.price-avg)
-                            :(avg-r.price)
-                    );
-
-            gross+=g;
-            net+=g;
-
-            basis*=1-closed/qty;
-            qty-=closed;
-            remaining-=closed;
-
-            if(qty<EPS){
-                qty=0;
-                basis=0;
-                side='';
-            }
-
-            if(remaining>EPS){
-
-                qty=remaining;
-                side=incoming;
-
-                basis=
-                    type==='inverse'
-                        ?remaining/r.price
-                        :remaining*r.price;
-            }
-        }
-
-        net-=feeUnit;
-    }
-
+function calculate(){
+ try{
+  const [base,quote]=currencies();
+  if(!base||!quote)
+   throw Error('Укажи торговую пару, например LTC/USDT.');
+
+  const type=$('type').value;
+  const unit=type==='inverse'?base:quote;
+  const rows=getRows();
+
+  let qty=0;
+  let basis=0;
+  let side='';
+  let gross=0;
+  let feeValue=0;
+  let fundingValue=0;
+  let netKnown=true;
+  let tradeCount=0;
+  let fundingCount=0;
+  let warnings=[];
+
+  const fees={};
+  const funds={};
+
+  // Отдельный учёт реализованного результата по себестоимости
+  let accountingPnL=0;
+  let accountingKnown=true;
+
+  function feeInUnit(r){
+   if(!r.fee)return 0;
+
+   if(r.coin===unit)return r.fee;
+
+   if(r.coin===base&&unit===quote)
+    return r.fee*r.price;
+
+   if(r.coin===quote&&unit===base)
+    return r.fee/r.price;
+
+   if(r.rate>0)return r.fee*r.rate;
+
+   netKnown=false;
+   warnings.push(
+    'Строка '+r.index+
+    ': нужен курс '+r.coin+' → '+unit
+   );
+   return 0;
+  }
+
+  function fundingInUnit(r){
+   if(!r.funding)return 0;
+   if(r.fcoin===unit)return r.funding;
+
+   netKnown=false;
+   warnings.push(
+    'Строка '+r.index+
+    ': Funding в '+r.fcoin+
+    ' нельзя автоматически пересчитать в '+unit
+   );
+   return 0;
+  }
+
+  for(const r of rows){
+
+   if(r.op==='funding'){
     if(type==='spot'){
-
-        // Gross без комиссий
-
-        let q=0;
-        let b=0;
-        let g=0;
-
-        for(const r of data()){
-
-            if(
-                r.op!=='trade' ||
-                !(r.qty>0 && r.price>0)
-            ) continue;
-
-            if(r.side==='buy'){
-
-                q+=r.qty;
-                b+=r.qty*r.price;
-
-            }else{
-
-                let close=Math.min(q,r.qty);
-
-                if(close>0){
-
-                    let a=b/q;
-
-                    g+=close*(r.price-a);
-
-                    q-=close;
-                    b-=close*a;
-                }
-            }
-        }
-
-        gross=g;
+     if(r.funding)
+      throw Error('Funding недоступен для Spot, строка '+r.index);
+     continue;
     }
 
-    const avg=
-        qty>EPS
-            ?(
-                type==='inverse'
-                    ?qty/basis
-                    :basis/qty
-            )
-            :0;
+    if(!Number.isFinite(r.funding))
+     throw Error('Некорректный Funding в строке '+r.index);
 
-    $('sQty').textContent=
-        fmt(qty,8)+' '+
-        (type==='spot'?base:'контр.');
+    if(r.funding&&!r.fcoin)
+     throw Error('Укажи валюту Funding в строке '+r.index);
 
-    $('sAvg').textContent=
-        qty>EPS
-            ?fmt(avg)+' '+quote
-            :'—';
-
-    $('sGross').textContent=
-        fmt(gross)+' '+unit;
-
-    $('sNet').textContent=
-        netKnown
-            ?fmt(net)+' '+unit
-            :'Нужен курс';
-
-    $('sFees').textContent=display(fees);
-    $('sFund').textContent=display(funds);
-
-    $('result').innerHTML=`
-
-    <b>Биржа:</b>
-    ${safe($('exchange').value)}
-
-    · <b>Пара:</b>
-    ${safe(base+'/'+quote)}
-
-    · <b>Режим:</b>
-    ${safe(type)}
-
-    <br>
-
-    <b>Операций:</b> ${count}
-
-    · <b>Funding:</b> ${fc}
-
-    <br>
-
-    <b>Остаток:</b>
-    ${fmt(qty,8)}
-    ${type==='spot'?base:'контрактов'}
-
-    · <b>Средняя:</b>
-    ${qty?fmt(avg):'—'}
-
-    <br>
-
-    <b>Gross PnL:</b>
-    ${fmt(gross)} ${unit}
-
-    <br>
-
-    <b>Net PnL:</b>
-
-    <span class="${net>=0?'green':'red'}">
-    ${
-        netKnown
-            ?fmt(net)+' '+unit
-            :'не определён'
+    if(r.funding){
+     addMap(funds,r.fcoin,r.funding);
+     fundingValue+=fundingInUnit(r);
+     fundingCount++;
     }
-    </span>
+    continue;
+   }
 
-    <br>
+   if(!r.qty&&!r.price&&!r.fee)continue;
 
-    <b>Комиссии:</b>
-    ${display(fees)}
+   if(!(r.qty>0&&r.price>0))
+    throw Error('Количество и цена должны быть больше нуля, строка '+r.index);
 
-    <br>
+   if(!Number.isFinite(r.fee)||r.fee<0)
+    throw Error('Некорректная комиссия, строка '+r.index);
 
-    <b>Funding:</b>
-    ${display(funds)}
+   if(r.fee&&!r.coin)
+    throw Error('Укажи валюту комиссии, строка '+r.index);
 
-    ${
-        notes.length
-            ?'<br><span class="red">'+
-             notes.map(safe).join('; ')+
-             '</span>'
-            :''
+   if(r.fee&&r.coin===base&&type==='spot'&&
+      r.side==='buy'&&r.fee>=r.qty)
+    throw Error('Комиссия превышает покупку, строка '+r.index);
+
+   tradeCount++;
+
+   addMap(fees,r.coin,r.fee);
+   feeValue+=feeInUnit(r);
+
+   if(type==='spot'){
+
+    if(r.side==='buy'){
+     const received=r.qty-(r.coin===base?r.fee:0);
+
+     qty+=received;
+
+     // Себестоимость фактически полученных монет.
+     basis+=r.qty*r.price;
+
+     if(r.coin===quote)basis+=r.fee;
+
+     if(r.fee&&r.coin!==base&&r.coin!==quote){
+      if(r.rate>0)basis+=r.fee*r.rate;
+      else accountingKnown=false;
+     }
+
+    }else{
+     if(qty<EPS)
+      throw Error('Нет монет для продажи, строка '+r.index);
+
+     const used=r.qty+(r.coin===base?r.fee:0);
+
+     if(used>qty+EPS)
+      throw Error(
+       'Продажа и комиссия превышают остаток в строке '+
+       r.index+'. Доступно '+fmt(qty)+' '+base
+      );
+
+     const avg=basis/qty;
+
+     // Gross по торговому объёму, без комиссий.
+     gross+=r.qty*(r.price-avg);
+
+     // Реализованный результат по себестоимости,
+     // включая списанные монеты в комиссию.
+     let proceeds=r.qty*r.price;
+     if(r.coin===quote)proceeds-=r.fee;
+
+     accountingPnL+=proceeds-used*avg;
+
+     if(r.fee&&r.coin!==base&&r.coin!==quote){
+      if(r.rate>0)accountingPnL-=r.fee*r.rate;
+      else accountingKnown=false;
+     }
+
+     basis-=used*avg;
+     qty-=used;
+
+     if(qty<EPS){
+      qty=0;
+      basis=0;
+     }
     }
 
-    <br>
+    continue;
+   }
 
+   // FUTURES
+   const incoming=r.side==='buy'?'long':'short';
+   let remaining=r.qty;
+
+   if(qty<EPS){
+    qty=remaining;
+    side=incoming;
+    basis=type==='inverse'
+     ?remaining/r.price
+     :remaining*r.price;
+
+   }else if(side===incoming){
+    qty+=remaining;
+    basis+=type==='inverse'
+     ?remaining/r.price
+     :remaining*r.price;
+
+   }else{
+    const closed=Math.min(qty,remaining);
+    const avg=type==='inverse'?qty/basis:basis/qty;
+
+    let pnl;
+
+    if(type==='inverse'){
+     pnl=side==='long'
+      ?closed*(1/avg-1/r.price)
+      :closed*(1/r.price-1/avg);
+    }else{
+     pnl=side==='long'
+      ?closed*(r.price-avg)
+      :closed*(avg-r.price);
+    }
+
+    gross+=pnl;
+
+    basis*=1-closed/qty;
+    qty-=closed;
+    remaining-=closed;
+
+    if(qty<EPS){
+     qty=0;
+     basis=0;
+     side='';
+    }
+
+    if(remaining>EPS){
+     qty=remaining;
+     side=incoming;
+     basis=type==='inverse'
+      ?remaining/r.price
+      :remaining*r.price;
+    }
+   }
+  }
+
+  // Для Spot торговый Gross рассчитывается без комиссий.
+  // Поэтому дополнительно пересчитываем его по исходным
+  // торговым количествам, независимо от способа оплаты комиссий.
+  if(type==='spot'){
+   let q=0,b=0,g=0;
+
+   for(const r of rows){
+    if(r.op!=='trade'||!(r.qty>0&&r.price>0))continue;
+
+    if(r.side==='buy'){
+     q+=r.qty;
+     b+=r.qty*r.price;
+    }else{
+     if(q+EPS<r.qty)
+      throw Error('Продажа превышает купленный объём в строке '+r.index);
+
+     const avg=b/q;
+     g+=r.qty*(r.price-avg);
+     b-=r.qty*avg;
+     q-=r.qty;
+     if(q<EPS){q=0;b=0;}
+    }
+   }
+
+   gross=g;
+  }
+
+  const avg=qty>EPS
+   ?(type==='inverse'?qty/basis:basis/qty)
+   :0;
+
+  // Net в рыночной оценке комиссии на момент сделки.
+  // Для Spot с незакрытым остатком это аналитический
+  // показатель, а не бухгалтерский реализованный PnL.
+  const net=gross-feeValue-fundingValue;
+
+  $('sQty').textContent=
+   fmt(qty,8)+' '+(type==='spot'?base:'контр.');
+
+  $('sAvg').textContent=
+   qty>EPS?fmt(avg)+' '+quote:'—';
+
+  $('sGross').textContent=fmt(gross)+' '+unit;
+
+  $('sCost').textContent=netKnown
+   ?fmt(feeValue)+' '+unit
+   :'Не все курсы';
+
+  $('sNet').textContent=netKnown
+   ?fmt(net)+' '+unit
+   :'Нужен курс';
+
+  $('sFees').textContent=mapText(fees);
+  $('sFund').textContent=mapText(funds);
+  $('sCount').textContent=tradeCount;
+  $('sSide').textContent=type==='spot'
+   ?'Spot'
+   :(qty>EPS?side.toUpperCase():'Закрыта');
+
+  let html=`
+   <b>Биржа:</b> ${escapeHTML($('exchange').value)}
+   · <b>Пара:</b> ${escapeHTML(base+'/'+quote)}
+   · <b>Режим:</b> ${escapeHTML(type)}
+   <br>
+   <b>Название:</b> ${escapeHTML($('tradeName').value||'—')}
+   <br>
+   <b>Операций:</b> ${tradeCount}
+   · <b>Funding событий:</b> ${fundingCount}
+   <br>
+   <b>Остаток:</b> ${fmt(qty,8)}
+   ${type==='spot'?base:'контрактов'}
+   <br>
+   <b>Средняя цена:</b> ${qty?fmt(avg):'—'}
+   <br>
+   <b>Gross PnL:</b> ${fmt(gross)} ${unit}
+   <br>
+   <b>Стоимость комиссий:</b>
+   ${netKnown?fmt(feeValue)+' '+unit:'нужен курс'}
+   <br>
+   <b>Funding:</b> ${mapText(funds)}
+   <br>
+   <b>Net PnL:</b>
+   <strong class="${net>=0?'green':'red'}">
+   ${netKnown?fmt(net)+' '+unit:'не определён'}
+   </strong>
+   <br>
+   <b>Комиссии по валютам:</b> ${mapText(fees)}
+  `;
+
+  if(type==='spot'){
+   html+=`
+    <br>
+    <b>Реализованный результат по себестоимости:</b>
+    ${accountingKnown?fmt(accountingPnL)+' '+quote:'нужен курс'}
+    <br>
     <span class="note">
-    Spot: Net PnL — реализованный результат
-    с учётом комиссий проданной части;
-    стоимость оставшихся монет учитывает
-    комиссии покупки.
-
-    Futures: результат по закрытой части
-    за вычетом всех введённых комиссий
-    и Funding.
-
-    Для неполной истории он может
-    не совпасть с биржей.
+    Net PnL выше — аналитическая оценка:
+    торговая прибыль минус рыночная стоимость всех
+    введённых комиссий. Если комиссия списана в LTC,
+    её стоимость берётся по цене операции.
+    Реализованный результат по себестоимости отдельно
+    учитывает списание LTC из остатка.
+    Эти два показателя нельзя складывать.
     </span>
-    `;
+   `;
+  }else{
+   html+=`
+    <br>
+    <span class="note">
+    Futures: Gross учитывает закрытые части позиции.
+    Net дополнительно учитывает все введённые комиссии
+    и Funding. Для открытой позиции результат
+    не включает нереализованную прибыль.
+    </span>
+   `;
+  }
 
-}catch(e){
+  if(warnings.length){
+   html+='<p class="warning">'+
+    warnings.map(escapeHTML).join('<br>')+'</p>';
+  }
 
-    $('result').textContent=
-        'Ошибка: '+e.message;
+  $('result').innerHTML=html;
+
+ }catch(e){
+  $('result').textContent='Ошибка: '+e.message;
+ }
 }
-}
-
-
-// КНОПКИ
 
 $('add').onclick=newRow;
 
 $('clear').onclick=()=>{
-
-    $('ops').innerHTML='';
-
-    newRow();
-
-    $('result').textContent=
-        'Добавь операции и нажми «Рассчитать».';
+ $('ops').innerHTML='';
+ newRow();
+ $('result').textContent='Добавь операции и нажми «Рассчитать».';
 };
 
-$('calc').onclick=calc;
+$('calc').onclick=calculate;
 
-
-// ВКЛАДКИ
-
-function tab(which){
-
-    $('manualBlock').classList.toggle(
-        'hidden',which!=='manual'
-    );
-
-    $('csvBlock').classList.toggle(
-        'hidden',which!=='csv'
-    );
-
-    $('manualTab').classList.toggle(
-        'active',which==='manual'
-    );
-
-    $('csvTab').classList.toggle(
-        'active',which==='csv'
-    );
+function tab(mode){
+ $('manualBlock').classList.toggle('hidden',mode!=='manual');
+ $('csvBlock').classList.toggle('hidden',mode!=='csv');
+ $('manualTab').classList.toggle('active',mode==='manual');
+ $('csvTab').classList.toggle('active',mode==='csv');
 }
 
 $('manualTab').onclick=()=>tab('manual');
 $('csvTab').onclick=()=>tab('csv');
 
-
-// CSV
-
 $('readCsv').onclick=()=>{
+ const file=$('csvFile').files[0];
 
-    let f=$('csvFile').files[0];
+ if(!file){
+  $('csvInfo').textContent='Сначала выбери CSV.';
+  return;
+ }
 
-    if(!f){
+ const reader=new FileReader();
 
-        $('csvInfo').textContent='Выбери CSV';
-        return;
-    }
+ reader.onload=()=>{
+  const lines=reader.result.replace(/^\uFEFF/,'')
+   .split(/\r?\n/).filter(x=>x.trim());
 
-    let reader=new FileReader();
+  $('csvInfo').textContent=
+   file.name+': прочитано '+Math.max(0,lines.length-1)+
+   ' строк. Автоматический расчёт CSV пока не подключён.';
+ };
 
-    reader.onload=()=>{
-
-        $('csvInfo').textContent=
-            f.name+
-            ': файл прочитан ('+
-            Math.max(
-                0,
-                reader.result.trim()
-                    .split(/\r?\n/).length-1
-            )+
-            ' строк). Автоматический расчёт '+
-            'импорта пока не подключён.';
-    };
-
-    reader.readAsText(f,'UTF-8');
+ reader.readAsText(file,'UTF-8');
 };
 
-
-// СТАРТ
-
 newRow();
 newRow();
-
 </script>
-
 </body>
 </html>

@@ -11,882 +11,1258 @@ body{
  margin:0;color:#edf2ff;font:15px Arial,sans-serif;
  background:
  radial-gradient(circle at top left,#243b80,transparent 35%),
- radial-gradient(circle at bottom right,#4b1f72,transparent 35%),
+ radial-gradient(circle at bottom right,#241a53,transparent 40%),
  #0b1020;
  min-height:100vh
 }
-.wrap{width:min(1350px,96%);margin:auto;padding:25px 0 50px}
-a{color:#57adff;text-decoration:none;transition:color .2s ease}
-a:hover{color:#b18cff;text-shadow:0 0 10px rgba(177,140,255,.45)}
-h1{text-align:center;margin:18px 0 5px}
-.sub{text-align:center;color:#aebbd5;margin-bottom:25px}
-.card{
- background:#111827f2;border:1px solid #2b3a5b;
- border-radius:15px;padding:18px;margin-bottom:16px
+.wrap{max-width:1200px;margin:auto;padding:22px}
+h1{margin:14px 0 6px;font-size:28px}
+h2{font-size:19px;margin:0 0 14px}
+h3{font-size:16px;margin:0 0 12px}
+p{line-height:1.5}
+.muted{color:#aab5d0}
+.back{display:inline-block;color:#b8c5ff;text-decoration:none;transition:.2s}
+.back:hover{color:#8f7cff}
+.panel{
+ background:rgba(19,27,51,.96);
+ border:1px solid #35446d;
+ border-radius:15px;
+ padding:18px;
+ margin:18px 0;
+ box-shadow:0 8px 28px #0003
 }
-.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.setup{
- display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
- gap:12px
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+label{font-size:13px;color:#b8c5df}
+input,select,button,textarea{
+ font:inherit;border-radius:8px;min-width:0
 }
-label{font-size:13px;color:#b7c4dc}
-input,select{
- width:100%;margin-top:5px;padding:9px;
- background:#0c1425;color:#fff;border:1px solid #354665;
- border-radius:8px;font:inherit
+input,select,textarea{
+ background:#0c152b;border:1px solid #42527b;
+ color:#fff;padding:10px;width:100%
+}
+input:focus,select:focus,textarea:focus{
+ outline:2px solid #7e6bff;outline-offset:1px
 }
 button{
- border:0;border-radius:9px;padding:11px 15px;
- background:#2563eb;color:#fff;cursor:pointer;font-weight:bold
+ border:0;background:#6757dc;color:#fff;
+ padding:10px 14px;cursor:pointer;font-weight:600
 }
-button:hover{filter:brightness(1.12)}
-.alt{background:#283650}
-.active{background:#7c3aed}
-.danger{background:#712d3b}
-.success{background:#18795b}
-.scroll{overflow:auto;margin-top:15px}
-table{border-collapse:collapse;min-width:1420px;width:100%}
+button:hover{background:#806fff}
+button.secondary{background:#283a61}
+button.secondary:hover{background:#3c527f}
+button.danger{background:#8a3548}
+button.danger:hover{background:#aa4057}
+button.small{padding:7px 10px;font-size:13px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tab{background:#263556}
+.tab.active{background:#6757dc}
+.hidden{display:none!important}
+.table-wrap{overflow-x:auto;margin-top:12px}
+table{border-collapse:collapse;width:100%;min-width:780px}
 th,td{
- padding:7px;border-bottom:1px solid #293853;
- text-align:left;font-size:13px
+ border-bottom:1px solid #354361;
+ padding:9px 7px;text-align:left;font-size:13px
 }
-th{color:#aab8d1}
-td input,td select{margin:0;padding:7px}
-td button{padding:7px 11px}
-.stats{
+th{color:#b9c9e9;background:#1b2947}
+td input,td select{padding:7px;font-size:13px}
+td button{white-space:nowrap}
+.result-grid{
  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
- gap:12px;margin-bottom:17px
+ gap:12px;margin-top:14px
 }
-.stat{
- background:#10192d;border:1px solid #2b3a5b;
- border-radius:12px;padding:15px;overflow-wrap:anywhere
+.metric{
+ background:#111e39;border:1px solid #34466e;
+ padding:13px;border-radius:10px
 }
-.stat small{color:#aebbd2}
-.stat strong{display:block;font-size:19px;margin-top:8px}
-.note{color:#aebbd2;font-size:13px;line-height:1.6}
-.green{color:#60d994}
-.red{color:#ff7989}
-.warning{color:#ffd28b}
-.hidden{display:none}
-#result{line-height:1.9;overflow-wrap:anywhere}
-#saveStatus{font-size:12px;color:#9db1d0}
-@media(max-width:850px){
- .setup,.stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+.metric .label{font-size:12px;color:#aab8d5;margin-bottom:7px}
+.metric .value{font-size:19px;font-weight:700;overflow-wrap:anywhere}
+.positive{color:#50dfab}
+.negative{color:#ff7889}
+.warning{
+ color:#ffd38a;background:#49391c;
+ border:1px solid #8b692d;padding:12px;border-radius:9px
 }
-@media(max-width:450px){
- .setup,.stats{grid-template-columns:1fr}
+.note{
+ background:#142440;border:1px solid #344d79;
+ border-radius:9px;padding:12px;color:#c4d5f3
+}
+.file-input{max-width:100%}
+.footer{color:#8c9ab7;text-align:center;margin:25px 0}
+@media(max-width:900px){
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .result-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:550px){
+ .wrap{padding:12px}
+ .panel{padding:13px}
+ .grid,.result-grid{grid-template-columns:1fr}
+ h1{font-size:23px}
 }
 </style>
 </head>
 <body>
-<main class="wrap">
+<div class="wrap">
 
-<a href="index.html">← Все калькуляторы</a>
-
-<h1>Криптоторговля</h1>
-<p class="sub">
-Spot и Futures · несколько бирж · комиссии · Funding · частичные закрытия
+<a class="back" href="index.html">← Все калькуляторы</a>
+<h1>Криптокалькулятор сделок</h1>
+<p class="muted">
+ Спот, фьючерсы Linear и Inverse, усреднение,
+ частичные закрытия, комиссии, Funding и импорт CSV.
 </p>
 
-<section class="card controls">
-<button id="manualTab" class="active">✍ Ручной ввод</button>
-<button id="csvTab" class="alt">📂 Импорт CSV</button>
+<section class="panel">
+ <h2>Параметры сделки</h2>
+ <div class="grid">
+  <div class="field">
+   <label for="tradeName">Название сделки</label>
+   <input id="tradeName" placeholder="Например, LTCUSDT">
+  </div>
+  <div class="field">
+   <label for="type">Рынок</label>
+   <select id="type">
+    <option value="spot">Спот</option>
+    <option value="linear">Фьючерсы Linear (USDT)</option>
+    <option value="inverse">Фьючерсы Inverse (Coin)</option>
+   </select>
+  </div>
+  <div class="field">
+   <label for="direction">Направление</label>
+   <select id="direction">
+    <option value="long">Long / Покупка</option>
+    <option value="short">Short / Продажа</option>
+   </select>
+  </div>
+  <div class="field">
+   <label for="pair">Торговая пара</label>
+   <input id="pair" value="BTCUSDT" placeholder="BTCUSDT">
+  </div>
+  <div class="field">
+   <label for="baseCurrency">Базовая валюта</label>
+   <input id="baseCurrency" value="BTC">
+  </div>
+  <div class="field">
+   <label for="quoteCurrency">Валюта котировки</label>
+   <input id="quoteCurrency" value="USDT">
+  </div>
+  <div class="field">
+   <label for="leverage">Плечо</label>
+   <input id="leverage" type="number" min="1" step="any" value="1">
+  </div>
+  <div class="field">
+   <label for="contractSize">Номинал контракта Inverse, USD</label>
+   <input id="contractSize" type="number" min="0.00000001" step="any" value="1">
+  </div>
+ </div>
 </section>
 
-<div id="manualBlock">
+<section class="panel">
+ <h2>Операции</h2>
+ <div class="tabs">
+  <button id="tabEntries" class="tab active" type="button">Входы</button>
+  <button id="tabExits" class="tab" type="button">Частичные закрытия</button>
+  <button id="tabFunding" class="tab" type="button">Funding</button>
+ </div>
 
-<section class="card setup">
-<label>Биржа
-<input id="exchange" list="exchanges" value="Bybit">
-<datalist id="exchanges">
-<option value="Bybit">
-<option value="OKX">
-<option value="Binance">
-<option value="BingX">
-<option value="MEXC">
-<option value="Gate.io">
-</datalist>
-</label>
+ <div id="entriesPanel">
+  <p class="muted">
+   Добавляй покупки или продажи для формирования позиции.
+   Количество — в монетах для Spot/Linear и в контрактах для Inverse.
+  </p>
+  <div class="table-wrap">
+   <table>
+    <thead>
+     <tr>
+      <th>№</th><th>Дата</th><th>Цена</th><th>Количество</th>
+      <th>Комиссия</th><th>Валюта комиссии</th><th></th>
+     </tr>
+    </thead>
+    <tbody id="entriesBody"></tbody>
+   </table>
+  </div>
+  <div class="actions">
+   <button id="addEntry" type="button">+ Добавить вход</button>
+  </div>
+ </div>
 
-<label>Тип торговли
-<select id="type">
-<option value="spot">Spot</option>
-<option value="linear">Futures Linear</option>
-<option value="inverse">Futures Inverse</option>
-</select>
-</label>
+ <div id="exitsPanel" class="hidden">
+  <p class="muted">
+   Указывай цену и количество закрытой части позиции.
+  </p>
+  <div class="table-wrap">
+   <table>
+    <thead>
+     <tr>
+      <th>№</th><th>Дата</th><th>Цена</th><th>Количество</th>
+      <th>Комиссия</th><th>Валюта комиссии</th><th></th>
+     </tr>
+    </thead>
+    <tbody id="exitsBody"></tbody>
+   </table>
+  </div>
+  <div class="actions">
+   <button id="addExit" type="button">+ Частичное закрытие</button>
+  </div>
+ </div>
 
-<label>Торговая пара
-<input id="pair" value="LTC/USDT">
-</label>
-
-<label>Название сделки
-<input id="tradeName" placeholder="Например: LTC октябрь">
-</label>
+ <div id="fundingPanel" class="hidden">
+  <p class="muted">
+   Funding со знаком: положительное значение — получили,
+   отрицательное — заплатили. Можно вводить +0.00001.
+  </p>
+  <div class="table-wrap">
+   <table>
+    <thead>
+     <tr>
+      <th>№</th><th>Дата</th><th>Сумма Funding</th>
+      <th>Валюта</th><th></th>
+     </tr>
+    </thead>
+    <tbody id="fundingBody"></tbody>
+   </table>
+  </div>
+  <div class="actions">
+   <button id="addFunding" type="button">+ Добавить Funding</button>
+  </div>
+ </div>
 </section>
 
-<section class="card">
-<div class="controls" style="justify-content:space-between">
-<strong>Операции</strong>
-<div class="controls">
-<button id="add">+ Добавить операцию</button>
-<button id="clear" class="danger">Очистить</button>
-</div>
-</div>
-
-<div class="scroll">
-<table>
-<thead>
-<tr>
-<th>#</th>
-<th>Операция</th>
-<th>Сторона</th>
-<th>Количество</th>
-<th>Цена</th>
-<th>Комиссия</th>
-<th>Валюта комиссии</th>
-<th>Курс комиссии*</th>
-<th>Funding</th>
-<th>Валюта Funding</th>
-<th>Дата / время</th>
-<th></th>
-</tr>
-</thead>
-<tbody id="ops"></tbody>
-</table>
-</div>
-
-<p class="note">
-* Курс комиссии нужен только для сторонней монеты.
-Например, при комиссии в BTC для LTC/USDT укажи стоимость
-1 BTC в USDT на момент операции.
-Для LTC и USDT используется цена самой сделки.
-</p>
-
-<p class="note">
-Funding: <span class="red">− расход</span>,
-<span class="green">+ доход</span>.
-Для Funding выбери соответствующий тип операции.
-</p>
+<section class="panel">
+ <h2>Результат расчёта</h2>
+ <div id="warnings"></div>
+ <div class="result-grid" id="results"></div>
+ <div class="actions">
+  <button id="recalculate" type="button">Пересчитать</button>
+  <button id="clearAll" class="danger" type="button">Очистить сделку</button>
+ </div>
 </section>
 
-<section class="card controls">
-<button id="calc">Рассчитать</button>
-<button id="exportJson" class="success">⬇ Сохранить копию JSON</button>
-<button id="importJson" class="alt">⬆ Загрузить копию JSON</button>
-<input id="jsonFile" type="file" accept=".json" class="hidden">
-<span id="saveStatus">Автосохранение включено</span>
+<section class="panel">
+ <h2>Сохранение данных</h2>
+ <p class="muted">
+  Данные автоматически сохраняются в браузере.
+  JSON можно использовать для резервной копии.
+ </p>
+ <div class="actions">
+  <button id="exportJson" type="button">Экспорт JSON</button>
+  <button id="importJsonBtn" class="secondary" type="button">Импорт JSON</button>
+  <input id="importJsonFile" class="hidden" type="file" accept=".json,application/json">
+ </div>
 </section>
 
-<div class="stats">
-<div class="stat">
-<small>Остаток позиции</small><strong id="sQty">—</strong>
-</div>
-<div class="stat">
-<small>Средняя цена</small><strong id="sAvg">—</strong>
-</div>
-<div class="stat">
-<small>Gross PnL</small><strong id="sGross">—</strong>
-</div>
-<div class="stat">
-<small>Стоимость комиссий</small><strong id="sCost">—</strong>
-</div>
-<div class="stat">
-<small>Net PnL</small><strong id="sNet">—</strong>
-</div>
-<div class="stat">
-<small>Комиссии по валютам</small><strong id="sFees">—</strong>
-</div>
-<div class="stat">
-<small>Funding по валютам</small><strong id="sFund">—</strong>
-</div>
-<div class="stat">
-<small>Сделок</small><strong id="sCount">0</strong>
-</div>
-<div class="stat">
-<small>Направление</small><strong id="sSide">—</strong>
-</div>
-</div>
+<section class="panel">
+ <h2>Импорт CSV Bybit</h2>
+ <p class="muted">
+  Поддерживаются файлы истории спотовых исполнений и
+  USDT-фьючерсов Bybit. Funding пока пропускается.
+  Перед импортом сохрани текущую сделку в JSON.
+ </p>
 
-<section class="card">
-<h3>Результат расчёта</h3>
-<div id="result" class="note">
-Добавь операции и нажми «Рассчитать».
-</div>
+ <div class="grid">
+  <div class="field">
+   <label for="csvFile">Файл CSV</label>
+   <input id="csvFile" class="file-input" type="file" accept=".csv,text/csv">
+  </div>
+  <div class="field">
+   <label for="csvPair">Торговая пара из файла</label>
+   <select id="csvPair">
+    <option value="">Сначала прочитай CSV</option>
+   </select>
+  </div>
+ </div>
+
+ <div class="actions">
+  <button id="readCsv" type="button">Прочитать CSV</button>
+ </div>
+
+ <p id="csvInfo" class="muted"></p>
+
+ <div id="csvPreview" class="hidden">
+  <h3>Предварительный просмотр</h3>
+  <p id="csvSummary" class="note"></p>
+  <div class="table-wrap">
+   <table>
+    <thead>
+     <tr>
+      <th>Дата</th><th>Пара</th><th>Сторона</th>
+      <th>Цена</th><th>Количество</th><th>Комиссия</th>
+     </tr>
+    </thead>
+    <tbody id="csvPreviewBody"></tbody>
+   </table>
+  </div>
+  <div class="actions">
+   <button id="applyCsv" type="button">Импортировать выбранную пару</button>
+  </div>
+ </div>
 </section>
 
+<div class="footer">ФинРасчёт · Криптокалькулятор</div>
 </div>
-
-<div id="csvBlock" class="hidden">
-<section class="card">
-<h3>Импорт CSV</h3>
-<label>Биржа
-<select id="csvExchange">
-<option>Bybit</option>
-<option>OKX</option>
-<option>Binance</option>
-<option>Другая</option>
-</select>
-</label>
-<p><input id="csvFile" type="file" accept=".csv"></p>
-<button id="readCsv">Прочитать файл</button>
-<p id="csvInfo" class="note">
-Пока доступна проверка файла.
-Автоматический анализ CSV подключим после проверки расчётов.
-</p>
-</section>
-</div>
-
-</main>
 
 <script>
 'use strict';
 
-const $=id=>document.getElementById(id);
-const EPS=1e-10;
-const STORAGE_KEY='finraschet_crypto_trade_v2';
+const $ = id => document.getElementById(id);
+const STORAGE_KEY = 'finraschet_crypto_trade_v3';
 
-function number(v){
- const s=String(v??'').trim().replace(',','.');
- if(!s)return 0;
+const state = {
+ entries:[],
+ exits:[],
+ funding:[]
+};
+
+let activeTab='entries';
+let csvParsed=null;
+
+function num(v){
+ if(typeof v==='number')return Number.isFinite(v)?v:0;
+ const s=String(v??'').trim().replace(/\s/g,'').replace(',','.');
  const n=Number(s);
- return Number.isFinite(n)?n:NaN;
+ return Number.isFinite(n)?n:0;
 }
 
-function fmt(n,d=10){
- return Number.isFinite(n)
- ?n.toLocaleString('ru-RU',{maximumFractionDigits:d})
- :'—';
-}
-
-function escapeHTML(s){
- return String(s).replace(/[&<>"']/g,c=>({
- '&':'&amp;','<':'&lt;','>':'&gt;',
- '"':'&quot;',"'":'&#39;'
- }[c]));
-}
-
-function addMap(map,currency,amount){
- if(!amount)return;
- map[currency]=(map[currency]||0)+amount;
-}
-
-function mapText(map){
- const items=Object.entries(map);
- if(!items.length)return '0';
- return items.map(([c,v])=>fmt(v)+' '+c).join(' · ');
-}
-
-function currencies(){
- const pair=$('pair').value.toUpperCase().replace(/\s/g,'');
- const parts=pair.split(/[\/-]/);
-
- if(parts.length===2&&parts[0]&&parts[1])return parts;
-
- for(const q of ['USDT','USDC','USD','BTC','ETH','BNB']){
-  if(pair.endsWith(q)&&pair.length>q.length)
-   return [pair.slice(0,-q.length),q];
- }
- return [null,null];
-}
-
-function newRow(values={}){
- const [,quote]=currencies();
- const tr=document.createElement('tr');
-
- tr.innerHTML=`
- <td class="idx"></td>
- <td><select class="op">
- <option value="trade">Сделка</option>
- <option value="funding">Funding</option>
- </select></td>
- <td><select class="side">
- <option value="buy">Buy / Long</option>
- <option value="sell">Sell / Short</option>
- </select></td>
- <td><input class="qty" type="number" min="0" step="any"></td>
- <td><input class="price" type="number" min="0" step="any"></td>
- <td><input class="fee" type="number" min="0" step="any"></td>
- <td><input class="coin"></td>
- <td><input class="rate" type="number" min="0" step="any"
- placeholder="если нужно"></td>
- <td><input class="fund" type="text" inputmode="decimal" placeholder="− расход, + доход"></td>
- <td><input class="fcoin"></td>
- <td><input class="time" type="datetime-local"></td>
- <td><button class="danger remove">×</button></td>`;
-
- const defaults={
-  op:'trade',side:'buy',qty:'',price:'',fee:'',
-  coin:quote||'',rate:'',fund:'',fcoin:quote||'',time:''
- };
-
- const row={...defaults,...values};
-
- for(const [key,value] of Object.entries(row)){
-  const el=tr.querySelector('.'+key);
-  if(el)el.value=value??'';
- }
-
- tr.querySelector('.remove').onclick=()=>{
-  tr.remove();
-  renumber();
-  save();
- };
-
- $('ops').append(tr);
- renumber();
- return tr;
-}
-
-function renumber(){
- [...$('ops').children].forEach((tr,i)=>{
-  tr.querySelector('.idx').textContent=i+1;
+function fmt(v,d=8){
+ if(!Number.isFinite(v))return '—';
+ return v.toLocaleString('ru-RU',{
+  minimumFractionDigits:0,
+  maximumFractionDigits:d
  });
 }
 
-function getRawRows(){
- return [...$('ops').children].map(tr=>{
-  const v=c=>tr.querySelector('.'+c).value;
-  return {
-   op:v('op'),
-   side:v('side'),
-   qty:v('qty'),
-   price:v('price'),
-   fee:v('fee'),
-   coin:v('coin'),
-   rate:v('rate'),
-   fund:v('fund'),
-   fcoin:v('fcoin'),
-   time:v('time')
-  };
- });
+function today(){
+ return new Date().toISOString().slice(0,16);
 }
 
-function getRows(){
- return getRawRows().map((r,i)=>({
-  index:i+1,
-  op:r.op,
-  side:r.side,
-  qty:number(r.qty),
-  price:number(r.price),
-  fee:number(r.fee),
-  coin:r.coin.trim().toUpperCase(),
-  rate:number(r.rate),
-  funding:number(r.fund),
-  fcoin:r.fcoin.trim().toUpperCase(),
-  time:r.time
- }));
+function escapeHtml(s){
+ return String(s??'')
+  .replace(/&/g,'&amp;')
+  .replace(/</g,'&lt;')
+  .replace(/>/g,'&gt;')
+  .replace(/"/g,'&quot;')
+  .replace(/'/g,'&#39;');
 }
 
-function snapshot(){
+function normalizePair(s){
+ return String(s??'').trim().toUpperCase()
+  .replace(/[^A-Z0-9]/g,'');
+}
+
+function currencyOptions(selected){
+ const base=($('baseCurrency').value||'BTC').toUpperCase();
+ const quote=($('quoteCurrency').value||'USDT').toUpperCase();
+ const list=[base,quote,'USDT','USD','BTC','ETH','LTC'];
+ if(selected)list.push(selected.toUpperCase());
+ return [...new Set(list)].map(c=>
+  `<option value="${escapeHtml(c)}" ${c===selected?'selected':''}>${escapeHtml(c)}</option>`
+ ).join('');
+}
+
+function newTrade(){
  return {
-  version:2,
-  exchange:$('exchange').value,
-  type:$('type').value,
-  pair:$('pair').value,
-  tradeName:$('tradeName').value,
-  rows:getRawRows()
+  date:today(),
+  price:'',
+  qty:'',
+  fee:'',
+  feeCurrency:$('quoteCurrency').value||'USDT'
  };
+}
+
+function newFunding(){
+ return {
+  date:today(),
+  amount:'',
+  currency:$('type').value==='inverse'
+   ?$('baseCurrency').value
+   :$('quoteCurrency').value
+ };
+}
+
+function rowHtml(item,index,kind){
+ if(kind==='funding'){
+  return `<tr data-index="${index}">
+   <td>${index+1}</td>
+   <td><input data-key="date" type="datetime-local" value="${escapeHtml(item.date||'')}"></td>
+   <td><input data-key="amount" type="text" inputmode="decimal" value="${escapeHtml(item.amount??'')}" placeholder="+0.00001 / -0.00001"></td>
+   <td><select data-key="currency">${currencyOptions(item.currency)}</select></td>
+   <td><button class="danger small remove-row" type="button">Удалить</button></td>
+  </tr>`;
+ }
+
+ return `<tr data-index="${index}">
+  <td>${index+1}</td>
+  <td><input data-key="date" type="datetime-local" value="${escapeHtml(item.date||'')}"></td>
+  <td><input data-key="price" type="number" min="0" step="any" value="${escapeHtml(item.price??'')}"></td>
+  <td><input data-key="qty" type="number" min="0" step="any" value="${escapeHtml(item.qty??'')}"></td>
+  <td><input data-key="fee" type="number" min="0" step="any" value="${escapeHtml(item.fee??'')}"></td>
+  <td><select data-key="feeCurrency">${currencyOptions(item.feeCurrency)}</select></td>
+  <td><button class="danger small remove-row" type="button">Удалить</button></td>
+ </tr>`;
+}
+
+function renderRows(){
+ $('entriesBody').innerHTML=state.entries.map((x,i)=>rowHtml(x,i,'entries')).join('');
+ $('exitsBody').innerHTML=state.exits.map((x,i)=>rowHtml(x,i,'exits')).join('');
+ $('fundingBody').innerHTML=state.funding.map((x,i)=>rowHtml(x,i,'funding')).join('');
+}
+
+function getSettings(){
+ return {
+  tradeName:$('tradeName').value,
+  type:$('type').value,
+  direction:$('direction').value,
+  pair:$('pair').value,
+  baseCurrency:$('baseCurrency').value.toUpperCase(),
+  quoteCurrency:$('quoteCurrency').value.toUpperCase(),
+  leverage:$('leverage').value,
+  contractSize:$('contractSize').value
+ };
+}
+
+function setSettings(s){
+ if(!s)return;
+ for(const id of [
+  'tradeName','type','direction','pair',
+  'baseCurrency','quoteCurrency','leverage','contractSize'
+ ]){
+  if(s[id]!==undefined && $(id))$(id).value=s[id];
+ }
 }
 
 function save(){
  try{
-  localStorage.setItem(STORAGE_KEY,JSON.stringify(snapshot()));
-  $('saveStatus').textContent='✓ Данные сохранены в браузере';
+  localStorage.setItem(STORAGE_KEY,JSON.stringify({
+   settings:getSettings(),
+   entries:state.entries,
+   exits:state.exits,
+   funding:state.funding
+  }));
  }catch(e){
-  $('saveStatus').textContent='Не удалось сохранить данные';
+  console.warn('Не удалось сохранить данные',e);
  }
 }
 
-function restore(data){
- if(!data||typeof data!=='object'||!Array.isArray(data.rows))
-  throw Error('Неверный формат резервной копии.');
-
- if(data.rows.length>20000)
-  throw Error('Слишком много операций в файле.');
-
- $('exchange').value=String(data.exchange??'Bybit');
- $('type').value=['spot','linear','inverse'].includes(data.type)
-  ?data.type:'spot';
- $('pair').value=String(data.pair??'LTC/USDT');
- $('tradeName').value=String(data.tradeName??'');
-
- $('ops').innerHTML='';
-
- for(const row of data.rows){
-  if(row&&typeof row==='object')newRow(row);
- }
-
- if(!$('ops').children.length)newRow();
-
- save();
-}
-
-function init(){
+function load(){
  try{
-  const stored=localStorage.getItem(STORAGE_KEY);
-  if(stored){
-   restore(JSON.parse(stored));
-   return;
-  }
+  const raw=localStorage.getItem(STORAGE_KEY);
+  if(!raw)return false;
+  const data=JSON.parse(raw);
+  setSettings(data.settings);
+  state.entries=Array.isArray(data.entries)?data.entries:[];
+  state.exits=Array.isArray(data.exits)?data.exits:[];
+  state.funding=Array.isArray(data.funding)?data.funding:[];
+  return true;
  }catch(e){
-  console.warn('Ошибка восстановления:',e);
- }
-
- newRow();
- newRow();
- save();
-}
-
-function calculate(){
- try{
-  const [base,quote]=currencies();
-
-  if(!base||!quote)
-   throw Error('Укажи пару, например LTC/USDT.');
-
-  const type=$('type').value;
-  const unit=type==='inverse'?base:quote;
-  const rows=getRows();
-
-  let qty=0;
-  let basis=0;
-  let side='';
-  let gross=0;
-  let feeValue=0;
-  let fundingValue=0;
-  let netKnown=true;
-  let tradeCount=0;
-  let fundingCount=0;
-  let warnings=[];
-
-  let accountingPnL=0;
-  let accountingKnown=true;
-
-  const fees={};
-  const funds={};
-
-  function feeInUnit(r){
-   if(!r.fee)return 0;
-
-   if(r.coin===unit)return r.fee;
-
-   if(r.coin===base&&unit===quote)
-    return r.fee*r.price;
-
-   if(r.coin===quote&&unit===base)
-    return r.fee/r.price;
-
-   if(r.rate>0)return r.fee*r.rate;
-
-   netKnown=false;
-   warnings.push(
-    'Строка '+r.index+
-    ': нужен курс '+r.coin+' → '+unit
-   );
-   return 0;
-  }
-
-  function fundingInUnit(r){
-   if(!r.funding)return 0;
-
-   if(r.fcoin===unit)return r.funding;
-
-   netKnown=false;
-   warnings.push(
-    'Строка '+r.index+
-    ': Funding в '+r.fcoin+
-    ' нельзя автоматически пересчитать в '+unit
-   );
-   return 0;
-  }
-
-  for(const r of rows){
-
-   if(r.op==='funding'){
-    if(type==='spot'){
-     if(r.funding)
-      throw Error('Funding недоступен для Spot, строка '+r.index);
-     continue;
-    }
-
-    if(!Number.isFinite(r.funding))
-     throw Error('Некорректный Funding, строка '+r.index);
-
-    if(r.funding&&!r.fcoin)
-     throw Error('Укажи валюту Funding, строка '+r.index);
-
-    if(r.funding){
-     addMap(funds,r.fcoin,r.funding);
-     fundingValue+=fundingInUnit(r);
-     fundingCount++;
-    }
-    continue;
-   }
-
-   if(!r.qty&&!r.price&&!r.fee)continue;
-
-   if(!(r.qty>0&&r.price>0))
-    throw Error(
-     'Количество и цена должны быть больше нуля, строка '+r.index
-    );
-
-   if(!Number.isFinite(r.fee)||r.fee<0)
-    throw Error('Некорректная комиссия, строка '+r.index);
-
-   if(r.fee&&!r.coin)
-    throw Error('Укажи валюту комиссии, строка '+r.index);
-
-   if(r.fee&&r.coin===base&&type==='spot'&&
-      r.side==='buy'&&r.fee>=r.qty)
-    throw Error('Комиссия превышает покупку, строка '+r.index);
-
-   tradeCount++;
-
-   addMap(fees,r.coin,r.fee);
-   feeValue+=feeInUnit(r);
-
-   if(type==='spot'){
-
-    if(r.side==='buy'){
-     const received=r.qty-(r.coin===base?r.fee:0);
-
-     qty+=received;
-     basis+=r.qty*r.price;
-
-     if(r.coin===quote)basis+=r.fee;
-
-     if(r.fee&&r.coin!==base&&r.coin!==quote){
-      if(r.rate>0)basis+=r.fee*r.rate;
-      else accountingKnown=false;
-     }
-
-    }else{
-     if(qty<EPS)
-      throw Error('Нет монет для продажи, строка '+r.index);
-
-     const used=r.qty+(r.coin===base?r.fee:0);
-
-     if(used>qty+EPS)
-      throw Error(
-       'Продажа и комиссия превышают остаток, строка '+
-       r.index+'. Доступно '+fmt(qty)+' '+base
-      );
-
-     const avg=basis/qty;
-
-     gross+=r.qty*(r.price-avg);
-
-     let proceeds=r.qty*r.price;
-     if(r.coin===quote)proceeds-=r.fee;
-
-     accountingPnL+=proceeds-used*avg;
-
-     if(r.fee&&r.coin!==base&&r.coin!==quote){
-      if(r.rate>0)accountingPnL-=r.fee*r.rate;
-      else accountingKnown=false;
-     }
-
-     basis-=used*avg;
-     qty-=used;
-
-     if(qty<EPS){
-      qty=0;
-      basis=0;
-     }
-    }
-
-    continue;
-   }
-
-   // Futures Linear и Inverse.
-   const incoming=r.side==='buy'?'long':'short';
-   let remaining=r.qty;
-
-   if(qty<EPS){
-    qty=remaining;
-    side=incoming;
-    basis=type==='inverse'
-     ?remaining/r.price
-     :remaining*r.price;
-
-   }else if(side===incoming){
-    qty+=remaining;
-    basis+=type==='inverse'
-     ?remaining/r.price
-     :remaining*r.price;
-
-   }else{
-    const closed=Math.min(qty,remaining);
-    const avg=type==='inverse'?qty/basis:basis/qty;
-
-    let pnl;
-
-    if(type==='inverse'){
-     pnl=side==='long'
-      ?closed*(1/avg-1/r.price)
-      :closed*(1/r.price-1/avg);
-    }else{
-     pnl=side==='long'
-      ?closed*(r.price-avg)
-      :closed*(avg-r.price);
-    }
-
-    gross+=pnl;
-
-    basis*=1-closed/qty;
-    qty-=closed;
-    remaining-=closed;
-
-    if(qty<EPS){
-     qty=0;
-     basis=0;
-     side='';
-    }
-
-    if(remaining>EPS){
-     qty=remaining;
-     side=incoming;
-     basis=type==='inverse'
-      ?remaining/r.price
-      :remaining*r.price;
-    }
-   }
-  }
-
-  // Spot: Gross без комиссий.
-  if(type==='spot'){
-   let q=0,b=0,g=0;
-
-   for(const r of rows){
-    if(r.op!=='trade'||!(r.qty>0&&r.price>0))continue;
-
-    if(r.side==='buy'){
-     q+=r.qty;
-     b+=r.qty*r.price;
-    }else{
-     if(q+EPS<r.qty)
-      throw Error(
-       'Продажа превышает купленный объём, строка '+r.index
-      );
-
-     const avg=b/q;
-     g+=r.qty*(r.price-avg);
-     b-=r.qty*avg;
-     q-=r.qty;
-
-     if(q<EPS){
-      q=0;
-      b=0;
-     }
-    }
-   }
-
-   gross=g;
-  }
-
-  const avg=qty>EPS
-   ?(type==='inverse'?qty/basis:basis/qty)
-   :0;
-
-  // Funding теперь подписан:
-  // отрицательный — расход, положительный — доход.
-  const net=gross-feeValue+fundingValue;
-
-  const qtyUnit=type==='inverse'?'контр.':base;
-
-  $('sQty').textContent=fmt(qty,8)+' '+qtyUnit;
-  $('sAvg').textContent=qty>EPS?fmt(avg)+' '+quote:'—';
-  $('sGross').textContent=fmt(gross)+' '+unit;
-
-  $('sCost').textContent=netKnown
-   ?fmt(feeValue)+' '+unit
-   :'Нужен курс';
-
-  $('sNet').textContent=netKnown
-   ?fmt(net)+' '+unit
-   :'Нужен курс';
-
-  $('sFees').textContent=mapText(fees);
-  $('sFund').textContent=mapText(funds);
-  $('sCount').textContent=tradeCount;
-
-  $('sSide').textContent=type==='spot'
-   ?'Spot'
-   :(qty>EPS?side.toUpperCase():'Закрыта');
-
-  let html=`
-   <b>Биржа:</b> ${escapeHTML($('exchange').value)}
-   · <b>Пара:</b> ${escapeHTML(base+'/'+quote)}
-   · <b>Режим:</b> ${escapeHTML(type)}
-   <br>
-   <b>Название:</b> ${escapeHTML($('tradeName').value||'—')}
-   <br>
-   <b>Сделок:</b> ${tradeCount}
-   · <b>Funding событий:</b> ${fundingCount}
-   <br>
-   <b>Остаток:</b> ${fmt(qty,8)} ${qtyUnit}
-   <br>
-   <b>Средняя цена:</b> ${qty?fmt(avg)+' '+quote:'—'}
-   <br>
-   <b>Gross PnL:</b> ${fmt(gross)} ${unit}
-   <br>
-   <b>Стоимость комиссий:</b>
-   ${netKnown?fmt(feeValue)+' '+unit:'нужен курс'}
-   <br>
-   <b>Funding:</b> ${mapText(funds)}
-   <br>
-   <b>Net PnL:</b>
-   <strong class="${net>=0?'green':'red'}">
-   ${netKnown?fmt(net)+' '+unit:'не определён'}
-   </strong>
-   <br>
-   <b>Комиссии по валютам:</b> ${mapText(fees)}
-  `;
-
-  if(type==='spot'){
-   html+=`
-    <br>
-    <b>Реализованный результат по себестоимости:</b>
-    ${accountingKnown?fmt(accountingPnL)+' '+quote:'нужен курс'}
-    <br>
-    <span class="note">
-    Net PnL — аналитическая оценка:
-    торговая прибыль минус рыночная стоимость всех комиссий.
-    Реализованный результат по себестоимости отдельно
-    учитывает списание монет из остатка.
-    Эти показатели нельзя складывать.
-    </span>
-   `;
-  }else{
-   html+=`
-    <br>
-    <span class="note">
-    Gross учитывает закрытые части позиции.
-    Net дополнительно учитывает все введённые комиссии
-    и Funding. Нереализованная прибыль открытой позиции
-    не включена.
-    Funding: минус — расход, плюс — доход.
-    </span>
-   `;
-  }
-
-  if(warnings.length){
-   html+='<p class="warning">'+
-    warnings.map(escapeHTML).join('<br>')+'</p>';
-  }
-
-  $('result').innerHTML=html;
-
- }catch(e){
-  $('result').textContent='Ошибка: '+e.message;
+  console.warn('Ошибка загрузки',e);
+  return false;
  }
 }
-
-$('add').onclick=()=>{
- newRow();
- save();
- calculate();
-};
-
-$('clear').onclick=()=>{
- if(!confirm('Удалить все введённые операции?'))return;
-
- $('ops').innerHTML='';
- newRow();
-
- $('result').textContent=
-  'Добавь операции и нажми «Рассчитать».';
-
- save();
- calculate();
-};
-
-$('calc').onclick=calculate;
 
 function saveAndCalculate(){
  save();
  calculate();
 }
-$('manualBlock').addEventListener('input',saveAndCalculate);
-$('manualBlock').addEventListener('change',saveAndCalculate);
 
-function tab(mode){
- $('manualBlock').classList.toggle('hidden',mode!=='manual');
- $('csvBlock').classList.toggle('hidden',mode!=='csv');
- $('manualTab').classList.toggle('active',mode==='manual');
- $('csvTab').classList.toggle('active',mode==='csv');
+function setTab(tab){
+ activeTab=tab;
+ for(const name of ['entries','exits','funding']){
+  const button=$('tab'+name[0].toUpperCase()+name.slice(1));
+  const panel=$(name+'Panel');
+  const selected=name===tab;
+  button.classList.toggle('active',selected);
+  panel.classList.toggle('hidden',!selected);
+ }
 }
 
-$('manualTab').onclick=()=>tab('manual');
-$('csvTab').onclick=()=>tab('csv');
+function addRow(kind){
+ state[kind].push(kind==='funding'?newFunding():newTrade());
+ renderRows();
+ saveAndCalculate();
+}
 
-$('exportJson').onclick=()=>{
- const json=JSON.stringify(snapshot(),null,2);
- const blob=new Blob([json],{type:'application/json'});
- const url=URL.createObjectURL(blob);
+function bindTable(bodyId,kind){
+ const body=$(bodyId);
 
- const a=document.createElement('a');
- a.href=url;
- a.download='finraschet-crypto-trade-'+
-  new Date().toISOString().slice(0,10)+'.json';
+ body.addEventListener('input',e=>{
+  const field=e.target.closest('[data-key]');
+  const tr=e.target.closest('tr[data-index]');
+  if(!field||!tr)return;
+  const index=Number(tr.dataset.index);
+  if(!state[kind][index])return;
+  state[kind][index][field.dataset.key]=field.value;
+  saveAndCalculate();
+ });
 
- document.body.append(a);
- a.click();
- a.remove();
+ body.addEventListener('change',e=>{
+  const field=e.target.closest('[data-key]');
+  const tr=e.target.closest('tr[data-index]');
+  if(!field||!tr)return;
+  const index=Number(tr.dataset.index);
+  if(!state[kind][index])return;
+  state[kind][index][field.dataset.key]=field.value;
+  saveAndCalculate();
+ });
 
- setTimeout(()=>URL.revokeObjectURL(url),1000);
-};
+ body.addEventListener('click',e=>{
+  const button=e.target.closest('.remove-row');
+  if(!button)return;
+  const tr=button.closest('tr[data-index]');
+  if(!tr)return;
+  state[kind].splice(Number(tr.dataset.index),1);
+  renderRows();
+  saveAndCalculate();
+ });
+}
 
-$('importJson').onclick=()=>$('jsonFile').click();
+function metric(label,value,cls=''){
+ return `<div class="metric">
+  <div class="label">${escapeHtml(label)}</div>
+  <div class="value ${cls}">${escapeHtml(value)}</div>
+ </div>`;
+}
 
-$('jsonFile').onchange=async e=>{
- const file=e.target.files[0];
- if(!file)return;
+function feeInSettlement(item,settings){
+ const fee=num(item.fee);
+ if(fee===0)return 0;
 
- try{
-  const text=await file.text();
-  const data=JSON.parse(text);
+ const currency=String(item.feeCurrency||settings.quoteCurrency).toUpperCase();
+ const price=num(item.price);
+ const type=settings.type;
 
-  if(!confirm(
-   'Загрузить резервную копию? Текущие операции будут заменены.'
-  ))return;
-
-  restore(data);
-  calculate();
-
-  alert('Операции восстановлены!');
- }catch(err){
-  alert('Ошибка загрузки JSON: '+err.message);
+ if(type==='inverse'){
+  if(currency===settings.baseCurrency)return fee;
+  if(currency===settings.quoteCurrency||currency==='USD'){
+   return price>0?fee/price:0;
+  }
+  return NaN;
  }
 
- e.target.value='';
-};
+ if(currency===settings.quoteCurrency)return fee;
+ if(currency===settings.baseCurrency)return fee*price;
+ if(currency==='USD'&&settings.quoteCurrency==='USDT')return fee;
+ return NaN;
+}
 
-$('readCsv').onclick=()=>{
+function fundingInSettlement(item,settings){
+ const amount=num(item.amount);
+ const currency=String(item.currency||'').toUpperCase();
+ const settlement=settings.type==='inverse'
+  ?settings.baseCurrency
+  :settings.quoteCurrency;
+
+ if(currency===settlement)return amount;
+ if(currency==='USD'&&settlement==='USDT')return amount;
+ return NaN;
+}
+
+function calculate(){
+ const s=getSettings();
+ const type=s.type;
+ const direction=s.direction;
+ const sign=direction==='short'?-1:1;
+ const contractSize=num(s.contractSize)||1;
+ const leverage=Math.max(1,num(s.leverage)||1);
+ const settlement=type==='inverse'?s.baseCurrency:s.quoteCurrency;
+
+ const warnings=[];
+ let totalEntryQty=0;
+ let totalEntryValue=0;
+ let totalExitQty=0;
+ let totalExitValue=0;
+ let fees=0;
+ let funding=0;
+ let validEntries=0;
+ let validExits=0;
+ let invalidFees=0;
+
+ const entries=[];
+ const exits=[];
+
+ for(const item of state.entries){
+  const price=num(item.price);
+  const qty=num(item.qty);
+  if(price<=0||qty<=0)continue;
+
+  entries.push({price,qty,date:item.date||''});
+  validEntries++;
+  totalEntryQty+=qty;
+
+  if(type==='inverse'){
+   totalEntryValue+=qty*contractSize/price;
+  }else{
+   totalEntryValue+=price*qty;
+  }
+
+  const fee=feeInSettlement(item,s);
+  if(Number.isFinite(fee))fees+=fee;
+  else invalidFees++;
+ }
+
+ for(const item of state.exits){
+  const price=num(item.price);
+  const qty=num(item.qty);
+  if(price<=0||qty<=0)continue;
+
+  exits.push({price,qty,date:item.date||''});
+  validExits++;
+  totalExitQty+=qty;
+
+  if(type==='inverse'){
+   totalExitValue+=qty*contractSize/price;
+  }else{
+   totalExitValue+=price*qty;
+  }
+
+  const fee=feeInSettlement(item,s);
+  if(Number.isFinite(fee))fees+=fee;
+  else invalidFees++;
+ }
+
+ let fundingCount=0;
+ for(const item of state.funding){
+  if(String(item.amount??'').trim()==='')continue;
+  const f=fundingInSettlement(item,s);
+  if(Number.isFinite(f)){
+   funding+=f;
+   fundingCount++;
+  }else{
+   warnings.push('Есть Funding в валюте, отличной от валюты расчёта.');
+  }
+ }
+
+ const remainingQty=totalEntryQty-totalExitQty;
+ if(totalExitQty>totalEntryQty+1e-9){
+  warnings.push('Закрыто больше, чем открыто. Проверь количество операций.');
+ }
+
+ if(invalidFees){
+  warnings.push('Некоторые комиссии указаны в другой валюте и не включены в итог.');
+ }
+
+ if(type==='spot'&&direction==='short'){
+  warnings.push('Обычный спот не поддерживает короткую продажу без маржинального займа.');
+ }
+
+ if(type==='spot'&&fundingCount){
+  warnings.push('Для обычного спота Funding не применяется.');
+ }
+
+ if(validEntries===0){
+  warnings.push('Добавь хотя бы один вход с ценой и количеством.');
+ }
+
+ let avgEntry=0;
+ let avgExit=0;
+ let gross=0;
+ let margin=0;
+ let positionValue=0;
+
+ if(totalEntryQty>0){
+  if(type==='inverse'){
+   avgEntry=totalEntryQty*contractSize/totalEntryValue;
+  }else{
+   avgEntry=totalEntryValue/totalEntryQty;
+  }
+ }
+
+ if(totalExitQty>0){
+  if(type==='inverse'){
+   avgExit=totalExitQty*contractSize/totalExitValue;
+  }else{
+   avgExit=totalExitValue/totalExitQty;
+  }
+ }
+
+ if(type==='inverse'){
+  if(avgEntry>0){
+   for(const x of exits){
+    gross+=sign*x.qty*contractSize*(1/avgEntry-1/x.price);
+   }
+   positionValue=remainingQty*contractSize;
+   margin=positionValue/avgEntry/leverage;
+  }
+ }else{
+  if(avgEntry>0){
+   for(const x of exits){
+    gross+=sign*x.qty*(x.price-avgEntry);
+   }
+   positionValue=remainingQty*avgEntry;
+   margin=positionValue/leverage;
+  }
+ }
+
+ const netFunding=type==='spot'?0:funding;
+ const net=gross-fees+netFunding;
+ const roi=margin>0?net/margin*100:0;
+
+ const pnlClass=net>0?'positive':net<0?'negative':'';
+
+ const result=[
+  metric('Входов',String(validEntries)),
+  metric('Частичных закрытий',String(validExits)),
+  metric('Всего открыто',fmt(totalEntryQty,8)+(type==='inverse'?' контрактов':' '+s.baseCurrency)),
+  metric('Всего закрыто',fmt(totalExitQty,8)+(type==='inverse'?' контрактов':' '+s.baseCurrency)),
+  metric('Остаток позиции',fmt(remainingQty,8)+(type==='inverse'?' контрактов':' '+s.baseCurrency)),
+  metric('Средняя цена входа',fmt(avgEntry,8)+' '+s.quoteCurrency),
+  metric('Средняя цена выхода',fmt(avgExit,8)+' '+s.quoteCurrency),
+  metric('Реализованный PnL до комиссий',fmt(gross,8)+' '+settlement,gross>0?'positive':gross<0?'negative':''),
+  metric('Комиссии',fmt(fees,8)+' '+settlement),
+  metric('Funding ('+fundingCount+' событий)',fmt(netFunding,8)+' '+settlement,netFunding>0?'positive':netFunding<0?'negative':''),
+  metric('Чистый реализованный PnL',fmt(net,8)+' '+settlement,pnlClass),
+  metric('Расчётная маржа остатка',fmt(margin,8)+' '+settlement),
+  metric('Доходность к марже остатка',fmt(roi,2)+' %',pnlClass)
+ ];
+
+ $('results').innerHTML=result.join('');
+
+ $('warnings').innerHTML=warnings.length
+  ?`<div class="warning">${warnings.map(escapeHtml).join('<br>')}</div>`
+  :'';
+}
+
+function downloadFile(filename,text,contentType){
+ const blob=new Blob([text],{type:contentType});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement('a');
+ a.href=url;
+ a.download=filename;
+ document.body.appendChild(a);
+ a.click();
+ a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+function exportJson(){
+ const data={
+  version:3,
+  exportedAt:new Date().toISOString(),
+  settings:getSettings(),
+  entries:state.entries,
+  exits:state.exits,
+  funding:state.funding
+ };
+ const filename='finraschet-crypto-'+
+  new Date().toISOString().slice(0,10)+'.json';
+ downloadFile(filename,JSON.stringify(data,null,2),'application/json');
+}
+
+async function importJson(file){
+ const text=await file.text();
+ const data=JSON.parse(text);
+ if(!data||!Array.isArray(data.entries)||
+    !Array.isArray(data.exits)||!Array.isArray(data.funding)){
+  throw new Error('Неверная структура JSON');
+ }
+ if(!confirm('Заменить текущую сделку данными из JSON?'))return;
+ setSettings(data.settings||{});
+ state.entries=data.entries;
+ state.exits=data.exits;
+ state.funding=data.funding;
+ renderRows();
+ saveAndCalculate();
+ alert('JSON успешно импортирован.');
+}
+
+/* ============================
+   CSV BYBIT
+   ============================ */
+
+function parseCsv(text){
+ text=String(text||'').replace(/^\uFEFF/,'');
+ const rows=[];
+ let row=[];
+ let cell='';
+ let quoted=false;
+
+ for(let i=0;i<text.length;i++){
+  const ch=text[i];
+
+  if(ch==='"'){
+   if(quoted&&text[i+1]==='"'){
+    cell+='"';
+    i++;
+   }else{
+    quoted=!quoted;
+   }
+  }else if(ch===','&&!quoted){
+   row.push(cell);
+   cell='';
+  }else if((ch==='\n'||ch==='\r')&&!quoted){
+   if(ch==='\r'&&text[i+1]==='\n')i++;
+   row.push(cell);
+   if(row.some(x=>String(x).trim()!==''))rows.push(row);
+   row=[];
+   cell='';
+  }else{
+   cell+=ch;
+  }
+ }
+
+ if(quoted)throw new Error('Незакрытые кавычки в CSV.');
+
+ row.push(cell);
+ if(row.some(x=>String(x).trim()!==''))rows.push(row);
+
+ return rows;
+}
+
+function headerKey(v){
+ return String(v??'').toLowerCase()
+  .replace(/^\uFEFF/,'')
+  .replace(/[^a-z0-9а-яё]/gi,'');
+}
+
+function findColumn(headers,variants){
+ const normalized=headers.map(headerKey);
+ for(const name of variants){
+  const index=normalized.indexOf(headerKey(name));
+  if(index!==-1)return index;
+ }
+ return -1;
+}
+
+function getCell(row,index){
+ return index>=0?String(row[index]??'').trim():'';
+}
+
+function parseDateValue(value){
+ const s=String(value??'').trim();
+ if(!s)return '';
+
+ if(/^\d{13}$/.test(s)){
+  const d=new Date(Number(s));
+  return Number.isNaN(d.getTime())?'':d.toISOString().slice(0,16);
+ }
+
+ if(/^\d{10}$/.test(s)){
+  const d=new Date(Number(s)*1000);
+  return Number.isNaN(d.getTime())?'':d.toISOString().slice(0,16);
+ }
+
+ const m=s.match(
+  /^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})[ T](\d{1,2}):(\d{2})/
+ );
+ if(m){
+  return `${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}T${m[4].padStart(2,'0')}:${m[5]}`;
+ }
+
+ const d=new Date(s);
+ if(!Number.isNaN(d.getTime()))return d.toISOString().slice(0,16);
+ return '';
+}
+
+function splitPair(pair,spot){
+ const p=normalizePair(pair);
+ const quotes=[
+  'USDT','USDC','FDUSD','BUSD','TUSD','USD',
+  'BTC','ETH','EUR','TRY'
+ ];
+ for(const quote of quotes){
+  if(p.endsWith(quote)&&p.length>quote.length){
+   return {base:p.slice(0,-quote.length),quote};
+  }
+ }
+ return {base:p||'BTC',quote:spot?'USDT':'USDT'};
+}
+
+function csvNumber(value){
+ const s=String(value??'').trim()
+  .replace(/\s/g,'')
+  .replace(/,/g,'');
+ const n=Number(s);
+ return Number.isFinite(n)?n:NaN;
+}
+
+function detectCsvColumns(headers){
+ const cols={
+  pair:findColumn(headers,[
+   'Symbol','Trading Pair','TradingPair','Pair',
+   'Contract','Coin Pair'
+  ]),
+  side:findColumn(headers,[
+   'Side','Direction','Trade Side','TradeSide'
+  ]),
+  price:findColumn(headers,[
+   'Exec Price','ExecPrice','Execution Price',
+   'Filled Price','Trade Price','Price'
+  ]),
+  qty:findColumn(headers,[
+   'Exec Qty','ExecQty','Execution Qty',
+   'Filled Qty','Filled Quantity','Trade Qty',
+   'Quantity','Qty','Size'
+  ]),
+  fee:findColumn(headers,[
+   'Exec Fee','ExecFee','Execution Fee',
+   'Trading Fee','Trade Fee','Fee'
+  ]),
+  feeCurrency:findColumn(headers,[
+   'Fee Currency','FeeCurrency','Fee Coin',
+   'FeeCoin','Fee Asset','FeeAsset'
+  ]),
+  date:findColumn(headers,[
+   'Exec Time','ExecTime','Execution Time',
+   'Trade Time','TradeTime','Created Time',
+   'CreatedTime','Time','Date','Timestamp'
+  ]),
+  type:findColumn(headers,[
+   'Type','Exec Type','ExecType',
+   'Transaction Type','TransactionType'
+  ]),
+  market:findColumn(headers,[
+   'Market','Category','Product Type','ProductType'
+  ])
+ };
+ return cols;
+}
+
+function isFundingRow(row,cols){
+ const text=[
+  getCell(row,cols.type),
+  getCell(row,cols.market)
+ ].join(' ').toLowerCase();
+
+ return /funding/.test(text);
+}
+
+function inferSpot(headers,filename){
+ const joined=headers.join(' ').toLowerCase();
+ const file=String(filename||'').toLowerCase();
+
+ if(/spottrade|spot.trade|spot_trade/.test(file))return true;
+ if(/futures|linear|perpetual|contract/.test(file))return false;
+ if(/spot/.test(joined))return true;
+ return false;
+}
+
+function parseBybitCsv(text,filename){
+ const rows=parseCsv(text);
+ if(rows.length<2)throw new Error('В CSV нет строк со сделками.');
+
+ let headerIndex=0;
+ let cols=null;
+
+ for(let i=0;i<Math.min(rows.length,20);i++){
+  const candidate=detectCsvColumns(rows[i]);
+  if(candidate.pair>=0&&candidate.side>=0&&
+     candidate.price>=0&&candidate.qty>=0){
+   headerIndex=i;
+   cols=candidate;
+   break;
+  }
+ }
+
+ if(!cols){
+  throw new Error(
+   'Не найдены колонки Symbol, Side, Price и Qty. '+
+   'Этот формат CSV пока не поддерживается.'
+  );
+ }
+
+ const headers=rows[headerIndex];
+ const spot=inferSpot(headers,filename);
+ const result=[];
+ let skippedFunding=0;
+ let invalid=0;
+
+ for(let i=headerIndex+1;i<rows.length;i++){
+  const row=rows[i];
+
+  if(isFundingRow(row,cols)){
+   skippedFunding++;
+   continue;
+  }
+
+  const pair=normalizePair(getCell(row,cols.pair));
+  const sideRaw=getCell(row,cols.side).toLowerCase();
+  const price=csvNumber(getCell(row,cols.price));
+  const qty=csvNumber(getCell(row,cols.qty));
+
+  let side='';
+  if(/^(buy|покупка)$/.test(sideRaw))side='buy';
+  if(/^(sell|продажа)$/.test(sideRaw))side='sell';
+
+  if(!pair||!side||!(price>0)||!(qty>0)){
+   invalid++;
+   continue;
+  }
+
+  const pairParts=splitPair(pair,spot);
+  const feeRaw=getCell(row,cols.fee);
+  const fee=feeRaw===''?0:Math.abs(csvNumber(feeRaw));
+
+  if(!Number.isFinite(fee)){
+   invalid++;
+   continue;
+  }
+
+  let feeCurrency=getCell(row,cols.feeCurrency).toUpperCase();
+
+  if(!feeCurrency){
+   feeCurrency=spot?pairParts.quote:pairParts.quote;
+  }
+
+  result.push({
+   pair,
+   side,
+   price,
+   qty,
+   fee,
+   feeCurrency,
+   date:parseDateValue(getCell(row,cols.date)),
+   sourceRow:i+1
+  });
+ }
+
+ result.sort((a,b)=>{
+  if(!a.date&&!b.date)return a.sourceRow-b.sourceRow;
+  if(!a.date)return 1;
+  if(!b.date)return -1;
+  return a.date.localeCompare(b.date)||a.sourceRow-b.sourceRow;
+ });
+
+ if(!result.length){
+  throw new Error(
+   'Подходящих исполненных сделок не найдено. '+
+   'Проверь тип отчёта Bybit.'
+  );
+ }
+
+ return {result,spot,skippedFunding,invalid,filename};
+}
+
+function refreshCsvPreview(){
+ if(!csvParsed)return;
+
+ const pair=$('csvPair').value;
+ const selected=csvParsed.result.filter(x=>x.pair===pair);
+
+ const buys=selected.filter(x=>x.side==='buy').length;
+ const sells=selected.filter(x=>x.side==='sell').length;
+
+ $('csvSummary').textContent=
+  'Пара: '+pair+
+  ' · Исполнений: '+selected.length+
+  ' · Buy: '+buys+
+  ' · Sell: '+sells+
+  ' · Рынок: '+(csvParsed.spot?'Spot':'Futures Linear')+
+  '. Перед переносом проверь полноту истории.';
+
+ $('csvPreviewBody').innerHTML=selected.slice(0,100).map(x=>
+  `<tr>
+   <td>${escapeHtml(x.date.replace('T',' '))}</td>
+   <td>${escapeHtml(x.pair)}</td>
+   <td>${x.side==='buy'?'Buy':'Sell'}</td>
+   <td>${escapeHtml(String(x.price))}</td>
+   <td>${escapeHtml(String(x.qty))}</td>
+   <td>${escapeHtml(fmt(x.fee,8)+' '+x.feeCurrency)}</td>
+  </tr>`
+ ).join('');
+
+ if(selected.length>100){
+  $('csvSummary').textContent+=' Показаны первые 100 строк.';
+ }
+}
+
+function classifyImportedTrades(selected,spot){
+ if(!selected.length)throw new Error('Не выбраны сделки.');
+
+ const firstSide=selected[0].side;
+ const direction=firstSide==='sell'?'short':'long';
+
+ if(spot&&direction==='short'){
+  throw new Error(
+   'История начинается с продажи. Возможно, покупки находятся '+
+   'в другом отчёте. Нельзя правильно рассчитать PnL.'
+  );
+ }
+
+ const entrySide=direction==='long'?'buy':'sell';
+ const exitSide=direction==='long'?'sell':'buy';
+
+ let balance=0;
+ const entries=[];
+ const exits=[];
+
+ for(const item of selected){
+  const row={
+   date:item.date,
+   price:item.price,
+   qty:item.qty,
+   fee:item.fee,
+   feeCurrency:item.feeCurrency
+  };
+
+  if(item.side===entrySide){
+   entries.push(row);
+   balance+=item.qty;
+  }else if(item.side===exitSide){
+   if(item.qty>balance+1e-9){
+    throw new Error(
+     'В истории обнаружено закрытие больше открытого объёма '+
+     '(строка CSV '+item.sourceRow+'). '+
+     'Возможно, история неполная или содержит несколько отдельных позиций.'
+    );
+   }
+   exits.push(row);
+   balance-=item.qty;
+  }
+ }
+
+ return {direction,entries,exits};
+}
+
+$('readCsv').onclick=async()=>{
  const file=$('csvFile').files[0];
-
  if(!file){
-  $('csvInfo').textContent='Сначала выбери CSV.';
+  alert('Сначала выбери CSV-файл.');
   return;
  }
 
- const reader=new FileReader();
+ try{
+  const content=await file.text();
+  csvParsed=parseBybitCsv(content,file.name);
 
- reader.onload=()=>{
-  const lines=reader.result.replace(/^\uFEFF/,'')
-   .split(/\r?\n/).filter(x=>x.trim());
+  const pairs=[...new Set(csvParsed.result.map(x=>x.pair))];
+  $('csvPair').innerHTML='';
+
+  for(const pair of pairs){
+   const opt=document.createElement('option');
+   opt.value=pair;
+   opt.textContent=pair;
+   $('csvPair').append(opt);
+  }
 
   $('csvInfo').textContent=
-   file.name+': прочитано '+Math.max(0,lines.length-1)+
-   ' строк. Автоматический расчёт CSV пока не подключён.';
- };
+   'Прочитано сделок: '+csvParsed.result.length+
+   '. Funding пропущено: '+csvParsed.skippedFunding+
+   '. Некорректных строк: '+csvParsed.invalid+'.';
 
- reader.readAsText(file,'UTF-8');
+  $('csvPreview').classList.remove('hidden');
+  refreshCsvPreview();
+
+ }catch(e){
+  csvParsed=null;
+  $('csvPreview').classList.add('hidden');
+  $('csvInfo').textContent='Ошибка: '+e.message;
+ }
 };
 
+$('csvPair').onchange=refreshCsvPreview;
+
+$('applyCsv').onclick=()=>{
+ if(!csvParsed)return;
+
+ const pair=$('csvPair').value;
+ const selected=csvParsed.result.filter(x=>x.pair===pair);
+
+ try{
+  const converted=classifyImportedTrades(selected,csvParsed.spot);
+  const currencies=splitPair(pair,csvParsed.spot);
+
+  if(!confirm(
+   'Импортировать '+selected.length+' исполнений '+pair+'?\n\n'+
+   'Текущие входы, закрытия и Funding будут заменены.\n'+
+   'Рекомендуется предварительно сохранить JSON.'
+  ))return;
+
+  $('type').value=csvParsed.spot?'spot':'linear';
+  $('direction').value=converted.direction;
+  $('pair').value=pair;
+  $('tradeName').value='Bybit CSV '+pair;
+  $('baseCurrency').value=currencies.base;
+  $('quoteCurrency').value=currencies.quote;
+
+  state.entries=converted.entries;
+  state.exits=converted.exits;
+  state.funding=[];
+
+  renderRows();
+  saveAndCalculate();
+  setTab('entries');
+
+  alert(
+   'Импорт завершён.\n'+
+   'Входов: '+state.entries.length+'\n'+
+   'Закрытий: '+state.exits.length+'\n\n'+
+   'Проверь расчёт и полноту истории.'
+  );
+
+ }catch(e){
+  alert('Импорт остановлен:\n'+e.message);
+ }
+};
+
+/* ============================
+   INITIALIZATION
+   ============================ */
+
+function init(){
+ load();
+
+ if(!state.entries.length&&!state.exits.length&&!state.funding.length){
+  state.entries.push(newTrade());
+ }
+
+ renderRows();
+
+ bindTable('entriesBody','entries');
+ bindTable('exitsBody','exits');
+ bindTable('fundingBody','funding');
+
+ $('tabEntries').onclick=()=>setTab('entries');
+ $('tabExits').onclick=()=>setTab('exits');
+ $('tabFunding').onclick=()=>setTab('funding');
+
+ $('addEntry').onclick=()=>addRow('entries');
+ $('addExit').onclick=()=>addRow('exits');
+ $('addFunding').onclick=()=>addRow('funding');
+
+ $('recalculate').onclick=saveAndCalculate;
+
+ $('clearAll').onclick=()=>{
+  if(!confirm('Очистить текущую сделку?'))return;
+  state.entries=[newTrade()];
+  state.exits=[];
+  state.funding=[];
+  renderRows();
+  saveAndCalculate();
+  setTab('entries');
+ };
+
+ $('exportJson').onclick=exportJson;
+
+ $('importJsonBtn').onclick=()=>$('importJsonFile').click();
+
+ $('importJsonFile').onchange=async e=>{
+  const file=e.target.files[0];
+  if(!file)return;
+  try{
+   await importJson(file);
+  }catch(err){
+   alert('Ошибка импорта JSON: '+err.message);
+  }
+  e.target.value='';
+ };
+
+ for(const id of [
+  'tradeName','type','direction','pair',
+  'baseCurrency','quoteCurrency','leverage','contractSize'
+ ]){
+  $(id).addEventListener('input',saveAndCalculate);
+  $(id).addEventListener('change',()=>{
+   if(id==='baseCurrency'||id==='quoteCurrency'){
+    renderRows();
+   }
+   saveAndCalculate();
+  });
+ }
+
+ setTab('entries');
+ calculate();
+}
+
 init();
-calculate();
 </script>
 </body>
 </html>

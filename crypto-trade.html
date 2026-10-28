@@ -222,8 +222,7 @@ Funding: <span class="red">− расход</span>,
 <h3>Импорт CSV Bybit</h3>
 <p class="note">
 Поддерживаются Spot Trade History,
-USDT Perpetual Trade History и
-Inverse Contract Closed PnL.
+USDT Perpetual Trade History и Inverse Contract Closed PnL.
 Файлы обрабатываются в браузере.
 Funding из Bybit пока не импортируется:
 в отчёте встречаются парные проводки,
@@ -263,6 +262,7 @@ Funding из Bybit пока не импортируется:
 <th>Средний вход</th>
 <th>Выход</th>
 <th>Realized P&amp;L</th>
+<th>Эквивалент, USD*</th>
 <th>Funding Fee</th>
 </tr>
 </thead>
@@ -738,7 +738,6 @@ function calculate(){
    ?(type==='inverse'?qty/basis:basis/qty)
    :0;
 
-  // Funding: отрицательный — расход, положительный — доход.
   const net=gross-feeValue+fundingValue;
 
   const qtyUnit=type==='inverse'?'контр.':base;
@@ -1131,17 +1130,24 @@ function refreshCsvPreview(){
    (selected[selected.length-1]?.timestamp||'—')+
    '.';
 
+  const usdEquivalent=selected.reduce(
+   (total,x)=>total+x.pnl*x.exit,0
+  );
+
   $('inverseTotals').textContent=
    'Realized P&L (сумма строк Bybit): '+
    fmt(sum('pnl'))+' '+coin+
+   ' | Расчётный эквивалент: '+
+   fmt(usdEquivalent)+' USD'+
    ' | Opening Fee: '+
    fmt(sum('openingFee'))+' '+coin+
    ' | Closing Fee: '+
    fmt(sum('closingFee'))+' '+coin+
    ' | Funding Fee (знак как в отчёте): '+
    fmt(sum('fundingFee'))+' '+coin+
-   '. Не складывай эти показатели повторно: '+
-   'итог Realized P&L уже рассчитан биржей.';
+   '. *USD = Realized P&L × цена выхода для каждой строки; '+
+   'это оценка, не фактический долларовый доход. '+
+   'Не складывай показатели повторно.';
 
   const esc=v=>String(v).replace(/[&<>"']/g,c=>({
    '&':'&amp;',
@@ -1160,6 +1166,7 @@ function refreshCsvPreview(){
     fmt(x.entry),
     fmt(x.exit),
     fmt(x.pnl),
+    fmt(x.pnl*x.exit),
     fmt(x.fundingFee)
    ].map(v=>
     '<td style="padding:7px;border-bottom:1px solid #445">'+

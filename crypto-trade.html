@@ -3,41 +3,77 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ФинРасчёт — криптоторговля</title>
 <style>
 *{box-sizing:border-box}
 body{
- margin:0;color:#edf2ff;font:15px Arial,sans-serif;
+ margin:0;
+ color:#edf2ff;
+ font:15px Arial,sans-serif;
  background:
  radial-gradient(circle at top left,#243b80,transparent 35%),
  radial-gradient(circle at bottom right,#4b1f72,transparent 35%),
  #0b1020;
  min-height:100vh
 }
-.wrap{width:min(1350px,96%);margin:auto;padding:25px 0 50px}
-a{color:#57adff;text-decoration:none;transition:color .2s ease}
-a:hover{color:#b18cff;text-shadow:0 0 10px rgba(177,140,255,.45)}
-h1{text-align:center;margin:18px 0 5px}
-.sub{text-align:center;color:#aebbd5;margin-bottom:25px}
-.card{
- background:#111827f2;border:1px solid #2b3a5b;
- border-radius:15px;padding:18px;margin-bottom:16px
+.wrap{
+ width:min(1350px,96%);
+ margin:auto;
+ padding:25px 0 50px
 }
-.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+a{
+ color:#57adff;
+ text-decoration:none;
+ transition:color .2s ease
+}
+a:hover{
+ color:#b18cff;
+ text-shadow:0 0 10px rgba(177,140,255,.45)
+}
+h1{text-align:center;margin:18px 0 5px}
+.sub{
+ text-align:center;
+ color:#aebbd5;
+ margin-bottom:25px
+}
+.card{
+ background:#111827f2;
+ border:1px solid #2b3a5b;
+ border-radius:15px;
+ padding:18px;
+ margin-bottom:16px
+}
+.controls{
+ display:flex;
+ gap:10px;
+ flex-wrap:wrap;
+ align-items:center
+}
 .setup{
- display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+ display:grid;
+ grid-template-columns:repeat(4,minmax(0,1fr));
  gap:12px
 }
 label{font-size:13px;color:#b7c4dc}
 input,select{
- width:100%;margin-top:5px;padding:9px;
- background:#0c1425;color:#fff;border:1px solid #354665;
- border-radius:8px;font:inherit
+ width:100%;
+ margin-top:5px;
+ padding:9px;
+ background:#0c1425;
+ color:#fff;
+ border:1px solid #354665;
+ border-radius:8px;
+ font:inherit
 }
 button{
- border:0;border-radius:9px;padding:11px 15px;
- background:#2563eb;color:#fff;cursor:pointer;font-weight:bold
+ border:0;
+ border-radius:9px;
+ padding:11px 15px;
+ background:#2563eb;
+ color:#fff;
+ cursor:pointer;
+ font-weight:bold
 }
 button:hover{filter:brightness(1.12)}
 .alt{background:#283650}
@@ -45,36 +81,150 @@ button:hover{filter:brightness(1.12)}
 .danger{background:#712d3b}
 .success{background:#18795b}
 .scroll{overflow:auto;margin-top:15px}
-table{border-collapse:collapse;min-width:1420px;width:100%}
+table{
+ border-collapse:collapse;
+ min-width:1420px;
+ width:100%
+}
 th,td{
- padding:7px;border-bottom:1px solid #293853;
- text-align:left;font-size:13px
+ padding:7px;
+ border-bottom:1px solid #293853;
+ text-align:left;
+ font-size:13px
 }
 th{color:#aab8d1}
 td input,td select{margin:0;padding:7px}
 td button{padding:7px 11px}
 .stats{
- display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
- gap:12px;margin-bottom:17px
+ display:grid;
+ grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:12px;
+ margin-bottom:17px
 }
 .stat{
- background:#10192d;border:1px solid #2b3a5b;
- border-radius:12px;padding:15px;overflow-wrap:anywhere
+ background:#10192d;
+ border:1px solid #2b3a5b;
+ border-radius:12px;
+ padding:15px;
+ overflow-wrap:anywhere
 }
 .stat small{color:#aebbd2}
-.stat strong{display:block;font-size:19px;margin-top:8px}
-.note{color:#aebbd2;font-size:13px;line-height:1.6}
+.stat strong{
+ display:block;
+ font-size:19px;
+ margin-top:8px
+}
+.note{
+ color:#aebbd2;
+ font-size:13px;
+ line-height:1.6
+}
 .green{color:#60d994}
 .red{color:#ff7989}
 .warning{color:#ffd28b}
 .hidden{display:none}
-#result{line-height:1.9;overflow-wrap:anywhere}
-#saveStatus{font-size:12px;color:#9db1d0}
+#result{
+ line-height:1.9;
+ overflow-wrap:anywhere
+}
+#saveStatus{
+ font-size:12px;
+ color:#9db1d0
+}
+
+/* Карточки отчёта Inverse */
+.inverse-stats{
+ display:grid;
+ grid-template-columns:repeat(4,minmax(0,1fr));
+ gap:12px;
+ margin:18px 0
+}
+.inverse-stat{
+ background:linear-gradient(145deg,#152440,#101a30);
+ border:1px solid #354b75;
+ border-radius:13px;
+ padding:17px;
+ min-width:0;
+ overflow-wrap:anywhere
+}
+.inverse-stat .caption{
+ color:#aabbd7;
+ font-size:13px;
+ margin-bottom:11px
+}
+.inverse-stat .amount{
+ font-size:23px;
+ font-weight:700;
+ line-height:1.3;
+ font-variant-numeric:tabular-nums
+}
+.inverse-stat .detail{
+ color:#9eafca;
+ font-size:12px;
+ margin-top:9px;
+ line-height:1.5
+}
+.inverse-stat.profit{
+ border-color:#276e60
+}
+.inverse-stat.usd{
+ border-color:#4964a8
+}
+.inverse-stat.fees{
+ border-color:#806338
+}
+.inverse-stat.funding{
+ border-color:#705184
+}
+.inverse-table{
+ min-width:900px;
+ width:100%
+}
+.inverse-table th,
+.inverse-table td{
+ padding:10px 8px;
+ white-space:nowrap
+}
+.inverse-table tbody tr:hover{
+ background:#1c2a43
+}
+.inverse-table .right{
+ text-align:right
+}
+.report-title{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ flex-wrap:wrap;
+ gap:10px
+}
+.report-count{
+ color:#aebbd2;
+ font-size:13px
+}
+
+@media(max-width:1000px){
+ .inverse-stats{
+  grid-template-columns:repeat(2,minmax(0,1fr))
+ }
+}
 @media(max-width:850px){
- .setup,.stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .setup,.stats{
+  grid-template-columns:repeat(2,minmax(0,1fr))
+ }
+}
+@media(max-width:550px){
+ .inverse-stats{
+  grid-template-columns:1fr
+ }
+ .inverse-stat .amount{
+  font-size:22px
+ }
 }
 @media(max-width:450px){
- .setup,.stats{grid-template-columns:1fr}
+ .setup,.stats{
+  grid-template-columns:1fr
+ }
 }
 </style>
 </head>
@@ -96,6 +246,7 @@ Spot и Futures · несколько бирж · комиссии · Funding ·
 <div id="manualBlock">
 
 <section class="card setup">
+
 <label>Биржа
 <input id="exchange" list="exchanges" value="Bybit">
 <datalist id="exchanges">
@@ -123,6 +274,7 @@ Spot и Futures · несколько бирж · комиссии · Funding ·
 <label>Название сделки
 <input id="tradeName" placeholder="Например: LTC октябрь">
 </label>
+
 </section>
 
 <section class="card">
@@ -180,31 +332,40 @@ Funding: <span class="red">− расход</span>,
 
 <div class="stats">
 <div class="stat">
-<small>Остаток позиции</small><strong id="sQty">—</strong>
+<small>Остаток позиции</small>
+<strong id="sQty">—</strong>
 </div>
 <div class="stat">
-<small>Средняя цена</small><strong id="sAvg">—</strong>
+<small>Средняя цена</small>
+<strong id="sAvg">—</strong>
 </div>
 <div class="stat">
-<small>Gross PnL</small><strong id="sGross">—</strong>
+<small>Gross PnL</small>
+<strong id="sGross">—</strong>
 </div>
 <div class="stat">
-<small>Стоимость комиссий</small><strong id="sCost">—</strong>
+<small>Стоимость комиссий</small>
+<strong id="sCost">—</strong>
 </div>
 <div class="stat">
-<small>Net PnL</small><strong id="sNet">—</strong>
+<small>Net PnL</small>
+<strong id="sNet">—</strong>
 </div>
 <div class="stat">
-<small>Комиссии по валютам</small><strong id="sFees">—</strong>
+<small>Комиссии по валютам</small>
+<strong id="sFees">—</strong>
 </div>
 <div class="stat">
-<small>Funding по валютам</small><strong id="sFund">—</strong>
+<small>Funding по валютам</small>
+<strong id="sFund">—</strong>
 </div>
 <div class="stat">
-<small>Сделок</small><strong id="sCount">0</strong>
+<small>Сделок</small>
+<strong id="sCount">0</strong>
 </div>
 <div class="stat">
-<small>Направление</small><strong id="sSide">—</strong>
+<small>Направление</small>
+<strong id="sSide">—</strong>
 </div>
 </div>
 
@@ -219,56 +380,112 @@ Funding: <span class="red">− расход</span>,
 
 <div id="csvBlock" class="hidden">
 <section class="card">
+
 <h3>Импорт CSV Bybit</h3>
 <p class="note">
 Поддерживаются Spot Trade History,
 USDT Perpetual Trade History и Inverse Contract Closed PnL.
 Файлы обрабатываются в браузере.
-Funding из Bybit пока не импортируется:
+Funding из торговой истории Bybit пока не импортируется:
 в отчёте встречаются парные проводки,
 их нельзя считать дважды.
 </p>
+
 <label>CSV-файл
 <input id="csvFile" type="file" accept=".csv,text/csv">
 </label>
+
+<div class="controls" style="margin-top:12px">
 <button id="readCsv">Прочитать CSV</button>
+</div>
+
 <p id="csvInfo" class="note"></p>
 
 <div id="csvPreview" class="hidden">
+
 <label>Торговая пара
 <select id="csvPair"></select>
 </label>
+
 <p id="csvDetails" class="note"></p>
+
 <button id="applyCsv" class="success">
 Перенести выбранную пару в калькулятор
 </button>
 
 <div id="inverseReport" class="hidden">
+
+<div class="report-title">
 <h3>История закрытий Inverse (по данным Bybit)</h3>
+<span id="inverseCount" class="report-count"></span>
+</div>
+
 <p class="note">
 Это отчёт о закрытых объёмах, а не полная история
 входов и усреднений. Значения Realized P&amp;L
 взяты из Bybit; комиссии и Funding показаны
 отдельно и повторно из P&amp;L не вычитаются.
 </p>
-<div id="inverseTotals" class="note"></div>
-<div style="overflow-x:auto">
-<table style="width:100%;border-collapse:collapse;min-width:760px">
+
+<div class="inverse-stats">
+
+<div class="inverse-stat profit">
+<div class="caption">Realized P&amp;L</div>
+<div id="inversePnl" class="amount">—</div>
+<div class="detail">Сумма закрытий по данным Bybit</div>
+</div>
+
+<div class="inverse-stat usd">
+<div class="caption">Эквивалент в USD</div>
+<div id="inverseUsd" class="amount">—</div>
+<div class="detail">
+Расчёт по цене каждого закрытия, не фактический долларовый доход
+</div>
+</div>
+
+<div class="inverse-stat fees">
+<div class="caption">Комиссии</div>
+<div id="inverseFees" class="amount">—</div>
+<div id="inverseFeesDetail" class="detail">
+Открытие и закрытие
+</div>
+</div>
+
+<div class="inverse-stat funding">
+<div class="caption">Funding Fee</div>
+<div id="inverseFunding" class="amount">—</div>
+<div class="detail">
+Сумма со знаками из отчёта Bybit
+</div>
+</div>
+
+</div>
+
+<p class="note">
+* USD = Realized P&amp;L × цена выхода для каждой строки.
+Это оценка долларового эквивалента, а не подтверждённый доход в USD.
+Не складывай комиссии и Funding с Realized P&amp;L повторно:
+итог уже рассчитан биржей.
+</p>
+
+<div class="scroll">
+<table class="inverse-table">
 <thead>
 <tr>
 <th>Закрытие (UTC)</th>
 <th>Сторона</th>
-<th>Контракты</th>
-<th>Средний вход</th>
-<th>Выход</th>
-<th>Realized P&amp;L</th>
-<th>Эквивалент, USD*</th>
-<th>Funding Fee</th>
+<th class="right">Контракты</th>
+<th class="right">Средний вход</th>
+<th class="right">Выход</th>
+<th class="right">Realized P&amp;L</th>
+<th class="right">Эквивалент, USD*</th>
+<th class="right">Funding Fee</th>
 </tr>
 </thead>
 <tbody id="inverseRows"></tbody>
 </table>
 </div>
+
 </div>
 </div>
 </section>
@@ -380,6 +597,7 @@ function newRow(values={}){
   tr.remove();
   renumber();
   save();
+  calculate();
  };
 
  $('ops').append(tr);
@@ -739,7 +957,6 @@ function calculate(){
    :0;
 
   const net=gross-feeValue+fundingValue;
-
   const qtyUnit=type==='inverse'?'контр.':base;
 
   $('sQty').textContent=fmt(qty,8)+' '+qtyUnit;
@@ -833,6 +1050,7 @@ function calculate(){
 $('add').onclick=()=>{
  newRow();
  save();
+ calculate();
 };
 
 $('clear').onclick=()=>{
@@ -845,6 +1063,7 @@ $('clear').onclick=()=>{
   'Добавь операции и нажми «Рассчитать».';
 
  save();
+ calculate();
 };
 
 $('calc').onclick=calculate;
@@ -899,9 +1118,7 @@ $('jsonFile').onchange=async e=>{
   ))return;
 
   restore(data);
-  $('result').textContent=
-   'Резервная копия загружена. Нажми «Рассчитать».';
-
+  calculate();
   alert('Операции восстановлены!');
  }catch(err){
   alert('Ошибка загрузки JSON: '+err.message);
@@ -910,8 +1127,7 @@ $('jsonFile').onchange=async e=>{
  e.target.value='';
 };
 
-// Bybit CSV: поддержка кавычек,
-// запятых и переводов строк внутри ячеек.
+// Чтение CSV с учётом кавычек.
 function parseCsv(text){
  const out=[];
  let row=[],field='',quoted=false;
@@ -944,6 +1160,11 @@ function parseCsv(text){
 
  row.push(field);
  if(row.some(v=>v.trim()))out.push(row);
+
+ if(quoted){
+  throw Error('Ошибка CSV: незакрытые кавычки.');
+ }
+
  return out;
 }
 
@@ -1023,8 +1244,10 @@ function bybitCsv(text){
 
  if(headerIndex<0){
   throw Error(
-   'Неизвестный формат. Нужен Spot Trade History '+
-   'или USDT Perpetual Trade History Bybit.'
+   'Неизвестный формат CSV Bybit. '+
+   'Нужен Spot Trade History, '+
+   'USDT Perpetual Trade History или '+
+   'Inverse Contract Closed PnL.'
   );
  }
 
@@ -1057,8 +1280,6 @@ function bybitCsv(text){
    continue;
   }
 
-  // Spot Bybit: BUY обычно комиссия в базовой монете,
-  // SELL — в котируемой.
   const quote=pair.endsWith('USDT')?'USDT':
    pair.endsWith('USDC')?'USDC':
    pair.endsWith('USD')?'USD':'';
@@ -1118,9 +1339,15 @@ function refreshCsvPreview(){
  if(csvParsed.inverse){
   const coin=pair.split('/')[0];
   const sum=key=>selected.reduce((a,x)=>a+x[key],0);
-  const fmt=n=>n.toLocaleString('ru-RU',{
-   maximumFractionDigits:8
-  });
+
+  const pnl=sum('pnl');
+  const usdEquivalent=selected.reduce(
+   (total,x)=>total+x.pnl*x.exit,0
+  );
+  const openingFee=sum('openingFee');
+  const closingFee=sum('closingFee');
+  const totalFees=openingFee+closingFee;
+  const fundingFee=sum('fundingFee');
 
   $('csvDetails').textContent=
    'Закрытий: '+selected.length+
@@ -1130,51 +1357,42 @@ function refreshCsvPreview(){
    (selected[selected.length-1]?.timestamp||'—')+
    '.';
 
-  const usdEquivalent=selected.reduce(
-   (total,x)=>total+x.pnl*x.exit,0
-  );
+  $('inverseCount').textContent=
+   selected.length+' закрытий · '+pair;
 
-  $('inverseTotals').textContent=
-   'Realized P&L (сумма строк Bybit): '+
-   fmt(sum('pnl'))+' '+coin+
-   ' | Расчётный эквивалент: '+
-   fmt(usdEquivalent)+' USD'+
-   ' | Opening Fee: '+
-   fmt(sum('openingFee'))+' '+coin+
-   ' | Closing Fee: '+
-   fmt(sum('closingFee'))+' '+coin+
-   ' | Funding Fee (знак как в отчёте): '+
-   fmt(sum('fundingFee'))+' '+coin+
-   '. *USD = Realized P&L × цена выхода для каждой строки; '+
-   'это оценка, не фактический долларовый доход. '+
-   'Не складывай показатели повторно.';
+  const pnlEl=$('inversePnl');
+  pnlEl.textContent=fmt(pnl,8)+' '+coin;
+  pnlEl.className='amount '+(pnl>=0?'green':'red');
 
-  const esc=v=>String(v).replace(/[&<>"']/g,c=>({
-   '&':'&amp;',
-   '<':'&lt;',
-   '>':'&gt;',
-   '"':'&quot;',
-   "'":'&#39;'
-  }[c]));
+  const usdEl=$('inverseUsd');
+  usdEl.textContent=fmt(usdEquivalent,2)+' USD';
+  usdEl.className='amount '+(usdEquivalent>=0?'green':'red');
 
-  $('inverseRows').innerHTML=selected.map(x=>
-   '<tr>'+
-   [
-    x.timestamp,
-    x.side,
-    fmt(x.qty),
-    fmt(x.entry),
-    fmt(x.exit),
-    fmt(x.pnl),
-    fmt(x.pnl*x.exit),
-    fmt(x.fundingFee)
-   ].map(v=>
-    '<td style="padding:7px;border-bottom:1px solid #445">'+
-    esc(v)+
-    '</td>'
-   ).join('')+
-   '</tr>'
-  ).join('');
+  $('inverseFees').textContent=
+   fmt(totalFees,8)+' '+coin;
+
+  $('inverseFeesDetail').textContent=
+   'Открытие: '+fmt(openingFee,8)+' '+coin+
+   ' · Закрытие: '+fmt(closingFee,8)+' '+coin;
+
+  $('inverseFunding').textContent=
+   fmt(fundingFee,8)+' '+coin;
+
+  $('inverseRows').innerHTML=selected.map(x=>{
+   const usd=x.pnl*x.exit;
+   const cls=x.pnl>=0?'green':'red';
+
+   return '<tr>'+
+    '<td>'+escapeHTML(x.timestamp)+'</td>'+
+    '<td>'+escapeHTML(x.side)+'</td>'+
+    '<td class="right">'+fmt(x.qty)+'</td>'+
+    '<td class="right">'+fmt(x.entry)+'</td>'+
+    '<td class="right">'+fmt(x.exit)+'</td>'+
+    '<td class="right '+cls+'">'+fmt(x.pnl,8)+'</td>'+
+    '<td class="right '+cls+'">'+fmt(usd,2)+'</td>'+
+    '<td class="right">'+fmt(x.fundingFee,8)+'</td>'+
+    '</tr>';
+  }).join('');
 
   return;
  }
